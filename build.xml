@@ -40,7 +40,7 @@
         <property name="aws.profile" value="" />
         <aws-config region="${aws.region}" profile="${aws.profile}" />
     </target>
-    
+
     <target name="delete-stack">
         <aws-cf-deletestack name="${cf.stackName}" />
     </target>
@@ -50,10 +50,10 @@
             <equals arg1="single-server" arg2="${cf.template}" />
             <then>
                 <aws-cf-runstack
-                        name="subsite-${cf.stackName}"
-                        updateOnConflict="true"
-                        capabilities="CAPABILITY_IAM"
-                        templatePath="./resources/cloudformation/${cf.template}.template">
+                    name="subsite-${cf.stackName}"
+                    updateOnConflict="true"
+                    capabilities="CAPABILITY_IAM"
+                    templatePath="./resources/cloudformation/${cf.template}.template">
                     <param name="KeyName" value="${cf.KeyName}" />
                     <param name="env" value="${cf.stackName}" />
                 </aws-cf-runstack>
@@ -61,10 +61,10 @@
             <else>
                 <!-- Todo: This is currently untested. -->
                 <aws-cf-runstack
-                        name="subsite-${cf.stackName}"
-                        updateOnConflict="true"
-                        capabilities="CAPABILITY_IAM"
-                        templatePath="./resources/cloudformation/${cf.template}.template">
+                    name="subsite-${cf.stackName}"
+                    updateOnConflict="true"
+                    capabilities="CAPABILITY_IAM"
+                    templatePath="./resources/cloudformation/${cf.template}.template">
                     <param name="KeyName" value="${cf.KeyName}" />
                     <param name="DBName" value="${cf.DBName}" />
                     <param name="DBUser" value="${cf.DBUser}" />
@@ -81,21 +81,21 @@
             <equals arg1="single-server" arg2="${cf.template}" />
             <then>
                 <aws-deploy-deployment-group
-                        name="${cf.stackName}"
-                        updateOnConflict="true"
-                        deploymentConfigName="CodeDeployDefault.OneAtATime"
-                        serviceRole="${deploy.serviceRole}"
-                        application="${deploy.applicationName}">
+                    name="${cf.stackName}"
+                    updateOnConflict="true"
+                    deploymentConfigName="CodeDeployDefault.OneAtATime"
+                    serviceRole="${deploy.serviceRole}"
+                    application="${deploy.applicationName}">
                     <ec2TagFilter key="env" value="${cf.stackName}" />
                 </aws-deploy-deployment-group>
             </then>
             <else>
                 <aws-deploy-deployment-group
-                        name="${cf.stackName}"
-                        updateOnConflict="true"
-                        deploymentConfigName="CodeDeployDefault.OneAtATime"
-                        serviceRole="${deploy.serviceRole}"
-                        application="${deploy.applicationName}">
+                    name="${cf.stackName}"
+                    updateOnConflict="true"
+                    deploymentConfigName="CodeDeployDefault.OneAtATime"
+                    serviceRole="${deploy.serviceRole}"
+                    application="${deploy.applicationName}">
                     <autoScalingGroup name="${deploy.autoScalingGroup}" />
                 </aws-deploy-deployment-group>
             </else>
