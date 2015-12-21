@@ -30,6 +30,10 @@
     <echo msg="Loading Drush Makefile task." />
     <taskdef name="drushmakefile" classname="\NextEuropa\Phing\DrushMakeFileTask" />
 
+    <echo msg="Loading temporary backwards compatible deployment task." />
+    <taskdef name="bcdeploy" classname="\NextEuropa\Phing\BCDeployTask" />
+
+    <import file="build.deploy.xml" />
     <import file="build.package.xml" />
     <import file="build.test.xml" />
 
