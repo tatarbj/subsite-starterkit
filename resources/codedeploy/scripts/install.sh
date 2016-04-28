@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /var/www/html
+cd /srv/project
 
 while [ ! -f /usr/local/etc/subsite/subsite.ini ]
 do
@@ -7,4 +7,4 @@ do
 done
 
 bin/phing -propertyfile /usr/local/etc/subsite/subsite.ini install >> /var/log/subsite/install.log 2>&1
-chown -R www-data:www-data /var/www/html/*
+chown -R www-data:www-data /srv/project

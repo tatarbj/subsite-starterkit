@@ -234,9 +234,8 @@ development.modules.location = development
 
 # AWS SDK
 # -------
-# !!! Keep this in your local properties, never commit to git !!!
-#aws.id = <your id>
-#aws.secret = <your secret key>
+# Your aws profile to use ( stored in ~/.aws/credentials )
+aws.profile = default
 aws.region = eu-west-1
 
 
