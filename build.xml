@@ -33,6 +33,9 @@
     <echo msg="Loading Starterkit update check task." />
     <taskdef name="checkstarterkit" classname="\NextEuropa\Phing\CheckStarterkitTask" />
 
+    <echo msg="Loading infra additional tasks." />
+    <import file="./vendor/ec-europa/infra/infra.xml" />
+
     <import file="build.package.xml" />
     <import file="build.test.xml" />
 
