@@ -48,7 +48,8 @@ drupal.core.version = 7.x
 
 # The root directory of the platform. This will become the Drupal root folder,
 # so point your web server here.
-platform.build.dir = ${project.basedir}/platform
+documentroot.path = platform
+platform.build.dir = ${project.basedir}/${documentroot.path}
 
 # The install profile to use. Either multisite_drupal_standard or
 # multisite_drupal_communities.
@@ -270,4 +271,3 @@ copy.path.haltonerror = true
 # Packer configuration
 # --------------------
 packer.path = /usr/bin/env packer
-project.docroot = ${platform.build.dir}
