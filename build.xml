@@ -30,6 +30,12 @@
     <echo msg="Loading Drush Makefile task." />
     <taskdef name="drushmakefile" classname="\NextEuropa\Phing\DrushMakeFileTask" />
 
+    <echo msg="Loading Starterkit update check task." />
+    <taskdef name="checkstarterkit" classname="\NextEuropa\Phing\CheckStarterkitTask" />
+
+    <echo msg="Loading infra additional tasks." />
+    <import file="./vendor/ec-europa/infra/infra.xml" />
+
     <import file="build.package.xml" />
     <import file="build.test.xml" />
 
@@ -40,13 +46,13 @@
         <property name="aws.profile" value="" />
         <aws-config region="${aws.region}" profile="${aws.profile}" />
     </target>
-    
+
     <target name="delete-deployment-group">
         <aws-deploy-delete-deployment-group
                 name="${deploy.groupName}"
                 application="${deploy.applicationName}" />
     </target>
-    
+
     <target name="delete-stack" depends="delete-deployment-group">
         <aws-cf-deletestack name="${cf.stackName}" />
     </target>
