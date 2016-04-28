@@ -13,7 +13,6 @@ subsite.install.modules = myproject_core
 # The site type ( Infrastructure stack )
 project.siteType = subsite
 
-
 # Drupal configuration
 # --------------------
 
