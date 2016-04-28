@@ -10,6 +10,9 @@ subsite.make = ${subsite.resources.dir}/site.make
 # Modules to enable after installation. Separate multiple modules with spaces.
 subsite.install.modules = myproject_core
 
+# The site type ( Infrastructure stack )
+project.siteType = subsite
+
 
 # Drupal configuration
 # --------------------
@@ -232,6 +235,9 @@ development.modules.location = development
 
 # AWS SDK
 # -------
+# !!! Keep this in your local properties, never commit to git !!!
+#aws.id = <your id>
+#aws.secret = <your secret key>
 aws.region = eu-west-1
 
 
@@ -263,3 +269,7 @@ starterkit.remote = starterkit
 
 # Whether or not to stop executing the build if a directory cannot be copied.
 copy.path.haltonerror = true
+
+# Packer configuration
+# --------------------
+packer.path = /usr/bin/env packer
