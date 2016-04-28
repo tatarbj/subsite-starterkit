@@ -211,7 +211,6 @@ phpcs.global.config = ${project.basedir}/vendor/squizlabs/php_codesniffer/CodeSn
 # The location of the webserver docroot. Used for testing on CI infrastructure.
 server.docroot = /var/www
 
-
 # Debugging and development configuration
 # ---------------------------------------
 
@@ -271,3 +270,4 @@ copy.path.haltonerror = true
 # Packer configuration
 # --------------------
 packer.path = /usr/bin/env packer
+project.docroot = ${platform.build.dir}
