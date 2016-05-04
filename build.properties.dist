@@ -3,6 +3,7 @@
 
 # The site name.
 subsite.name = My Project
+application.name = my-project
 
 # The make file containing the dependencies of the subsite.
 subsite.make = ${subsite.resources.dir}/site.make
