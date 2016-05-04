@@ -11,7 +11,7 @@ subsite.make = ${subsite.resources.dir}/site.make
 subsite.install.modules = myproject_core
 
 # The site type ( Infrastructure stack )
-project.siteType = subsite
+infra.type = subsite
 
 # Drupal configuration
 # --------------------
