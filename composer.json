@@ -9,7 +9,7 @@
     "drupal/drupal-extension": "~3.1.5",
     "drupal/phing-drush-task": "1.0",
     "drush/drush": "~8.0",
-    "ec-europa/infra": "dev-master",
+    "ec-europa/infra": "~0.4",
     "ext-json": "*",
     "ext-phar": "*",
     "ext-xml": "*",
