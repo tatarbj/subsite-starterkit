@@ -79,6 +79,9 @@ Example file:
 # The site name.
 subsite.name = My Project
 
+# The application name (short, alphanumeric)
+application.name = my-project
+
 # The install profile to use.
 platform.profile.name = multisite_drupal_standard
 
