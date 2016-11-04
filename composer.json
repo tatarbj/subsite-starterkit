@@ -8,7 +8,7 @@
     "drupal/coder": "8.2.7",
     "drupal/phing-drush-task": "1.0",
     "drush/drush": "~8.0",
-    "ec-europa/qa-automation": "1.1",
+    "ec-europa/qa-automation": "1.*",
     "ext-json": "*",
     "ext-phar": "*",
     "ext-xml": "*",
@@ -76,22 +76,10 @@
           "reference": "master"
         }
       }
-    },
-    {
-      "type": "package",
-      "package": {
-        "name": "ec-europa/qa-automation",
-        "version": "1.1",
-        "source": {
-          "url": "https://github.com/ec-europa/qa-automation.git",
-          "type": "git",
-          "reference": "master"
-        }
-      }
     }
   ],
   "scripts": {
-    "post-install-cmd": "resources/scripts/composer/post-install.sh"
+    "post-update-cmd": "resources/scripts/composer/post-install.sh"
   },
   "config": {
     "bin-dir": "bin/"
