@@ -36,7 +36,7 @@ own repository on GitHub. We are in fact using two repositories: 'dev' and
 5. Don't add a README or any other files, just leave it empty.
 6. Click "Create repository".
 7. On the next page you will see the URL of your repository, which will look
-   similar to this: `git@github.com:ec-europa/myproject-dev.git`. We will need
+   similar to this: `https://github.com/ec-europa/myproject-dev.git`. We will need
    this in the next step.
 
 ### 2. Fork the starterkit
@@ -52,7 +52,7 @@ $ cd subsite-starterkit
 
 # Remove the 'origin' remote, and replace it with the one from our project repo.
 $ git remote rm origin
-$ git remote add origin git@github.com:ec-europa/myproject-dev.git
+$ git remote add origin https://github.com/ec-europa/myproject-dev.git
 
 # Test the connection with the project repository.
 $ git fetch origin
