@@ -7,7 +7,7 @@
     "cpliakas/git-wrapper": "dev-master as 1.7.1",
     "drupal/coder": "8.2.7",
     "drupal/phing-drush-task": "1.0",
-    "drush/drush": "~8.0",
+    "drush/drush": "8.1.5",
     "ec-europa/qa-automation": "~1.0",
     "ext-json": "*",
     "ext-phar": "*",
