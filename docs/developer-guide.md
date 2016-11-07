@@ -14,7 +14,7 @@ Let's assume our project is called `ec-europa/myproject` and is hosted on our
 Github. We will be working on the "dev" version.
 
 ```
-$ git clone git@github.com:ec-europa/myproject-dev.git
+$ git clone https://github.com/ec-europa/myproject-dev.git
 $ cd myproject-dev
 ```
 
