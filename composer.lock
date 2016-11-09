@@ -569,16 +569,16 @@
         },
         {
             "name": "ec-europa/qa-automation",
-            "version": "1.1",
+            "version": "1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/qa-automation.git",
-                "reference": "40d0d00a98d7ee4a532649b847d6b82453017ab1"
+                "reference": "c071dd5df705d01a5d8820639cb0ee89c6bfa7fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/40d0d00a98d7ee4a532649b847d6b82453017ab1",
-                "reference": "40d0d00a98d7ee4a532649b847d6b82453017ab1",
+                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/c071dd5df705d01a5d8820639cb0ee89c6bfa7fe",
+                "reference": "c071dd5df705d01a5d8820639cb0ee89c6bfa7fe",
                 "shasum": ""
             },
             "require": {
@@ -590,7 +590,8 @@
             },
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2016-10-31 13:34:42"
+            "description": "Performs automated QA checks and extra php codesniffs for the subsite starterkit.",
+            "time": "2016-11-09 12:40:37"
         },
         {
             "name": "guzzlehttp/command",
