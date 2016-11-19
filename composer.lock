@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8e0ba73be7e30dc28e9a2f254f81a4af",
-    "content-hash": "88ef4a1826362147f30d15dcaa7f3802",
+    "hash": "ce3fb66bbbc3f55aed38937f95126975",
+    "content-hash": "0d3a313935c6c0c445da7815b350daed",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.19.23",
+            "version": "3.19.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "fbfb87734e5d298b40354ac7fb3f95d0f72ad16e"
+                "reference": "1be75a77fb58eb0b0bdf8ff87495466934afb736"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fbfb87734e5d298b40354ac7fb3f95d0f72ad16e",
-                "reference": "fbfb87734e5d298b40354ac7fb3f95d0f72ad16e",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1be75a77fb58eb0b0bdf8ff87495466934afb736",
+                "reference": "1be75a77fb58eb0b0bdf8ff87495466934afb736",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-11-03 20:28:28"
+            "time": "2016-11-18 23:27:25"
         },
         {
             "name": "consolidation/annotated-command",
@@ -188,16 +188,16 @@
         },
         {
             "name": "continuousphp/aws-sdk-phing",
-            "version": "0.2.1",
+            "version": "0.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/continuousphp/aws-sdk-phing.git",
-                "reference": "9204e824de96a1643b898079814cb743d070e8ee"
+                "reference": "59a121be2f28ab95945cb38e516fccc4db533bd1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/continuousphp/aws-sdk-phing/zipball/9204e824de96a1643b898079814cb743d070e8ee",
-                "reference": "9204e824de96a1643b898079814cb743d070e8ee",
+                "url": "https://api.github.com/repos/continuousphp/aws-sdk-phing/zipball/59a121be2f28ab95945cb38e516fccc4db533bd1",
+                "reference": "59a121be2f28ab95945cb38e516fccc4db533bd1",
                 "shasum": ""
             },
             "require": {
@@ -223,7 +223,7 @@
             ],
             "description": "phing tasks for Amazon AWS",
             "homepage": "https://github.com/continuousphp/aws-sdk-phing",
-            "time": "2016-08-30 07:47:08"
+            "time": "2016-11-15 15:09:58"
         },
         {
             "name": "continuousphp/phing-tasks",
@@ -569,16 +569,16 @@
         },
         {
             "name": "ec-europa/qa-automation",
-            "version": "1.2",
+            "version": "dev-bugfix/MULTISITE-14337",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/qa-automation.git",
-                "reference": "c071dd5df705d01a5d8820639cb0ee89c6bfa7fe"
+                "reference": "432813a8b7eaab2192627d9f335fb898e7028ba5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/c071dd5df705d01a5d8820639cb0ee89c6bfa7fe",
-                "reference": "c071dd5df705d01a5d8820639cb0ee89c6bfa7fe",
+                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/432813a8b7eaab2192627d9f335fb898e7028ba5",
+                "reference": "432813a8b7eaab2192627d9f335fb898e7028ba5",
                 "shasum": ""
             },
             "require": {
@@ -591,7 +591,7 @@
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "description": "Performs automated QA checks and extra php codesniffs for the subsite starterkit.",
-            "time": "2016-11-09 12:40:37"
+            "time": "2016-11-19 11:19:46"
         },
         {
             "name": "guzzlehttp/command",
@@ -739,16 +739,16 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "1.2.0",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "c10d860e2a9595f8883527fa0021c7da9e65f579"
+                "reference": "2693c101803ca78b27972d84081d027fca790a1e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/c10d860e2a9595f8883527fa0021c7da9e65f579",
-                "reference": "c10d860e2a9595f8883527fa0021c7da9e65f579",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/2693c101803ca78b27972d84081d027fca790a1e",
+                "reference": "2693c101803ca78b27972d84081d027fca790a1e",
                 "shasum": ""
             },
             "require": {
@@ -786,7 +786,7 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2016-05-18 16:56:05"
+            "time": "2016-11-18 17:47:58"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -2220,16 +2220,16 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.2.0",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "dff51f72b0706335131b00a7f49606168c582594"
+                "reference": "e79d363049d1c2128f133a2667e4f4190904f7f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/dff51f72b0706335131b00a7f49606168c582594",
-                "reference": "dff51f72b0706335131b00a7f49606168c582594",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/e79d363049d1c2128f133a2667e4f4190904f7f4",
+                "reference": "e79d363049d1c2128f133a2667e4f4190904f7f4",
                 "shasum": ""
             },
             "require": {
@@ -2241,7 +2241,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.2-dev"
+                    "dev-master": "1.3-dev"
                 }
             },
             "autoload": {
@@ -2275,7 +2275,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-05-18 14:26:46"
+            "time": "2016-11-14 01:06:16"
         },
         {
             "name": "symfony/process",
@@ -3700,6 +3700,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "cpliakas/git-wrapper": 20,
+        "ec-europa/qa-automation": 20,
         "pear/archive_tar": 20,
         "pear/versioncontrol_git": 20,
         "behat/behat": 5

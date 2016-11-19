@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains all install and update hooks for the myproject_core feature.
+ */
+
+/**
+ * Enable example_module.
+ */
+function myproject_core_update_7001() {
+  // Enable example module.
+  module_enable(['example_module']);
+}
+
+/**
+ * Revert feature.
+ */
+function myproject_core_update_7002() {
+  // Enable theme.
+  $theme = 'example_theme';
+  theme_enable([$theme]);
+  variable_set('theme_default', $theme);
+}
