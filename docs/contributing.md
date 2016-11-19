@@ -13,7 +13,7 @@ feature, bugfix or task depending on the type of ticket you created. And as
 {ticketnumber} add MULTISITE-XXXXX.
 3. Create a pull request from that branch of your forked subsite-starterkit to the
 develop branch of the subsite-starterkit project:
-  *always allow maintainers of the project to commit to the branch of your fork.
+  * always allow maintainers of the project to commit to the branch of your fork.
 4. Add a link to the pull request on the multisite ticket.
 
 **Note:**
