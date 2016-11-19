@@ -2,15 +2,15 @@
 
 ### Contributing as non-maintainer:
 1. Create a **multisite ticket** with the following values:
-  * A short but descriptive title starting with `Feature: `, `Bug: ` or `Task: `.
+  * A short but descriptive title starting with Feature: , Bug:  or Task: .
   * An extensive description of what is the exact problem or requested functionality.
-  * The correct ticket type, `New feature`, `Bug` or `Task`.
-  * For fix versions enter `subsite-starterkit` and `yourproject`.
+  * The correct ticket type, New feature, Bug or Task.
+  * For fix versions enter subsite-starterkit and yourproject.
   * Add a link to the repository url of your subsite-starterkit fork on github.
 2. In your fork of the subsite-starterkit create a branch called
-**{type}/{TICKETNUMBER}** from within the `develop` branch:
-  * Where **{type}** stands for `feature`, `hotfix` or `task` (always lowercase).
-  * Where **{ticketnumber}** stands for `MULTISITE-XXXXX` (always uppercase).
+`{type}/{TICKETNUMBER}` from within the `develop` branch:
+  * Where **{type}** stands for feature, bugfix or task, always in lowercase.
+  * Where **{TICKETNUMBER}** stands for MULTISITE-XXXXX, always in uppercase.
 3. Create a pull request from that branch of your forked subsite-starterkit:
   * Always make that pull request to the `develop` branch of the subsite-starterkit.
   * Always allow maintainers of the project to commit to the branch of your fork.
@@ -29,15 +29,15 @@ that are used in the subsite-starterkit.
 
 
 ### Contributing as a maintainer:
-1. Create a multisite ticket with the following values:
-  * A short but descriptive title starting with `Feature: `, `Bug: ` or `Task: `.
+1. Create a **multisite ticket** with the following values:
+  * A short but descriptive title starting with Feature: , Bug:  or Task: .
   * An extensive description of what is the exact problem or requested functionality.
-  * The correct ticket type, `New feature`, `Bug` or `Task`.
-  * For fix versions enter `subsite-starterkit` and `projects`.
+  * The correct ticket type, New feature, Bug or Task.
+  * For fix versions enter subsite-starterkit and projects.
   * Add a link to the repository url of the subsite-starterkit on github.
-2. Add a branch called **{type}/{TICKETNUMBER}** from within the `develop` branch:
-  * Where **{type}** stands for `feature`, `bugfix` or `task` (always lowercase).
-  * Where **{ticketnumber}** stands for `MULTISITE-XXXXX` (always uppercase).
+2. Add a branch called `{type}/{TICKETNUMBER}` from within the `develop` branch:
+  * Where **{type}** stands for feature, bugfix or task, always in lowercase.
+  * Where **{TICKETNUMBER}** stands for MULTISITE-XXXXX, always in uppercase.
 3. Create a pull request to the `develop` or `release/2.X` branch accordingly.
 4. Add a link to the pull request on the multisite ticket.
 
@@ -48,10 +48,10 @@ mentioned on the ticket and checkout the correct branch.
 
 > the same workflow applies for contributions to the
 [qa-automation](https://github.com/ec-europa/qa-automation) tools that are used in 
-the subsite-starterkit. Additions to the `QualityAssurancTask.php` class have to be
-tested on the subsite-starterkit by creating a **test/{TICKETNUMBER}** branch where
+the subsite-starterkit. Additions to the QualityAssurancTask.php class have to be
+tested on the subsite-starterkit by creating a `test/{TICKETNUMBER}` branch where
 you make the following updates:
-  * Change the qa-automation version in composer.json to `dev-{type}/{TICKETNUMBER}`.
-  * Update the composer.lock file by running `composer update`.
+  * Change the qa-automation version in composer.json to "dev-{type}/{TICKETNUMBER}".
+  * Update the composer.lock file by running "composer update".
   * Add changes to the example module, feature or theme to test the improved class.
 
