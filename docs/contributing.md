@@ -1,41 +1,58 @@
 ## Contributing
 
 ### Contributing as non-maintainer:
-1. Create a multisite ticket with the following values:
+1. Create a **multisite ticket** with the following values:
   * A short but descriptive title starting with “Feature: ”, “Bug: ” or “Task: “.
   * An extensive description of what is the exact problem or requested functionality.
   * The correct ticket type, “New feature”, Bug” or “Task”.
-  * For fix versions enter “subsite-starterkit” and “yourproject”.
+  * For fix versions enter `subsite-starterkit` and `yourproject`.
   * Add a link to the repository url of your subsite-starterkit fork on github.
 2. In your fork of the subsite-starterkit create a branch called
-{type}/{TICKETNUMBER} from within the “develop” branch. Where {type} stands for
-feature, bugfix or task depending on the type of ticket you created. And as
-{ticketnumber} add MULTISITE-XXXXX.
-3. Create a pull request from that branch of your forked subsite-starterkit to the
-develop branch of the subsite-starterkit project:
-  * always allow maintainers of the project to commit to the branch of your fork.
+**{type}/{TICKETNUMBER}** from within the `develop` branch:
+  * Where **{type}** stands for `feature`, `hotfix` or `task` (always lowercase).
+  * Where **{ticketnumber}** stands for `MULTISITE-XXXXX` (always uppercase).
+3. Create a pull request from that branch of your forked subsite-starterkit:
+  * Always make that pull request to the `develop` branch of the subsite-starterkit.
+  * Always allow maintainers of the project to commit to the branch of your fork.
 4. Add a link to the pull request on the multisite ticket.
 
-**Note:**
+**Notes:**
 
-> external pull requests always have to be made on the “develop” branch. The
+> external pull requests always have to be made to the “develop” branch. The
 maintainers may choose to reallocate the pull request to the next minor release
-branch (2.X.0). Others will be merged straight in to “develop” and frequently released
-with a new revision number (2.1.X).
+branch `release/2.X`. Others will be merged straight in to “develop” and frequently
+released with a new revision number `starterkit/2.1.X`.
+
+> the same workflow applies for contributions to the qa-automation tools that are
+used in the subsite-starterkit which is located
+[here](https://github.com/ec-europa/qa-automation). 
+
 
 ### Contributing as a maintainer:
 1. Create a multisite ticket with the following values:
   * A short but descriptive title starting with “Feature: ”, “Bug: ” or “Task: “.
   * An extensive description of what is the exact problem or requested functionality.
   * The correct ticket type, “New feature”, Bug” or “Task”.
-  * For fix versions enter “subsite-starterkit” and “projects”.
+  * For fix versions enter `subsite-starterkit` and `projects`.
   * Add a link to the repository url of the subsite-starterkit on github.
-2. Add a branch called {type}/{TICKETNUMBER} from within the develop branch.
-3. Create a pull request to the develop or release branch accordingly.
+2. Add a branch called **{type}/{TICKETNUMBER}** from within the `develop` branch:
+  * Where **{type}** stands for `feature`, `bugfix` or `task` (always lowercase).
+  * Where **{ticketnumber}** stands for `MULTISITE-XXXXX` (always uppercase).
+3. Create a pull request to the `develop` or `release/2.X` branch accordingly.
 4. Add a link to the pull request on the multisite ticket.
 
-**Note:**
+**Notes:**
 
 > to work on an external pull request you have to clone the forked repository
 mentioned on the ticket and checkout the correct branch.
+
+> the same workflow applies for contributions to the qa-automation tools that are
+used in the subsite-starterkit which is located
+[here](https://github.com/ec-europa/qa-automation). 
+Additions to the QualityAssurancTask class have to be tested on the subsite-
+starterkit by creating a **test/{TICKETNUMBER}** branch where you make the following
+updates:
+  * Change the qa-automation version in composer.json to `dev-{type}/{TICKETNUMBER}`.
+  * Update the composer.lock file by running `composer update`.
+  * Add changes to the example module, feature or theme to test the improved class.
 
