@@ -573,12 +573,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/qa-automation.git",
-                "reference": "e82f32b6c7b4a792ace2ad070cdd3cb1ce812e60"
+                "reference": "7c173160e00425f491f464d9243f7bb4b620a629"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/e82f32b6c7b4a792ace2ad070cdd3cb1ce812e60",
-                "reference": "e82f32b6c7b4a792ace2ad070cdd3cb1ce812e60",
+                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/7c173160e00425f491f464d9243f7bb4b620a629",
+                "reference": "7c173160e00425f491f464d9243f7bb4b620a629",
                 "shasum": ""
             },
             "require": {
@@ -601,7 +601,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "description": "Performs automated QA checks and extra php codesniffs for the subsite starterkit.",
-            "time": "2016-12-03 15:08:46"
+            "time": "2016-12-03 22:30:36"
         },
         {
             "name": "guzzlehttp/command",
@@ -1046,16 +1046,16 @@
         },
         {
             "name": "mtdowling/jmespath.php",
-            "version": "2.3.0",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jmespath/jmespath.php.git",
-                "reference": "192f93e43c2c97acde7694993ab171b3de284093"
+                "reference": "adcc9531682cf87dfda21e1fd5d0e7a41d292fac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jmespath/jmespath.php/zipball/192f93e43c2c97acde7694993ab171b3de284093",
-                "reference": "192f93e43c2c97acde7694993ab171b3de284093",
+                "url": "https://api.github.com/repos/jmespath/jmespath.php/zipball/adcc9531682cf87dfda21e1fd5d0e7a41d292fac",
+                "reference": "adcc9531682cf87dfda21e1fd5d0e7a41d292fac",
                 "shasum": ""
             },
             "require": {
@@ -1097,7 +1097,7 @@
                 "json",
                 "jsonpath"
             ],
-            "time": "2016-01-05 18:25:05"
+            "time": "2016-12-03 22:08:25"
         },
         {
             "name": "nikic/php-parser",
