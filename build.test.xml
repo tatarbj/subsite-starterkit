@@ -139,14 +139,18 @@
         />
     </target>
 
-    <!-- Check that the subsite starterkit is up-to-date. -->
+    <!--
+    Check that the subsite starterkit is up-to-date. This target is a class located
+    in the src/Phing folder that calls a console command of the qa-automation
+    package.
+    -->
     <target name="check-starterkit">
         <echo msg="Checking if the subsite starterkit is up-to-date." />
         <checkstarterkit
             starterkitRepository="${starterkit.repository}"
             starterkitBranch="${starterkit.branch}"
             starterkitRemote="${starterkit.remote}"
-            subsiteRepository="${project.basedir}"
+            projectBasedir="${project.basedir}"
         />
     </target>
 
