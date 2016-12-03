@@ -7,8 +7,10 @@
 
 namespace NextEuropa\Phing;
 
-use GitWrapper\GitException;
-use GitWrapper\GitWrapper;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Input\ArrayInput;
+use QualityAssurance\Component\Console\Command\CheckStarterkitCommand;
 
 require_once 'phing/Task.php';
 
@@ -16,13 +18,6 @@ require_once 'phing/Task.php';
  * Phing task to check if the starterkit is updated to the latest version.
  */
 class CheckStarterkitTask extends \Task {
-
-  /**
-   * The git wrapper.
-   *
-   * @var \GitWrapper\GitWrapper
-   */
-  protected $gitWrapper;
 
   /**
    * The path to the repository of the starterkit.
@@ -46,58 +41,42 @@ class CheckStarterkitTask extends \Task {
   protected $starterkitRemote;
 
   /**
-   * The git repository of the subsite.
+   * The project base directory.
    *
-   * @var \GitWrapper\GitWorkingCopy
    */
-  protected $subsiteRepository;
+  protected $projectBasedir;
 
   /**
-   * Pushes the deployment build to the temporary git repository.
+   * Runs the check-starterkit command provided by the qa-automation tools.
+   *
+   * @see ../../vendor/ec-europa/qa-automation/src/Command/CheckStarterkitCommand.php
    */
   public function main() {
     // Check if all required properties are present.
     $this->checkRequiredProperties();
 
-    // Add the remote for the starterkit if it doesn't exist yet.
-    $remote_branch = 'remotes/' . $this->starterkitRemote . '/' . $this->starterkitBranch;
-    $remote_exists = $this->subsiteRepository->hasRemote($this->starterkitRemote);
-    if (!$remote_exists) {
-      $this->log('Adding remote repository.');
-      // Only track the given branch, and don't download any tags.
-      $options = [
-        '--no-tags' => TRUE,
-        '-t' => [$this->starterkitBranch],
-      ];
-      $this->subsiteRepository->addRemote($this->starterkitRemote, $this->starterkitRepository, $options);
-    }
+    // Setup our qa-automation application for the check-starterkit command.
+    $application = new Application();
+    $application->setAutoExit(false);
+    $application->add(new CheckStarterkitCommand());
 
-    // Check if the tracking branch exists and create it if it doesn't.
-    try {
-      $this->subsiteRepository->run(array('rev-parse', $remote_branch));
-    }
-    catch (GitException $e) {
-      $this->log('Adding tracking branch.');
-      $this->subsiteRepository->remote('set-branches', '--add', $this->starterkitRemote, $this->starterkitBranch);
-    }
+    // Setup the check-starterkit command input array.
+    $input = new ArrayInput(array(
+      'command' => 'check-starterkit',
+      '--starterkit.branch' => $this->starterkitBranch,
+      '--starterkit.remote' => $this->starterkitRemote,
+      '--starterkit.repository' => $this->starterkitRepository,
+      '--project.basedir' => $this->projectBasedir,
+      '--ansi',
+      // @todo: Make interaction configurable in the build properties.
+      //'--no-interaction'
+    ));
 
-    // Fetch the latest changes.
-    $this->log('Fetching latest changes.');
-    $this->subsiteRepository->fetch($this->starterkitRemote);
+    // Open up the console output.
+    $output = new ConsoleOutput();
 
-    // Check if the latest commit on the remote is merged into the current
-    // branch.
-    $this->subsiteRepository->clearOutput();
-    $latest_commit = (string) $this->subsiteRepository->run(array('rev-parse', $remote_branch));
-    $merge_base = (string) $this->subsiteRepository->run(array('merge-base @ ' . $remote_branch));
-
-    // If the latest commit on the remote is not merged into the current branch,
-    // the repository is not up-to-date.
-    if ($merge_base !== $latest_commit) {
-      throw new \BuildException('The current branch is not up to date with the starterkit.');
-    }
-
-    $this->log('The starterkit is up to date.');
+    // Run the application.
+    $application->run($input, $output);
   }
 
   /**
@@ -111,26 +90,13 @@ class CheckStarterkitTask extends \Task {
       'starterkitBranch',
       'starterkitRemote',
       'starterkitRepository',
-      'subsiteRepository',
+      'projectBasedir',
     ];
     foreach ($required_properties as $required_property) {
       if (empty($this->$required_property)) {
         throw new \BuildException("Missing required property '$required_property'.");
       }
     }
-  }
-
-  /**
-   * Returns the GitWrapper singleton.
-   *
-   * @return \GitWrapper\GitWrapper
-   *   The git wrapper.
-   */
-  protected function getGitWrapper() {
-    if (empty($this->gitWrapper)) {
-      $this->gitWrapper = new GitWrapper();
-    }
-    return $this->gitWrapper;
   }
 
   /**
@@ -164,13 +130,12 @@ class CheckStarterkitTask extends \Task {
   }
 
   /**
-   * Sets the git repository of the subsite.
+   * Sets the project base working directory.
    *
-   * @param string $subsiteRepository
-   *   The path to the git repository of the subsite.
+   * @param string $projectBasedir
+   *   The path to the project base working directory.
    */
-  public function setSubsiteRepository($subsiteRepository) {
-    $this->subsiteRepository = $this->getGitWrapper()->workingCopy($subsiteRepository);
+  public function setProjectBasedir($projectBasedir) {
+    $this->projectBasedir = $projectBasedir;
   }
-
 }
