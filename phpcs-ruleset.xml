@@ -5,6 +5,7 @@
     <description>Drupal coding standard for NextEuropa subsites</description>
 
     <rule ref="./vendor/drupal/coder/coder_sniffer/Drupal" />
+    <rule ref="./vendor/drupal/coder/coder_sniffer/DrupalPractice" />
     <rule ref="./vendor/ec-europa/qa-automation/DrupalSecure" />
     <rule ref="./vendor/ec-europa/qa-automation/QualityAssurance" />
 
@@ -19,18 +20,13 @@
     <exclude-pattern>*\.yml</exclude-pattern>
     <exclude-pattern>composer.lock</exclude-pattern>
 
-    <!-- Exclude non drupal folders. -->
-    <exclude-pattern>/vendor</exclude-pattern>
-    <exclude-pattern>/src</exclude-pattern>
-    <exclude-pattern>/resources</exclude-pattern>
-
     <!-- Exclude contrib folders. -->
     <exclude-pattern>contrib</exclude-pattern>
     <exclude-pattern>contributed</exclude-pattern>
 
     <!-- Exclude folders of example modules. -->
     <exclude-pattern>**/example_module</exclude-pattern>
-    <exclude-pattern>**/myproject_core</exclude-pattern>
+    <!-- <exclude-pattern>**/myproject_core</exclude-pattern> -->
     <exclude-pattern>**/example_theme</exclude-pattern>
 
     <!-- Views handlers not strictly follow Drupal class name conventions. -->
@@ -53,4 +49,15 @@
     <rule ref="Drupal.Commenting.InlineComment.InvalidEndChar">
         <exclude-pattern>*.features.wysiwyg.inc</exclude-pattern>
     </rule>
+
+    <!-- Features generated files do not backslash quoted text. -->
+    <rule ref="Drupal.Semantics.FunctionT.BackslashSingleQuote">
+        <exclude-pattern>*.features.*.inc</exclude-pattern>
+    </rule>
+
+    <!-- Features generated menu links often have too long comment strings. -->
+    <rule ref="Drupal.Files.LineLength.TooLong">
+        <exclude-pattern>*.features.menu_links.inc</exclude-pattern>
+    </rule>
+
 </ruleset>
