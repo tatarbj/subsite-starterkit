@@ -6,8 +6,8 @@
 
     <rule ref="./vendor/drupal/coder/coder_sniffer/Drupal" />
     <rule ref="./vendor/drupal/coder/coder_sniffer/DrupalPractice" />
-    <rule ref="./vendor/ec-europa/qa-automation/DrupalSecure" />
-    <rule ref="./vendor/ec-europa/qa-automation/QualityAssurance" />
+    <rule ref="./vendor/ec-europa/qa-automation/phpcs/Standards/DrupalSecure" />
+    <rule ref="./vendor/ec-europa/qa-automation/phpcs/Standards/QualityAssurance" />
 
     <!-- Minified files don't have to comply with coding standards. -->
     <exclude-pattern>*\.min\.css</exclude-pattern>
