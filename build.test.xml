@@ -139,41 +139,29 @@
         />
     </target>
 
-    <!--
-    Check that the subsite starterkit is up-to-date. This target is a class located
-    in the src/Phing folder that calls a console command of the qa-automation
-    package.
-    -->
+    <!-- Check that the subsite starterkit is up-to-date. -->
     <target name="check-starterkit">
         <echo msg="Checking if the subsite starterkit is up-to-date." />
-        <checkstarterkit
-            starterkitRepository="${starterkit.repository}"
-            starterkitBranch="${starterkit.branch}"
-            starterkitRemote="${starterkit.remote}"
-            projectBasedir="${project.basedir}"
+        <exec
+            command="bin/qa check:ssk
+                --repository=${starterkit.repository}
+                --branch=${starterkit.branch}
+                --remote=${starterkit.remote}
+                --basedir=${project.basedir}
+                --no-interaction
+                --ansi"
+            passthru="true"
+            checkreturn="true"
         />
     </target>
 
     <!-- Do quality assurance checks. -->
     <target name="quality-assurance">
-        <if>
-            <available file="${dist.build.dir}" type="dir" />
-            <then>
-                <qualityassurance
-                    skipSelect="${qa.skip.select}"
-                    skipPhpcs="${qa.skip.phpcs}"
-                    makeFile="${subsite.make}"
-                    projectBaseDir="${project.basedir}"
-                    resourcesDir="${subsite.resources.dir}"
-                    distBuildDir="${dist.build.dir}"
-                    libDir="${subsite.resources.lib.dir}"
-                    profileName="${platform.profile.name}"
-                />
-            </then>
-            <else>
-                <fail message="Please run build-dist before running quality-assurance" />
-            </else>
-        </if>
+        <exec
+            command="bin/qa review:full --no-interaction --ansi"
+            passthru="true"
+            checkreturn="true"
+        />
     </target>
 
     <!-- Run a full static analysis. -->
