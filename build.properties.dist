@@ -194,7 +194,7 @@ phpcs.ignore =
 phpcs.report = full
 
 # Whether or not to show sniff codes in the report.
-phpcs.sniffcodes = 0
+phpcs.sniffcodes = 1
 
 # Whether or not to show the progress of the run.
 phpcs.progress = 1
