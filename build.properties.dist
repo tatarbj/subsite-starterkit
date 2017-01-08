@@ -269,8 +269,8 @@ deploy.serviceRole = arn:aws:iam::918396081007:role/CodeDeploy
 starterkit.repository = https://github.com/ec-europa/subsite-starterkit.git
 
 # The branch of the subsite starterkit that will be tracked.
-starterkit.branch = master
-
+#starterkit.branch = master
+starterkit.branch = starterkit/2.0.0
 # The name of the git remote for the starterkit.
 starterkit.remote = starterkit
 
