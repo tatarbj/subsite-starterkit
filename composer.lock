@@ -573,12 +573,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/qa-automation.git",
-                "reference": "5a2dc0f6940a67d4bb36ec2a644d76d47a6fc8d6"
+                "reference": "e23a2bd1ffcdbab041748f7cc4b26731bb256c8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/5a2dc0f6940a67d4bb36ec2a644d76d47a6fc8d6",
-                "reference": "5a2dc0f6940a67d4bb36ec2a644d76d47a6fc8d6",
+                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/e23a2bd1ffcdbab041748f7cc4b26731bb256c8d",
+                "reference": "e23a2bd1ffcdbab041748f7cc4b26731bb256c8d",
                 "shasum": ""
             },
             "require": {
@@ -591,17 +591,21 @@
                 "phpunit/phpunit": ">=3.7 <5.0"
             },
             "bin": [
-                "bin/qa"
+                "bin/qa",
+                "vendor/bin/phpunit"
             ],
             "type": "library",
             "autoload": {
+                "classmap": [
+                    "phpcs/Standards/QualityAssurance/Sniffs/"
+                ],
                 "psr-4": {
                     "QualityAssurance\\Component\\Console\\": "src/Console"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "description": "Performs automated QA checks and extra php codesniffs for the subsite starterkit.",
-            "time": "2017-01-06 07:26:17"
+            "time": "2017-01-08 23:07:20"
         },
         {
             "name": "guzzlehttp/command",
