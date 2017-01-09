@@ -125,6 +125,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     // Clear out the watchdog table at the beginning of each test scenario.
     db_truncate('watchdog')->execute();
   }
+
   /**
    * Check for PHP errors log.
    *
@@ -168,7 +169,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
   }
 
-    /**
+  /**
    * Fill a captcha the captcha on the page.
    *
    * @Then (I )fill the captcha
