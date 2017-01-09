@@ -1,4 +1,4 @@
-# Subsite configuration
+w# Subsite configuration
 # ---------------------
 
 # The site name.
@@ -272,7 +272,8 @@ starterkit.repository = https://github.com/ec-europa/subsite-starterkit.git
 #starterkit.branch = master
 starterkit.branch = starterkit/2.0.0
 # The name of the git remote for the starterkit.
-starterkit.remote = starterkit
+#starterkit.remote = starterkit
+starterkit.remote = starterkit/starterkit/2.0.0
 
 
 # Build defaults
