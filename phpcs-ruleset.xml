@@ -26,7 +26,7 @@
 
     <!-- Exclude folders of example modules. -->
     <exclude-pattern>**/example_module</exclude-pattern>
-    <!-- <exclude-pattern>**/myproject_core</exclude-pattern> -->
+    <exclude-pattern>**/myproject_core</exclude-pattern>
     <exclude-pattern>**/example_theme</exclude-pattern>
 
     <!-- Views handlers not strictly follow Drupal class name conventions. -->
