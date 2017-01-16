@@ -296,7 +296,7 @@
                     <try>
                         <continuousphp-config token="${platform.package.token}" />
                         <continuousphp-package
-                            provider="${platform.package.provider}s"
+                            provider="${platform.package.provider}"
                             repository="${platform.package.repository}"
                             reference="${platform.package.reference}"
                             destination="${platform.package.destination}"
