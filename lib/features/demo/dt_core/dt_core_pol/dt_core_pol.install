@@ -1,0 +1,203 @@
+<?php
+
+/**
+ * @file
+ * Digital Transformation Political Core install file.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function dt_core_pol_install() {
+  $dt_modules = [
+    'dt_pri_policy_area_default',
+    'dt_priority_default',
+    'dt_page_extended',
+    // Roles and permissions.
+    'dt_roles_permissions',
+    'dt_list_view_content',
+    'dt_info_homepage',
+  ];
+  module_enable($dt_modules);
+
+  // Enabling europa base theme.
+  theme_enable(['political']);
+  variable_set('theme_default', 'political');
+  // Disabling unnecessary themes.
+  theme_disable(['ec_resp', 'seven']);
+
+  // Enabling EC official languages.
+  _dt_core_enable_languages(_dt_core_ec_official_languages());
+
+  // Disable a menu item.
+  $mlid = _dt_core_menu_item_name_get('[site:name]', 'menu-breadcrumb-menu');
+  if (is_numeric($mlid)) {
+    $menu_item = menu_link_load($mlid);
+    $menu_item['hidden'] = TRUE;
+    menu_link_save($menu_item);
+  }
+
+  // Set the homepage if available.
+  $nid = variable_get('dt_priority_page_id', FALSE);
+  if ($nid) {
+    variable_set('site_frontpage', 'node/' . $nid);
+    // Set alias for the home page.
+    $node = node_load($nid);
+    $node->path = ['alias' => 'index', 'pathauto' => 0];
+    node_save($node);
+  }
+
+  // Create default menu items.
+  _dt_core_pol_menu_footer();
+
+  // Enable the dt header background custom module.
+  module_enable(['dt_header_background']);
+
+  // Set the default header background image.
+  _dt_header_background_set_default_header_background();
+
+  // Initialize permissions.
+  _dt_roles_permissions_import_import('all', TRUE);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function dt_core_pol_uninstall() {
+  $contexts = variable_get('context_status', []);
+  unset($contexts['site_wide'], $contexts['homepage']);
+  variable_set('context_status', $contexts);
+  drupal_set_message(t('NextEuropa Subject feature is uninstalled on your site.'));
+}
+
+/**
+ * Reverting features: NEXTEUROPA-4811.
+ */
+function dt_core_pol_update_7101() {
+  // The features to revert.
+  $features = [
+    'dt_core',
+    'dt_core_pol',
+    'dt_pri_policy_area',
+    'dt_pri_policy_area_default',
+    'dt_priority',
+    'dt_priority_default',
+    'dt_publication',
+  ];
+
+  // Reverting the features.
+  foreach ($features as $feature) {
+    features_revert_module($feature);
+  }
+}
+
+/**
+ * Hotfix: Enabling dt_page content type on political site instance.
+ */
+function dt_core_pol_update_7102() {
+  module_enable(['dt_page']);
+}
+
+/**
+ * Roles and permissions.
+ */
+function dt_core_pol_update_7103() {
+  module_enable(['dt_roles_permissions', 'dt_roles_permissions_import']);
+}
+
+/**
+ * Enabling the custom site_wide context.
+ */
+function dt_core_pol_update_7104() {
+  // Enable the custom context.
+  features_revert([
+    'dt_core_pol' => [
+      'context',
+      'variable',
+    ],
+  ]);
+}
+
+/**
+ * NEXTEUROPA-7687: Enabling EC official languages.
+ */
+function dt_core_pol_update_7105() {
+  // Enable languages.
+  _dt_core_enable_languages(_dt_core_ec_official_languages());
+}
+
+/**
+ * NEXTEUROPA-7764: Modifying the footer.
+ */
+function dt_core_pol_update_7106() {
+  // Revert the relevant components.
+  features_revert([
+    'dt_core_pol' => ['context', 'menu_links'],
+    'dt_core' => ['menu_custom'],
+  ]);
+
+  // Create the menu items.
+  _dt_core_pol_menu_footer();
+}
+
+/**
+ * NEXTEUROPA-7954: Enabling political subtheme.
+ */
+function dt_core_pol_update_7107() {
+  // Enabling  political theme and setting it as the default one.
+  theme_enable(['political']);
+  variable_set('theme_default', 'political');
+
+  // Title of the menu item used as the home page link in the breadcrumb.
+  $mlid = _dt_core_menu_item_name_get('[site:name]', 'menu-breadcrumb-menu');
+  if (is_numeric($mlid)) {
+    $menu_item = menu_link_load($mlid);
+    $menu_item['link_title'] = 'Priorities';
+    $menu_item['weight'] = 1;
+    menu_link_save($menu_item);
+  }
+
+  // Set the homepage.
+  $nid = variable_get('dt_priority_page_id', '88');
+  variable_set('site_frontpage', 'node/' . $nid);
+  // Set alias for the home page.
+  $node = node_load($nid);
+  $node->path = ['alias' => 'index', 'pathauto' => 0];
+  node_save($node);
+}
+
+/**
+ * NEXTEUROPA-8072: Set id to the feedback form, same as CWT for now.
+ */
+function dt_core_pol_update_7108() {
+  variable_set('nexteuropa_feedback_form_id', '1040');
+}
+
+/**
+ * DTTSB-313: Enable dt_page_extended.
+ */
+function dt_core_pol_update_7109() {
+  module_enable(['dt_page_extended']);
+}
+
+/**
+ * DTTSB-954: Update menu items (7110).
+ *
+ * Enable dt_list_view_content (7111) and homepage content type (7112).
+ */
+function dt_core_pol_update_7112() {
+  // Collect all menu link items which assigned to 'dt_core_pol' module.
+  $mlids = db_select('menu_links', 'ml')
+    ->condition('module', 'dt_core_pol')
+    ->fields('ml', ['mlid'])
+    ->execute()
+    ->fetchCol();
+  // Update all these items by 'menu' module.
+  foreach ($mlids as $mlid) {
+    $menu_link = menu_link_load($mlid);
+    $menu_link['module'] = 'menu';
+    menu_link_save($menu_link);
+  }
+  // Enable new modules.
+  module_enable(['dt_list_view_content', 'dt_info_homepage']);
+}

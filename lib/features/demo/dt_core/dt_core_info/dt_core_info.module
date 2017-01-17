@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Code for the Information Site Core feature.
+ */
+
+include_once 'dt_core_info.features.inc';
+
+/**
+ * Implements hook_entity_view_mode_alter().
+ */
+function dt_core_info_entity_view_mode_alter(&$view_mode, $context) {
+  // Set the view mode of Informational homepage.
+  if ($view_mode == 'full' && isset($context['entity']->type) && $context['entity']->type == 'info_homepage') {
+    $view_mode = 'homepage_informational';
+  }
+}

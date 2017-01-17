@@ -1,0 +1,189 @@
+<?php
+
+/**
+ * @file
+ * Digital Transformation Core BRP install file.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function dt_core_brp_install() {
+  // These is a minimal config, with time we will
+  // add functionality/modules if needed.
+  $dt_modules = [
+    // Roles and permissions.
+    'dt_header_background',
+    'dt_wysiwyg',
+    'dt_roles_permissions',
+    // NAL service integrations.
+    'dt_nal_services',
+    'dt_nal_countries',
+    'dt_nal_corporate_bodies',
+    'dt_nal_resource_types',
+    // BRP related modules.
+    'brp_ws_client',
+    'brp_feedback_form',
+    'brp_initiative',
+    'brp_feedbackfield',
+    // Other modueles.
+    'dt_page_default',
+    'l10n_update',
+  ];
+  module_enable($dt_modules);
+
+  // Enable the search api feature.
+  module_enable(['brp_initiative_search']);
+
+  // Enable brp theme.
+  theme_enable(['brp']);
+  variable_set('theme_default', 'brp');
+
+  // Enable languages.
+  _dt_core_enable_languages(_dt_core_ec_official_languages());
+
+  // Removing admin pages to use default, (WATCH OUT FOR THAT IN THE FUTURE).
+  variable_set('cce_basic_config_admin_pages', []);
+
+  // Enabling admin theme for node pages.
+  variable_set('node_admin_theme', 1);
+
+  // Update the default social media link url (other social networks).
+  variable_set('dt_core_other_social_networks_link', 'http://europa.eu/contact/social-networks/');
+
+  multisite_drupal_toolbox_remove_context('site_wide');
+  multisite_drupal_toolbox_remove_context('homepage');
+
+  // NEXTEUROPA-8254 - Remove the platform breadcrumb menu.
+  _dt_shared_functions_delete('menu-breadcrumb-menu', 'menu', 'menu');
+
+  // Reverting the features.
+  $features = [
+    'dt_core',
+  ];
+  foreach ($features as $feature) {
+    // If module enabled, that revert.
+    if (module_exists($feature)) {
+      features_revert_module($feature);
+    }
+  }
+
+  // Initialize permissions.
+  _dt_roles_permissions_import_import('all', TRUE);
+}
+
+/**
+ * Implements hook_enable().
+ */
+function dt_core_brp_enable() {
+  module_enable(['brp_local_importer']);
+  // Run all non NAL migrations.
+  _brp_local_importer_data();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function dt_core_brp_uninstall() {
+  drupal_set_message(t('Brp core feature is uninstalled on your site.'));
+}
+
+/**
+ * NEXTEUROPA-9587: Enabling NAL taxonomy importers.
+ */
+function dt_core_brp_update_7101() {
+  module_enable([
+    'dt_nal_services',
+    'dt_nal_countries',
+    'dt_nal_resource_types',
+  ]);
+}
+
+/**
+ * Implements hook_update().
+ *
+ * Imports all none NAL terms and their translations.
+ */
+function dt_core_brp_update_7102() {
+  module_enable([
+    'brp_local_importer',
+  ]);
+  // Run all non NAL migrations.
+  _brp_local_importer_data();
+}
+
+/**
+ * Implements hook_update().
+ *
+ * Enable BRP theme.
+ */
+function dt_core_brp_update_7103() {
+  // Enable brp theme.
+  theme_enable(['brp']);
+  variable_set('theme_default', 'brp');
+}
+
+/**
+ * DTTSB-313 - Enabling nexteuropa_inpage_nav module.
+ */
+function dt_core_brp_update_7104() {
+  module_enable([
+    'nexteuropa_inpage_nav',
+    'dt_page_default',
+  ]);
+}
+
+/**
+ * DTTSB-423 - Remove obsolete role.
+ */
+function dt_core_brp_update_7105() {
+  user_role_delete('brp contributor');
+}
+
+/**
+ * DTTSB: Enable l10n_update.
+ */
+function dt_core_brp_update_7106() {
+  module_enable(['l10n_update']);
+}
+
+/**
+ * DTTSB-303: Enabling NAL taxonomy for corporate bodies.
+ */
+function dt_core_brp_update_7107() {
+  // Delete the country_id to use the nal_service_id.
+  if ($field_instance = field_info_instance('taxonomy_term', 'field_country_id', 'nal_countries')) {
+    field_delete_instance($field_instance);
+    // Delete the field base too.
+    if ($field_base = field_info_field('field_country_id')) {
+      field_delete_field($field_base);
+    }
+  }
+  // Delete the resource_id to use the nal_service_id.
+  if ($field_instance = field_info_instance('taxonomy_term', 'field_resource_id', 'nal_resource_types')) {
+    field_delete_instance($field_instance);
+    // Delete the field base too.
+    if ($field_base = field_info_field('field_resource_id')) {
+      field_delete_field($field_base);
+    }
+  }
+
+  module_enable(['dt_nal_corporate_bodies']);
+}
+
+/**
+ * DTTSB-712 (Disable anonymous user permission).
+ */
+function dt_core_brp_update_7108() {
+  // Remove user profile permission.
+  _dt_roles_permissions_import_import('all', TRUE);
+}
+
+/**
+ * Import PMO.
+ */
+function dt_core_brp_update_7109() {
+  module_load_include('inc', 'dt_nal_services', 'dt_nal_services.helpers');
+  _dt_nal_services_run_importer('nal_corporate_bodies_importer', 'http://publications.europa.eu/mdr/resource/authority/corporate-body/xml/corporatebodies.xml');
+  _dt_nal_services_create_translations('nal_corporate_bodies', 'http://publications.europa.eu/mdr/resource/authority/corporate-body/xml/corporatebodies.xml');
+}

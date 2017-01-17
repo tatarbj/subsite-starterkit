@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * @file
+ * Code for the Political Core feature.
+ */
+
+include_once 'dt_core_pol.features.inc';
+
+/**
+ * Helper function to adapt the services menu.
+ */
+function _dt_core_pol_menu_footer() {
+  $menu = 'menu-dt-service-links';
+  $menu_items = [
+    'Cookies' => 'http://ec.europa.eu/cookies/index_en.htm',
+    'Legal notice' => 'http://ec.europa.eu/geninfo/legal_notices_en.htm',
+    'Contact' => 'http://ec.europa.eu/contact/index_en.htm',
+  ];
+
+  $weight = 0;
+  foreach ($menu_items as $title => $path) {
+    _dt_core_menu_item($menu, $path, 0, $title, $weight);
+    $weight++;
+  }
+}
+
+/**
+ * Implements hook_entity_view_mode_alter().
+ */
+function dt_core_pol_entity_view_mode_alter(&$view_mode, $context) {
+  // Set the view mode of Political homepage.
+  if ($view_mode == 'full' && isset($context['entity']->type) && $context['entity']->type == 'info_homepage') {
+    $view_mode = 'homepage_political';
+  }
+}
