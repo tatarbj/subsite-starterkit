@@ -22,7 +22,7 @@
         <!-- Update database. -->
         <drush command="updatedb" assume="yes" root="${platform.build.dir}" bin="${drush.bin}"></drush>
         <!-- Clear Caches. -->
-        <drush command="cc" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}">
+        <drush command="cc" assume="yes" root="${platform.build.dir}" bin="${drush.bin}">
             <param>all</param>
         </drush>
     </target>
