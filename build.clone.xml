@@ -59,14 +59,14 @@
                     <token key="drupal.db.password" value="${drupal.db.password}" />
                     <token key="drupal.db.host" value="${drupal.db.host}" />
                     <token key="drupal.db.port" value="${drupal.db.port}" />
-                    <token key="development.variables.error_level" value="${development.variables.error_level}" />
-                    <token key="development.variables.views_ui_show_sql_query" value="${development.variables.views_ui_show_sql_query}" />
-                    <token key="development.variables.views_ui_show_performance_statistics" value="${development.variables.views_ui_show_performance_statistics}" />
-                    <token key="development.variables.views_show_additional_queries" value="${development.variables.views_show_additional_queries}" />
-                    <token key="development.variables.stage_file_proxy_origin" value="${development.variables.stage_file_proxy_origin}" />
-                    <token key="development.variables.stage_file_proxy_origin_dir" value="${development.variables.stage_file_proxy_origin_dir}" />
-                    <token key="development.variables.stage_file_proxy_hotlink" value="${development.variables.stage_file_proxy_hotlink}" />
-                    <token key="development.variables.theme_default" value="${development.variables.theme_default}" />
+                    <token key="error_level" value="${development.variables.error_level}" />
+                    <token key="views_ui_show_sql_query" value="${development.variables.views_ui_show_sql_query}" />
+                    <token key="views_ui_show_performance_statistics" value="${development.variables.views_ui_show_performance_statistics}" />
+                    <token key="views_show_additional_queries" value="${development.variables.views_show_additional_queries}" />
+                    <token key="stage_file_proxy_origin" value="${development.variables.stage_file_proxy_origin}" />
+                    <token key="stage_file_proxy_origin_dir" value="${development.variables.stage_file_proxy_origin_dir}" />
+                    <token key="stage_file_proxy_hotlink" value="${development.variables.stage_file_proxy_hotlink}" />
+                    <token key="theme_default" value="${development.variables.theme_default}" />
                 </replacetokens>
             </filterchain>
         </copy>
