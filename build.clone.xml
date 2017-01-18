@@ -26,7 +26,6 @@
         <echo msg="Download the production database." />
         <!--Strips gz suffix. -->
         <php expression="substr('${project.database.filename}', 0, -3)" returnProperty="gunzipped.filename"/>
-        <echo msg="${gunzipped.filename}" />
         <if>
             <not>
                 <!-- Check if we have a previously downloaded dump available. -->
@@ -39,7 +38,8 @@
             </then>
             <else>
                 <!-- Inform user if file was already downloaded. -->
-                <echo msg="File already downloaded." />
+                <echo msg="File ${gunzipped.filename} already downloaded." />
+                <echo msg="Proceeding to import." />
             </else>
         </if>
     </target>
