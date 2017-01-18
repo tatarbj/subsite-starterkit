@@ -6,7 +6,9 @@
  */
 
 // Include the install.inc to use the function drupal_rewrite_settings().
-include 'includes/install.inc';
+if (!function_exists('drupal_rewrite_settings')) {
+  include 'includes/install.inc';
+}
 
 // Setup the database settings array.
 $settings['databases'] = array(

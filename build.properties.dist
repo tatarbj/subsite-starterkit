@@ -16,7 +16,7 @@ subsite.install.modules = myproject_core
 # Project ID used to generate other properties.
 project.id = <project>
 
-# Project database url. Use only in build.properties.local if credentials are used!
+# Project database url scheme.
 project.database.url.scheme = https
 
 # Project database url username is used for .htaccess to file download url. Use only
