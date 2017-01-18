@@ -26,6 +26,9 @@ of the European Commission.
 
 ## Recent notable changes
 
+- **2017-01-18**: New build target "build-clone" added to setup a local
+    clone by importing a sanitized production database.
+- **2017-01-17**: New version of QA automation tools based on symfony/console.
 - **2016-10-05**: Added QA automation tools that should be run before each time
     you make a pull request to your reference repository.
 - **2016-08-09**: We made the `resources/site.make` optional for use. Please

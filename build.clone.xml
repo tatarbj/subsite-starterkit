@@ -30,6 +30,17 @@
     <!-- Download the production database. -->
     <target name="download-prod-db" description="Download the production database." >
         <echo msg="Download the production database." />
+        <!--Generate .htaccess credential property if needed, empty if not. -->
+        <property name="project.database.url.htaccess.credentials"  value="" override="true" />
+        <if>
+            <isset property="project.database.url.htaccess.username" />
+            <and>
+                <isset property="project.database.url.htaccess.password" />
+            </and>
+            <then>
+                <property name="project.database.url.htaccess.credentials"  value="${project.database.url.htaccess.username}:${project.database.url.htaccess.password}@" override="true" />
+            </then>
+        </if>
         <!--Strips gz suffix-->
         <php expression="substr('${project.database.filename}', 0, -3)" returnProperty="gunzipped.filename"/>
         <echo msg="${gunzipped.filename}" />
@@ -38,8 +49,8 @@
                 <available file="tmp/${gunzipped.filename}" type="file" property="gunzipped.project.db" />
             </not>
             <then>
-                <exec command="wget ${project.database.url}${project.database.filename}" dir="tmp" checkreturn="false" passthru="false" logoutput="true" />
-                <exec command="gunzip tmp/${project.database.filename}" checkreturn="false" passthru="false" logoutput="true" />
+                <exec command="wget ${project.database.url.scheme}://${project.database.url.htaccess.credentials}${project.database.url}${project.database.filename}" dir="tmp" checkreturn="true" passthru="false" logoutput="true" />
+                <exec command="gunzip tmp/${project.database.filename}" checkreturn="true" passthru="false" logoutput="true" />
             </then>
             <else>
                 <echo msg="File already downloaded." />

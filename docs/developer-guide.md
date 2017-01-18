@@ -103,7 +103,22 @@ This will:
 > long time. Future builds will be quicker since the platform will be cached and
 > does not have to be downloaded every time.
 
-### 5. Set up your webserver
+### 5. Clone a production site.
+
+```
+$ ./bin/phing build-clone
+```
+
+This will:
+
+* Re-generate the settings.php with addition of development variables.
+* Download a sanitized production database if provided in build.properties.
+* Drop the current database and import the downloaded one.
+* Rebuild the registry, run updates and clear caches.
+
+This target can only be run after running a successful build-dev first.
+
+### 6. Set up your webserver
 
 The Drupal site will now be present in the `platform/` folder. Set up a
 virtualhost in your favourite web server (Apache, Nginx, Lighttpd, ...) and
@@ -113,7 +128,7 @@ If you intend to run Behat tests then you should put the base URL you assign to
 your website in the `build.properies.local` file for the `behat.base_url`
 property. See the example above.
 
-### 6. Install the site
+### 7. Install the site
 
 ```
 $ ./bin/phing install-dev
@@ -127,7 +142,7 @@ This will:
 After a few minutes this process should complete and the website should be up
 and running!
 
-### 7. Run tests
+### 8. Run tests
 
 Behat has been preconfigured in the `tests/` folder and an example test and
 some example Contexts are supplied. Feel free to change them to your needs.
@@ -139,7 +154,7 @@ $ cd tests/
 $ ./behat
 ```
 
-### 8. Check coding standards
+### 9. Check coding standards
 
 #### Automated coding standards check on git push
 
@@ -208,20 +223,19 @@ the rules.
 #### QA automation tool
 
 Before each pull request to a reference repository of ec-europa you need to run the
-QA automation tool. This will perform static code checks on the result of build-dist.
-The tool is included in the starterkit as a composer dependency. More information on
-the tool can be found at https://github.com/ec-europa/qa-automation.
+QA automation tool. This will perform static code checks on the directories defined
+in your build properties as phpcs.files. The tool is included in the starterkit as
+a composer dependency. More information on the tool can be found at 
+https://github.com/ec-europa/qa-automation.
 
 ```
 $ ./bin/phing mjolnir
 ```
 
-Note: this tool can only be run after a "composer install" that successfully executed
-the post-install script. Without a composer.lock file this post-install hook will not
-fire.
+You can also run commands of the qa-automation individually by calling ./bin/qa
+directly.
 
-
-### 9. Create a pull request
+### 10. Create a pull request
 
 When your code is ready for review, you should create a pull request. The code
 can be considered ready if:
@@ -265,7 +279,7 @@ executed, the coding standards will be checked and an automated QA checklist
 will be run. You will be able to see the result of this automated check in your
 pull request as soon as this process is finished.
 
-### 10. Working with Composer
+### 11. Working with Composer
 
 The Subsite Starterkit comes with full Composer support. Subsite dependencies
 are specified in `resources/composer.json`.
