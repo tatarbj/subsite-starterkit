@@ -88,7 +88,7 @@
             report="${phpcs.report}"
             showProgress="${phpcs.progress}"
             showSniffCodes="${phpcs.sniffcodes}"
-            standard="${phpcs.standard}"
+            standards="${phpcs.standards}"
         />
 
         <!-- Set up the git pre-push hook. -->

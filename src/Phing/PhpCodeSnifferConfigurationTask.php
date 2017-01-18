@@ -66,11 +66,11 @@ class PhpCodeSnifferConfigurationTask extends \Task {
   private $showSniffCodes = FALSE;
 
   /**
-   * The coding standard to use.
+   * The coding standards to use.
    *
-   * @var string
+   * @var array
    */
-  private $standard;
+  private $standards = array();
 
   /**
    * Configures PHP CodeSniffer.
@@ -91,10 +91,12 @@ class PhpCodeSnifferConfigurationTask extends \Task {
     $element = $document->createElement('description', 'Default PHP CodeSniffer configuration for NextEuropa subsites.');
     $root_element->appendChild($element);
 
-    // Add the coding standard.
-    $element = $document->createElement('rule');
-    $element->setAttribute('ref', $this->standard);
-    $root_element->appendChild($element);
+    // Add the coding standards.
+    foreach ($this->standards as $standard) {
+      $element = $document->createElement('rule');
+      $element->setAttribute('ref', $standard);
+      $root_element->appendChild($element);
+    }
 
     // Add the files to check.
     foreach ($this->files as $file) {
@@ -179,7 +181,7 @@ PHP;
    *   Thrown when a required property is not present.
    */
   protected function checkRequirements() {
-    $required_properties = array('configFile', 'files', 'standard');
+    $required_properties = array('configFile', 'files', 'standards');
     foreach ($required_properties as $required_property) {
       if (empty($this->$required_property)) {
         throw new \BuildException("Missing required property '$required_property'.");
@@ -287,13 +289,18 @@ PHP;
   }
 
   /**
-   * Sets the coding standard to use.
+   * Sets the coding standards to use.
    *
-   * @param string $standard
-   *   The coding standard to use.
+   * @param string $standards
+   *   A list of paths, delimited by spaces, commas or semicolons.
    */
-  public function setStandard($standard) {
-    $this->standard = $standard;
+  public function setStandards($standards) {
+    $this->standards = array();
+    $token = ' ,;';
+    $standard = strtok($standards, $token);
+    while ($standard !== FALSE) {
+      $this->standards[] = $standard;
+      $standard = strtok($token);
+    }
   }
-
 }
