@@ -31,15 +31,17 @@
     <target name="download-prod-db" description="Download the production database." >
         <echo msg="Download the production database." />
         <!--Generate .htaccess credential property if needed, empty if not. -->
-        <property name="project.database.url.htaccess.credentials"  value="" override="true" />
         <if>
-            <isset property="project.database.url.htaccess.username" />
             <and>
-                <isset property="project.database.url.htaccess.password" />
+                <istrue value="project.database.url.htaccess.username" />
+                <istrue value="project.database.url.htaccess.password" />
             </and>
             <then>
                 <property name="project.database.url.htaccess.credentials"  value="${project.database.url.htaccess.username}:${project.database.url.htaccess.password}@" override="true" />
             </then>
+            <else>
+                <property name="project.database.url.htaccess.credentials"  value="" override="true" />
+            </else>
         </if>
         <!--Strips gz suffix-->
         <php expression="substr('${project.database.filename}', 0, -3)" returnProperty="gunzipped.filename"/>
@@ -60,6 +62,28 @@
 
     <!-- Regenerate the settings file with database credentials and development variables. -->
     <target name="regenerate-settings" description="Regenerate settings.php file.">
+        <if>
+            <not>
+                <available file="${platform.build.settings.dir}/default.settings.php" type="file" property="platform.build.settings.dir.default.settings" />
+            </not>
+            <then>
+                <echo msg="No default settings detected at ${platform.build.settings.dir}/default.settings.php." level="warning" />
+                <propertyprompt propertyName="platform.rebuild" defaultValue="no" promptText="Do you wish to rebuild? (y/n)" />
+                <if>
+                    <equals arg1="${platform.rebuild}" arg2="y" />
+                    <then>
+                        <phingcall target="build-dev" />
+                    </then>
+                    <else>
+                        <echo msg="Can not re-generate settings, canceling clone task." level="error" />
+                        <fail />
+                    </else>
+                </if>
+            </then>
+            <else>
+                <echo msg="Default settings found at ${platform.build.settings.dir}/default.settings.php." />
+            </else>
+        </if>
         <copy file="src/Drupal/generate-settings.php" tofile="tmp/generate-settings.php" overwrite="true">
             <filterchain>
                 <replacetokens begintoken="%%" endtoken="%%">
@@ -78,6 +102,9 @@
                     <token key="stage_file_proxy_origin_dir" value="${development.variables.stage_file_proxy_origin_dir}" />
                     <token key="stage_file_proxy_hotlink" value="${development.variables.stage_file_proxy_hotlink}" />
                     <token key="theme_default" value="${development.variables.theme_default}" />
+                    <token key="file_public_path" value="${platform.build.files.dir}" />
+                    <token key="file_private_path" value="${platform.build.files.dir}/private_files" />
+                    <token key="file_temporary_path" value="@todo" />
                 </replacetokens>
             </filterchain>
         </copy>
@@ -85,6 +112,8 @@
         <drush command="php-script" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}">
             <param>tmp/generate-settings.php</param>
         </drush>
+        <!-- Setup the private files directory if needed -->
+        <phingcall target="setup-files-directory" />
     </target>
 
     <!-- Install a development version of the subsite with a production database. -->

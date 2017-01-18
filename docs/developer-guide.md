@@ -117,6 +117,8 @@ This will:
 * Rebuild the registry, run updates and clear caches.
 
 This target can only be run after running a successful build-dev first.
+If no default.settings.php is found you will be prompted for executing
+a rebuild.
 
 ### 6. Set up your webserver
 
