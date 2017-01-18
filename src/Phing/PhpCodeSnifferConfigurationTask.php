@@ -303,5 +303,5 @@ PHP;
       $standard = strtok($token);
     }
   }
-  
+
 }
