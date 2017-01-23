@@ -45,6 +45,13 @@ class PhpCodeSnifferConfigurationTask extends \Task {
   private $ignorePatterns = array();
 
   /**
+   * Whether or not to pass with warnings.
+   *
+   * @var bool
+   */
+  private $passWarnings = FALSE;
+
+  /**
    * The report format to use.
    *
    * @var string
@@ -140,10 +147,12 @@ class PhpCodeSnifferConfigurationTask extends \Task {
 
     // If a global configuration file is passed, update this too.
     if (!empty($this->globalConfig)) {
+      $ignore_warnings_on_exit = $this->passWarnings ? 1 : 0;
       $global_config = <<<PHP
 <?php
  \$phpCodeSnifferConfig = array (
   'default_standard' => '$this->configFile',
+  'ignore_warnings_on_exit' => '$ignore_warnings_on_exit',
 );
 PHP;
       file_put_contents($this->globalConfig, $global_config);
@@ -170,7 +179,9 @@ PHP;
     if (!empty($name)) {
       $argument->setAttribute('name', $name);
     }
-    $argument->setAttribute('value', $value);
+    if (!empty($value)) {
+      $argument->setAttribute('value', $value);
+    }
     $element->appendChild($argument);
   }
 
@@ -256,6 +267,16 @@ PHP;
       $this->ignorePatterns[] = $pattern;
       $pattern = strtok($token);
     }
+  }
+
+  /**
+   * Sets whether or not to pass with warnings.
+   *
+   * @param bool $passWarnings
+   *   Whether or not to pass with warnings.
+   */
+  public function setPassWarnings($passWarnings) {
+    $this->passWarnings = (bool) $passWarnings;
   }
 
   /**

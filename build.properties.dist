@@ -240,6 +240,9 @@ phpcs.files = ${subsite.resources.dir};${subsite.resources.lib.dir};${phing.proj
 # Paths to ignore, delimited by semicolons.
 phpcs.ignore =
 
+# Returns a 0 error code when only warnings are found if enabled. Ment for CI.
+phpcs.passwarnings = 0
+
 # The report format. For example 'full', 'summary', 'diff', 'xml', 'json'.
 phpcs.report = full
 

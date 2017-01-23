@@ -10,4 +10,18 @@
 <!-- =================================================================================== -->
 <ruleset name="Subsite">
     <description>Custom ruleset for subsite usage.</description>
+
+    <!-- New guidelines allow for use of project property. -->
+    <!-- Remove comment to disable the project check on info files.
+    <rule ref="Drupal.InfoFiles.AutoAddedKeys.Project">
+        <severity>0</severity>
+    </rule>
+    -->
+
+    <!-- New guidelines allow for use of version property. -->
+    <!-- Remove comment to disable the version check on info files.
+    <rule ref="Drupal.InfoFiles.AutoAddedKeys.Version">
+        <severity>0</severity>
+    </rule>
+    -->
 </ruleset>
