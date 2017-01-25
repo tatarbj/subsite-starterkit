@@ -247,7 +247,7 @@ phpcs.passwarnings = 0
 phpcs.report = full
 
 # Whether or not to show sniff codes in the report.
-phpcs.sniffcodes = 1
+phpcs.sniffcodes = 0
 
 # Whether or not to show the progress of the run.
 phpcs.progress = 1
