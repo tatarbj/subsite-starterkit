@@ -268,7 +268,8 @@ phpcs.prepush.destination = ${project.basedir}/.git/hooks/pre-push
 #------------------
 
 # Sets the branch for which checks needing git diff are based on. Usually is master.
-qa.diff.branch = master
+# @todo: feature still has to be implemented.
+# qa.diff.branch = master
 
 
 # Host configuration
