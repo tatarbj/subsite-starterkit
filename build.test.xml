@@ -169,7 +169,7 @@
     <target
         name="mjolnir"
         description="The Hammer Of Thor will execute a full static analysis on the deployment package. Run this before sending a delivery to QA."
-        depends="check-starterkit, setup-php-codesniffer, quality-assurance"
+        depends="setup-php-codesniffer, quality-assurance"
     />
 
     <!-- Install a development version of the subsite. -->
