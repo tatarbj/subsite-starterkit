@@ -210,8 +210,8 @@ $ ./bin/phing setup-php-codesniffer
 
 This will generate a new phpcs.xml file that includes other rulesets such as
 [phpcs-ruleset.xml](../phpcs-ruleset.xml) and [resources/phpcs-custom.xml](../resources/phpcs-custom.xml)
-This documentation page [phpcs-index.md] contains an overview with the current
-enabled sniffs codes and will be updated with each release.
+This documentation page [phpcs-index.md](phpcs-index.md) contains an overview
+with the current enabled sniffs codes and will be updated with each release.
 
 To manually check the coding standards you can run PHP CodeSniffer from the
 root folder:
