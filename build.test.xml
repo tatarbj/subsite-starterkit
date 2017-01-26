@@ -85,10 +85,11 @@
             files="${phpcs.files}"
             globalConfig="${phpcs.global.config}"
             ignorePatterns="${phpcs.ignore}"
+            passWarnings = "${phpcs.passwarnings}"
             report="${phpcs.report}"
             showProgress="${phpcs.progress}"
             showSniffCodes="${phpcs.sniffcodes}"
-            standard="${phpcs.standard}"
+            standards="${phpcs.standards}"
         />
 
         <!-- Set up the git pre-push hook. -->
@@ -142,41 +143,33 @@
     <!-- Check that the subsite starterkit is up-to-date. -->
     <target name="check-starterkit">
         <echo msg="Checking if the subsite starterkit is up-to-date." />
-        <checkstarterkit
-            starterkitRepository="${starterkit.repository}"
-            starterkitBranch="${starterkit.branch}"
-            starterkitRemote="${starterkit.remote}"
-            subsiteRepository="${project.basedir}"
+        <exec
+            command="bin/qa check:ssk
+                --repository=${starterkit.repository}
+                --branch=${starterkit.branch}
+                --remote=${starterkit.remote}
+                --basedir=${project.basedir}
+                --no-interaction
+                --ansi"
+            passthru="true"
+            checkreturn="true"
         />
     </target>
 
     <!-- Do quality assurance checks. -->
     <target name="quality-assurance">
-        <if>
-            <available file="${dist.build.dir}" type="dir" />
-            <then>
-                <qualityassurance
-                    skipSelect="${qa.skip.select}"
-                    skipPhpcs="${qa.skip.phpcs}"
-                    makeFile="${subsite.make}"
-                    projectBaseDir="${project.basedir}"
-                    resourcesDir="${subsite.resources.dir}"
-                    distBuildDir="${dist.build.dir}"
-                    libDir="${subsite.resources.lib.dir}"
-                    profileName="${platform.profile.name}"
-                />
-            </then>
-            <else>
-                <fail message="Please run build-dist before running quality-assurance" />
-            </else>
-        </if>
+        <exec
+            command="bin/qa review:full --no-interaction --ansi"
+            passthru="true"
+            checkreturn="true"
+        />
     </target>
 
     <!-- Run a full static analysis. -->
     <target
         name="mjolnir"
         description="The Hammer Of Thor will execute a full static analysis on the deployment package. Run this before sending a delivery to QA."
-        depends="build-dist, setup-php-codesniffer, quality-assurance"
+        depends="setup-php-codesniffer, quality-assurance"
     />
 
     <!-- Install a development version of the subsite. -->

@@ -10,6 +10,56 @@ subsite.make = ${subsite.resources.dir}/site.make
 # Modules to enable after installation. Separate multiple modules with spaces.
 subsite.install.modules = myproject_core
 
+# Subsite clone configuration.
+#-----------------------------
+
+# Project ID used to generate other properties.
+project.id = <project>
+
+# Project database url scheme.
+project.database.url.scheme = https
+
+# Project database url username is used for .htaccess to file download url. Use only
+# within build.properties.local if needed. Never commit credentials on github.
+project.database.url.htaccess.username =
+
+# Project database url username is used for .htaccess to file download url. Use only
+# within build.properties.local if needed. Never commit credentials on github.
+project.database.url.htaccess.password =
+
+# Project database url. Define the scheme in project.database.url.scheme property. If
+# you want developers to use the same database this should be added to the projects
+# build.properties file.
+project.database.url = webgate.ec.europa.eu/fpfis/files-for/${project.id}/
+
+# Project database filename.  If you want developers to use the same database this
+# should be added to the projects build.properties file. The file has to be
+# compressed in .gz format. Thus ending in .sql.gz.
+project.database.filename =
+
+
+# Development configuration
+# ---------------------------------------
+
+# Development / testing modules to download.
+development.modules.download = devel maillog stage_file_proxy
+
+# Development / testing modules to enable.
+development.modules.enable = devel context field_ui maillog simpletest stage_file_proxy views_ui
+
+# The location where development modules will be installed.
+development.modules.location = devel
+
+# Variables to set for cloning production.
+development.variables.error_level = 2
+development.variables.views_ui_show_sql_query = 1
+development.variables.views_ui_show_performance_statistics = 1
+development.variables.views_show_additional_queries = 1
+development.variables.stage_file_proxy_origin = http://ec.europa.eu/${project.id}
+development.variables.stage_file_proxy_origin_dir = sites/${project.id}/files
+development.variables.stage_file_proxy_hotlink = 1
+development.variables.theme_default = ec_resp
+
 
 # Drupal configuration
 # --------------------
@@ -58,7 +108,7 @@ platform.profile.name = multisite_drupal_standard
 # For most projects you would want to follow 'master' so that you always have
 # the latest version that is deployed on production. Use 'develop' to check if
 # your project is compatible with the upcoming release.
-platform.package.reference = 2.2.%
+platform.package.reference = 2.2.152
 
 # The provider that hosts the platform repository.
 platform.package.provider = git-hub
@@ -181,14 +231,17 @@ phpcs.extensions = php inc module install info test profile theme css js
 # The default configuration file to generate.
 phpcs.config = ${project.basedir}/phpcs.xml
 
-# The coding standard to use.
-phpcs.standard = ${project.basedir}/phpcs-ruleset.xml
+# The coding standards to use, delimited by semicolons.
+phpcs.standards = ${project.basedir}/phpcs-ruleset.xml;${subsite.resources.dir}/phpcs-custom.xml
 
 # Paths to check, delimited by semicolons.
 phpcs.files = ${subsite.resources.dir};${subsite.resources.lib.dir};${phing.project.src.dir};${behat.src.dir}
 
 # Paths to ignore, delimited by semicolons.
 phpcs.ignore =
+
+# Returns a 0 error code when only warnings are found if enabled. Ment for CI.
+phpcs.passwarnings = 0
 
 # The report format. For example 'full', 'summary', 'diff', 'xml', 'json'.
 phpcs.report = full
@@ -214,11 +267,14 @@ phpcs.prepush.destination = ${project.basedir}/.git/hooks/pre-push
 # Quality Assurance
 #------------------
 
-# Automatic selection of modules on or off. Used for cphp.
-qa.skip.select = 0
+# Sets the branch for which checks needing git diff are based on. Usually is master.
+# @todo: feature still has to be implemented.
+# qa.diff.branch = master
 
-# Skip running of phpcs on modules. Used for cphp.
-qa.skip.phpcs = 0
+# Gives you the possibility to disable the check:ssk that preceeds the qa review
+# commands. CI and QA will always perform this check.
+qa.check.ssk = 1
+
 
 # Host configuration
 # ------------------
@@ -227,7 +283,7 @@ qa.skip.phpcs = 0
 server.docroot = /var/www
 
 
-# Debugging and development configuration
+# Debugging configuration
 # ---------------------------------------
 
 # Verbosity of drush commands. Set to TRUE to be verbose.
@@ -236,15 +292,6 @@ drush.verbose = FALSE
 # Verbosity of PHP Codesniffer. Set to 0 for standard output, 1 for progress
 # report, 2 for debugging info.
 phpcs.verbose = 0
-
-# Development / testing modules to download.
-development.modules.download = devel maillog
-
-# Development / testing modules to enable.
-development.modules.enable = devel field_ui maillog simpletest views_ui
-
-# The location where development modules will be installed.
-development.modules.location = development
 
 
 # AWS SDK
@@ -270,7 +317,6 @@ starterkit.repository = https://github.com/ec-europa/subsite-starterkit.git
 
 # The branch of the subsite starterkit that will be tracked.
 starterkit.branch = master
-
 # The name of the git remote for the starterkit.
 starterkit.remote = starterkit
 

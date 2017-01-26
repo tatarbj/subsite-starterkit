@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains NextEuropa\Phing\PhpCodeSnifferConfigurationTask.
- */
-
 namespace NextEuropa\Phing;
 
 require_once 'phing/Task.php';
@@ -50,6 +45,13 @@ class PhpCodeSnifferConfigurationTask extends \Task {
   private $ignorePatterns = array();
 
   /**
+   * Whether or not to pass with warnings.
+   *
+   * @var bool
+   */
+  private $passWarnings = FALSE;
+
+  /**
    * The report format to use.
    *
    * @var string
@@ -71,11 +73,11 @@ class PhpCodeSnifferConfigurationTask extends \Task {
   private $showSniffCodes = FALSE;
 
   /**
-   * The coding standard to use.
+   * The coding standards to use.
    *
-   * @var string
+   * @var array
    */
-  private $standard;
+  private $standards = array();
 
   /**
    * Configures PHP CodeSniffer.
@@ -96,10 +98,12 @@ class PhpCodeSnifferConfigurationTask extends \Task {
     $element = $document->createElement('description', 'Default PHP CodeSniffer configuration for NextEuropa subsites.');
     $root_element->appendChild($element);
 
-    // Add the coding standard.
-    $element = $document->createElement('rule');
-    $element->setAttribute('ref', $this->standard);
-    $root_element->appendChild($element);
+    // Add the coding standards.
+    foreach ($this->standards as $standard) {
+      $element = $document->createElement('rule');
+      $element->setAttribute('ref', $standard);
+      $root_element->appendChild($element);
+    }
 
     // Add the files to check.
     foreach ($this->files as $file) {
@@ -143,10 +147,12 @@ class PhpCodeSnifferConfigurationTask extends \Task {
 
     // If a global configuration file is passed, update this too.
     if (!empty($this->globalConfig)) {
+      $ignore_warnings_on_exit = $this->passWarnings ? 1 : 0;
       $global_config = <<<PHP
 <?php
  \$phpCodeSnifferConfig = array (
   'default_standard' => '$this->configFile',
+  'ignore_warnings_on_exit' => '$ignore_warnings_on_exit',
 );
 PHP;
       file_put_contents($this->globalConfig, $global_config);
@@ -173,7 +179,9 @@ PHP;
     if (!empty($name)) {
       $argument->setAttribute('name', $name);
     }
-    $argument->setAttribute('value', $value);
+    if (!empty($value)) {
+      $argument->setAttribute('value', $value);
+    }
     $element->appendChild($argument);
   }
 
@@ -184,7 +192,7 @@ PHP;
    *   Thrown when a required property is not present.
    */
   protected function checkRequirements() {
-    $required_properties = array('configFile', 'files', 'standard');
+    $required_properties = array('configFile', 'files', 'standards');
     foreach ($required_properties as $required_property) {
       if (empty($this->$required_property)) {
         throw new \BuildException("Missing required property '$required_property'.");
@@ -262,6 +270,16 @@ PHP;
   }
 
   /**
+   * Sets whether or not to pass with warnings.
+   *
+   * @param bool $passWarnings
+   *   Whether or not to pass with warnings.
+   */
+  public function setPassWarnings($passWarnings) {
+    $this->passWarnings = (bool) $passWarnings;
+  }
+
+  /**
    * Sets the report format to use.
    *
    * @param string $report
@@ -292,13 +310,19 @@ PHP;
   }
 
   /**
-   * Sets the coding standard to use.
+   * Sets the coding standards to use.
    *
-   * @param string $standard
-   *   The coding standard to use.
+   * @param string $standards
+   *   A list of paths, delimited by spaces, commas or semicolons.
    */
-  public function setStandard($standard) {
-    $this->standard = $standard;
+  public function setStandards($standards) {
+    $this->standards = array();
+    $token = ' ,;';
+    $standard = strtok($standards, $token);
+    while ($standard !== FALSE) {
+      $this->standards[] = $standard;
+      $standard = strtok($token);
+    }
   }
 
 }

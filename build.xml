@@ -30,12 +30,7 @@
     <echo msg="Loading Drush Makefile task." />
     <taskdef name="drushmakefile" classname="\NextEuropa\Phing\DrushMakeFileTask" />
 
-    <echo msg="Loading Starterkit update check task." />
-    <taskdef name="checkstarterkit" classname="\NextEuropa\Phing\CheckStarterkitTask" />
-
-    <echo msg="Loading Quality Assurance checks task." />
-    <taskdef name="qualityassurance" classname="\NextEuropa\Phing\QualityAssuranceSubsiteTask" />
-
+    <import file="build.clone.xml" />
     <import file="build.package.xml" />
     <import file="build.test.xml" />
     <import file="resources/build.custom.xml" />
