@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "07fb81b2a5e4ae22ac8d3c91da27841a",
-    "content-hash": "bba73b43881e2d4949f728ac4e2a46d3",
+    "hash": "58ab30d3a8d56c0a0ef2b72d3c3556c6",
+    "content-hash": "163c9b26f70d2bf3d1061914a6dad430",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.21.4",
+            "version": "3.21.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "6408a4904a04eca44461a65ba4a0fae53f80417b"
+                "reference": "adaabe1e1b2c29a8748e52146194ab42222df8b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6408a4904a04eca44461a65ba4a0fae53f80417b",
-                "reference": "6408a4904a04eca44461a65ba4a0fae53f80417b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/adaabe1e1b2c29a8748e52146194ab42222df8b5",
+                "reference": "adaabe1e1b2c29a8748e52146194ab42222df8b5",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-01-25 00:43:08"
+            "time": "2017-01-25 22:06:08"
         },
         {
             "name": "consolidation/annotated-command",
@@ -569,16 +569,16 @@
         },
         {
             "name": "ec-europa/qa-automation",
-            "version": "2.0",
+            "version": "2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/qa-automation.git",
-                "reference": "7b66e71dbb9b55474db28fba04d123e414760d50"
+                "reference": "17aacc7d04640abc199986060b32d96dc7fe0945"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/7b66e71dbb9b55474db28fba04d123e414760d50",
-                "reference": "7b66e71dbb9b55474db28fba04d123e414760d50",
+                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/17aacc7d04640abc199986060b32d96dc7fe0945",
+                "reference": "17aacc7d04640abc199986060b32d96dc7fe0945",
                 "shasum": ""
             },
             "require": {
@@ -605,7 +605,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "description": "Performs automated QA checks and extra php codesniffs for the subsite starterkit.",
-            "time": "2017-01-25 14:23:35"
+            "time": "2017-01-26 08:00:45"
         },
         {
             "name": "guzzlehttp/command",
