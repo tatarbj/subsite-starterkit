@@ -60,6 +60,7 @@
         <exclude-pattern>*.features.menu_links.inc</exclude-pattern>
     </rule>
 
+    <!-- Disable DrupalPractice rules that do not apply to non-contribs. -->
     <rule ref="DrupalPractice">
         <exclude name="DrupalPractice.Commenting.AuthorTag" />
     </rule>
