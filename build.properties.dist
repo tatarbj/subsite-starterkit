@@ -271,6 +271,10 @@ phpcs.prepush.destination = ${project.basedir}/.git/hooks/pre-push
 # @todo: feature still has to be implemented.
 # qa.diff.branch = master
 
+# Gives you the possibility to disable the check:ssk that preceeds the qa review
+# commands. CI and QA will always perform this check.
+qa.check.ssk = 1
+
 
 # Host configuration
 # ------------------

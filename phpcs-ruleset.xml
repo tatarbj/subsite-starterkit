@@ -60,4 +60,8 @@
         <exclude-pattern>*.features.menu_links.inc</exclude-pattern>
     </rule>
 
+    <rule ref="DrupalPractice">
+        <exclude name="DrupalPractice.Commenting.AuthorTag" />
+    </rule>
+
 </ruleset>
