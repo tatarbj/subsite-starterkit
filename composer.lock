@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "58ab30d3a8d56c0a0ef2b72d3c3556c6",
-    "content-hash": "163c9b26f70d2bf3d1061914a6dad430",
+    "hash": "9a26aca5bcc4a4df46beda4980067152",
+    "content-hash": "56333e515efe252faa5b84103595f690",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.21.5",
+            "version": "3.21.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "adaabe1e1b2c29a8748e52146194ab42222df8b5"
+                "reference": "b51512a4ad4aa080ab963942a1e234265771fcde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/adaabe1e1b2c29a8748e52146194ab42222df8b5",
-                "reference": "adaabe1e1b2c29a8748e52146194ab42222df8b5",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b51512a4ad4aa080ab963942a1e234265771fcde",
+                "reference": "b51512a4ad4aa080ab963942a1e234265771fcde",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-01-25 22:06:08"
+            "time": "2017-01-27 00:34:55"
         },
         {
             "name": "consolidation/annotated-command",
@@ -278,16 +278,16 @@
         },
         {
             "name": "continuousphp/sdk",
-            "version": "0.3.2",
+            "version": "0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/continuousphp/sdk.git",
-                "reference": "e262c8b4e2d32f8e14e9fd19b1b8dc725e5ab55d"
+                "reference": "48f377e17149e75237583078bca475c15a234b84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/continuousphp/sdk/zipball/e262c8b4e2d32f8e14e9fd19b1b8dc725e5ab55d",
-                "reference": "e262c8b4e2d32f8e14e9fd19b1b8dc725e5ab55d",
+                "url": "https://api.github.com/repos/continuousphp/sdk/zipball/48f377e17149e75237583078bca475c15a234b84",
+                "reference": "48f377e17149e75237583078bca475c15a234b84",
                 "shasum": ""
             },
             "require": {
@@ -296,6 +296,7 @@
             },
             "require-dev": {
                 "behat/behat": "^3.0",
+                "php-mock/php-mock-phpunit": "^1.1",
                 "phpunit/phpunit": "^4.6",
                 "squizlabs/php_codesniffer": "^2.3"
             },
@@ -322,7 +323,7 @@
                 "continuousphp",
                 "tool"
             ],
-            "time": "2015-11-20 11:05:11"
+            "time": "2017-01-30 17:07:17"
         },
         {
             "name": "cpliakas/git-wrapper",
@@ -569,16 +570,16 @@
         },
         {
             "name": "ec-europa/qa-automation",
-            "version": "2.1",
+            "version": "2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/qa-automation.git",
-                "reference": "17aacc7d04640abc199986060b32d96dc7fe0945"
+                "reference": "cca7ea56935ecea34d28f76ac9776fbea85aa248"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/17aacc7d04640abc199986060b32d96dc7fe0945",
-                "reference": "17aacc7d04640abc199986060b32d96dc7fe0945",
+                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/cca7ea56935ecea34d28f76ac9776fbea85aa248",
+                "reference": "cca7ea56935ecea34d28f76ac9776fbea85aa248",
                 "shasum": ""
             },
             "require": {
@@ -605,7 +606,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "description": "Performs automated QA checks and extra php codesniffs for the subsite starterkit.",
-            "time": "2017-01-26 08:00:45"
+            "time": "2017-01-31 13:11:20"
         },
         {
             "name": "guzzlehttp/command",
@@ -3478,16 +3479,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v3.1.9",
+            "version": "v3.1.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "bedcf6d6b1be2fc25edcde41e8732b7ed9a6f4ba"
+                "reference": "f4a04433f82eb8ca58555d1b6375293fc7c90d18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/bedcf6d6b1be2fc25edcde41e8732b7ed9a6f4ba",
-                "reference": "bedcf6d6b1be2fc25edcde41e8732b7ed9a6f4ba",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/f4a04433f82eb8ca58555d1b6375293fc7c90d18",
+                "reference": "f4a04433f82eb8ca58555d1b6375293fc7c90d18",
                 "shasum": ""
             },
             "require": {
@@ -3534,7 +3535,7 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-10 14:09:41"
+            "time": "2017-01-28 00:04:57"
         },
         {
             "name": "symfony/dom-crawler",
