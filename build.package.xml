@@ -101,7 +101,7 @@
     </target>
 
     <!-- Make the development version of the subsite. -->
-    <target name="make-dev" depends="download-platform">
+    <target name="make-dev" depends="retrieve-platform">
         <if>
             <available file="${subsite.make}" type="file"/>
             <then>
@@ -302,12 +302,7 @@
         </if>
     </target>
 
-    <!-- Download the platform. -->
-    <target name="download-platform">
-        <!--
-            The platform is very large so downloading it can take a long time.
-            Only download it when it hasn't yet been downloaded.
-         -->
+    <target name="create-tmp-dirs">
         <if>
             <!-- Create the global cache directory if it doesn't exist. -->
             <not>
@@ -316,6 +311,9 @@
             <then>
                 <mkdir dir="${platform.package.cachedir}"/>
             </then>
+            <else>
+                <echo msg="Directory ${platform.package.cachedir} exists."/>
+            </else>
         </if>
         <if>
             <!-- Create the destination directory if it doesn't exist. -->
@@ -325,14 +323,27 @@
             <then>
                 <mkdir dir="${platform.package.destination}"/>
             </then>
+            <else>
+                <echo msg="Directory ${platform.package.destination} exists."/>
+            </else>
         </if>
+    </target>
+
+    <!-- Retrieve the platform (from tmp dirs or download). -->
+    <target name="retrieve-platform" depends="create-tmp-dirs" hidden="true">
+        <!--
+            The platform is very large so downloading it can take a long time.
+            Only download it when it hasn't yet been downloaded.
+         -->
         <if>
+            <!-- First check the primary global cache directory -->
             <available file="${platform.package.cachedir}/${platform.package.tarball}" type="file" property="platform.package.download"/>
             <then>
                 <echo msg="Skipping platform download, it is already downloaded at ${platform.package.cachedir}/${platform.package.tarball}."/>
                 <echo msg="Delete this file if you want to download the latest version."/>
             </then>
             <elseif>
+                <!-- Then check the projects cache directory -->
                 <available file="${platform.package.destination}/${platform.package.tarball}" type="file" property="platform.package.download"/>
                 <then>
                     <echo msg="Skipping platform download, it is already downloaded at ${platform.package.destination}/${platform.package.tarball}."/>
@@ -340,46 +351,57 @@
                 </then>
             </elseif>
             <else>
-                <if>
-                    <not>
-                        <available file="${platform.package.destination}/deploy-package.tar.gz" type="file"/>
-                    </not>
-                    <then>
-                        <echo msg="Starting to download the platform. Depending on your connection this can take between 5-15 minutes. Go get some coffee."/>
-                        <echo msg="This file will only be downloaded once and will be cached in ${platform.package.tarball}."/>
-                        <echo msg="You can delete this cached file whenever you want to download a new version of the platform."/>
-                        <trycatch>
-                            <!-- Try downloading platform through continuousphp api. -->
-                            <try>
-                                <continuousphp-config token="${platform.package.token}"/>
-                                <continuousphp-package
-                                        provider="${platform.package.provider}"
-                                        repository="${platform.package.repository}"
-                                        reference="${platform.package.reference}"
-                                        destination="${platform.package.destination}"
-                                        property="platform.package.property"
-                                />
-                                <echo msg="Downloaded platform package reference ${platform.package.property}"/>
-                            </try>
-                            <!-- Try downloading platform with curl as backup. -->
-                            <catch>
-                                <if>
-                                    <http url="https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz"/>
-                                    <then>
-                                        <exec command="curl -L -o ${platform.package.destination}/deploy-package.tar.gz https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz"
-                                              passthru="true"/>
-                                        <echo msg="Downloaded platform package reference ${platform.package.reference}"/>
-                                    </then>
-                                    <else>
-                                        <fail msg="Failed downloading platform package reference ${platform.package.reference}"/>
-                                    </else>
-                                </if>
-                            </catch>
-                        </trycatch>
-                    </then>
-                </if>
+                <!-- Lastly download the platform if we haven't found any previous downloads -->
+                <phingcall target="download-platform" />
             </else>
         </if>
+        <!-- Move our package to the cache directory -->
+        <phingcall target="move-download-to-tmp-dir"/>
+    </target>
+
+    <!-- Download the platform. -->
+    <target name="download-platform">
+        <if>
+            <not>
+                <available file="${platform.package.destination}/deploy-package.tar.gz" type="file"/>
+            </not>
+            <then>
+                <echo msg="Starting to download the platform. Depending on your connection this can take between 5-15 minutes. Go get some coffee."/>
+                <echo msg="This file will only be downloaded once and will be cached in ${platform.package.tarball}."/>
+                <echo msg="You can delete this cached file whenever you want to download a new version of the platform."/>
+                <trycatch>
+                    <!-- Try downloading platform through continuousphp api. -->
+                    <try>
+                        <continuousphp-config token="${platform.package.token}"/>
+                        <continuousphp-package
+                                provider="${platform.package.provider}"
+                                repository="${platform.package.repository}"
+                                reference="${platform.package.reference}"
+                                destination="${platform.package.destination}"
+                                property="platform.package.property"
+                        />
+                        <echo msg="Downloaded platform package reference ${platform.package.property}"/>
+                    </try>
+                    <!-- Try downloading platform with curl as backup. -->
+                    <catch>
+                        <if>
+                            <http url="https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz"/>
+                            <then>
+                                <exec command="curl -L -o ${platform.package.destination}/deploy-package.tar.gz https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz"
+                                      passthru="true"/>
+                                <echo msg="Downloaded platform package reference ${platform.package.reference}"/>
+                            </then>
+                            <else>
+                                <fail msg="Failed downloading platform package reference ${platform.package.reference}"/>
+                            </else>
+                        </if>
+                    </catch>
+                </trycatch>
+            </then>
+        </if>
+    </target>
+
+    <target name="move-download-to-tmp-dir">
         <if>
             <and>
                 <available file="${platform.package.cachedir}" type="dir"/>
