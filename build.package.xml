@@ -351,10 +351,76 @@
         </if>
     </target>
 
+    <!-- Remove all symlinks that will be present after build-dev. -->
+    <target name="unlink-dev-resources">
+        <!-- Remove our custom modules symlink. -->
+        <delete file="${platform.build.subsite.modules.custom.dir}" />
+        <!-- Remove our custom features symlink. -->
+        <delete file="${platform.build.subsite.modules.features.dir}" />
+        <!-- Remove our custom themes symlink. -->
+        <delete file="${platform.build.subsite.themes.dir}" />
+        <!-- Remove our custom PSR-4 code symlink. -->
+        <delete file="${platform.build.subsite.source.dir}" />
+        <!-- Remove composer configuration symlinks. -->
+        <delete file="${platform.build.subsite.composer.json}" />
+        <delete file="${platform.build.subsite.composer.lock}" />
+        <!-- Remove vendor folder. -->
+        <delete dir="${platform.build.subsite.dir}/vendor" includeemptydirs="true" />
+    </target>
+
+    <!-- Unlink the Behat bin and test directory in the subsite folder. -->
+    <target name="unlink-behat">
+        <echo msg="Remove the Behat bin and test directory symlinks in './sites/all'." />
+        <delete file="bin/behat"/>
+        <delete file="${platform.build.subsite.dir}/tests"/>
+    </target>
+
+    <!-- Backs up sites directory if settings.php is found. -->
+    <target name="backup-site">
+        <if>
+            <and>
+                <available file="${platform.build.sites.dir}" type="dir"/>
+                <available file="${platform.build.settings.dir}/settings.php" type="file"/>
+            </and>
+            <then>
+                <echo msg="Backing up sites directory to ${phing.project.tmp.dir}"/>
+                <phingcall target="unlink-dev-resources"/>
+                <phingcall target="unlink-behat"/>
+                <move file="${platform.build.sites.dir}" todir="${phing.project.tmp.dir}" includeemptydirs="true"/>
+            </then>
+            <else>
+                <echo msg="No drupal installation found. Continuing rebuild without backup."/>
+            </else>
+        </if>
+    </target>
+
+    <!-- Restoring sites directory if backed up before rebuild-dev. -->
+    <target name="restore-site">
+        <if>
+            <available file="${phing.project.tmp.dir}/sites" type="dir"/>
+            <then>
+                <echo msg="Restoring sites directory to ${platform.build.dir}" />
+                <move file="${phing.project.tmp.dir}/sites" todir="${platform.build.dir}" includeemptydirs="true" overwrite="true" />
+            </then>
+            <else>
+                <echo msg="Completing rebuild without restoring a backed up sites folder."/>
+            </else>
+        </if>
+    </target>
+
     <target
-        name="build-dev"
-        description="Build a local development version of the subsite."
-        depends="
+            name="rebuild-dev"
+            description="Rebuild a previously built version of the subsite."
+            depends="
+            backup-site,
+            build-dev,
+            restore-site"
+    />
+
+    <target
+            name="build-dev"
+            description="Build a local development version of the subsite."
+            depends="
             install-build-dependencies,
             delete-dev,
             make-dev,
