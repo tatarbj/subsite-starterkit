@@ -351,59 +351,97 @@
         </if>
     </target>
 
-    <!-- Remove all symlinks that will be present after build-dev. -->
-    <target name="unlink-dev-resources">
-        <!-- Remove our custom modules symlink. -->
-        <delete file="${platform.build.subsite.modules.custom.dir}" />
-        <!-- Remove our custom features symlink. -->
-        <delete file="${platform.build.subsite.modules.features.dir}" />
-        <!-- Remove our custom themes symlink. -->
-        <delete file="${platform.build.subsite.themes.dir}" />
-        <!-- Remove our custom PSR-4 code symlink. -->
-        <delete file="${platform.build.subsite.source.dir}" />
-        <!-- Remove composer configuration symlinks. -->
-        <delete file="${platform.build.subsite.composer.json}" />
-        <delete file="${platform.build.subsite.composer.lock}" />
-        <!-- Remove vendor folder. -->
-        <delete dir="${platform.build.subsite.dir}/vendor" includeemptydirs="true" />
-    </target>
-
-    <!-- Unlink the Behat bin and test directory in the subsite folder. -->
-    <target name="unlink-behat">
-        <echo msg="Remove the Behat bin and test directory symlinks in './sites/all'." />
-        <delete file="bin/behat"/>
-        <delete file="${platform.build.subsite.dir}/tests"/>
-    </target>
-
-    <!-- Backs up sites directory if settings.php is found. -->
+    <!-- Backs up files and folders listed in platform.rebuild properties in order to rebuild. -->
     <target name="backup-site">
+        <echo msg="Backing up site files and folders to ${platform.rebuild.backup.destination}"/>
         <if>
-            <and>
-                <available file="${platform.build.sites.dir}" type="dir"/>
-                <available file="${platform.build.settings.dir}/settings.php" type="file"/>
-            </and>
+            <!-- Delete any remains of previous backup attempts. -->
+            <available file="${platform.rebuild.backup.destination}" type="dir"/>
             <then>
-                <echo msg="Backing up sites directory to ${phing.project.tmp.dir}"/>
-                <phingcall target="unlink-dev-resources"/>
-                <phingcall target="unlink-behat"/>
-                <move file="${platform.build.sites.dir}" todir="${phing.project.tmp.dir}" includeemptydirs="true"/>
+                <delete dir="${platform.rebuild.backup.destination}" includeemptydirs="true"/>
             </then>
-            <else>
-                <echo msg="No drupal installation found. Continuing rebuild without backup."/>
-            </else>
         </if>
+        <!-- Create backup directory. -->
+        <mkdir dir="${platform.rebuild.backup.destination}"/>
+        <!-- Back up folders list. -->
+        <foreach list="${platform.rebuild.backup.folders}" param="site-item" target="backup-site-item" delimiter=";">
+            <property name="site-item-type" value="dir"/>
+        </foreach>
+        <!-- Back up files list. -->
+        <foreach list="${platform.rebuild.backup.files}" param="site-item" target="backup-site-item" delimiter=";">
+            <property name="site-item-type" value="file"/>
+        </foreach>
     </target>
 
     <!-- Restoring sites directory if backed up before rebuild-dev. -->
     <target name="restore-site">
+        <echo msg="Restoring site files and folders from ${platform.rebuild.backup.destination}"/>
+        <!-- Restore folders list. -->
+        <foreach list="${platform.rebuild.backup.folders}" param="site-item" target="restore-site-item" delimiter=";">
+            <property name="site-item-type" value="dir"/>
+        </foreach>
+        <!-- Restore files list. -->
+        <foreach list="${platform.rebuild.backup.files}" param="site-item" target="restore-site-item" delimiter=";">
+            <property name="site-item-type" value="file"/>
+        </foreach>
+    </target>
+
+    <!-- Backs up a site item from the platform that will be removed in order to rebuild. -->
+    <target name="backup-site-item">
+        <php expression='dirname("${site-item}")' returnProperty="site-item-dir"/>
+        <property name="site-item-backup-dir" value="${site-item-dir}">
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="${platform.build.dir}" replace="${platform.rebuild.backup.destination}" ignoreCase="false"/>
+                </replaceregexp>
+            </filterchain>
+        </property>
         <if>
-            <available file="${phing.project.tmp.dir}/sites" type="dir"/>
+            <available file="${site-item}" type="${site-item-type}"/>
             <then>
-                <echo msg="Restoring sites directory to ${platform.build.dir}" />
-                <move file="${phing.project.tmp.dir}/sites" todir="${platform.build.dir}" includeemptydirs="true" overwrite="true" />
+                <if>
+                    <not>
+                        <available file="${site-item-backup-dir}" type="dir"/>
+                    </not>
+                    <then>
+                        <mkdir dir="${site-item-backup-dir}"/>
+                    </then>
+                </if>
+                <move file="${site-item}" todir="${site-item-backup-dir}" includeemptydirs="true"/>
             </then>
             <else>
-                <echo msg="Completing rebuild without restoring a backed up sites folder."/>
+                <php expression='ucwords("${site-item-type}")' returnProperty="site-item-type-capitalized"/>
+                <echo msg="Skipping ${site-item}. ${site-item-type-capitalized} not found." level="warning"/>
+            </else>
+        </if>
+    </target>
+
+    <!-- Restores a site item from the platform.rebuild.backup.destination to the new build. -->
+    <target name="restore-site-item">
+        <property name="site-item-backup" value="${site-item}">
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="${platform.build.dir}" replace="${platform.rebuild.backup.destination}" ignoreCase="false"/>
+                </replaceregexp>
+            </filterchain>
+        </property>
+        <if>
+            <available file="${site-item-backup}" type="${site-item-type}"/>
+            <then>
+                <php expression='dirname("${site-item}")' returnProperty="site-item-dir"/>
+                <if>
+                    <not>
+                        <available file="${site-item-dir}" type="dir"/>
+                    </not>
+                    <then>
+                        <mkdir dir="${site-item-dir}"/>
+                    </then>
+                </if>
+                <move file="${site-item-backup}" todir="${site-item-dir}" includeemptydirs="true"/>
+            </then>
+            <else>
+                <php expression='ucwords("${site-item-type}")' returnProperty="site-item-type-capitalized"/>
+                <echo msg="Skipping ${site-item}. ${site-item-type-capitalized} not found." level="warning"/>
             </else>
         </if>
     </target>
