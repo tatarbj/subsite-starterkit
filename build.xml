@@ -30,10 +30,10 @@
     <echo msg="Loading Drush Makefile task." />
     <taskdef name="drushmakefile" classname="\NextEuropa\Phing\DrushMakeFileTask" />
 
+    <import file="resources/build.custom.xml" />
     <import file="build.clone.xml" />
     <import file="build.package.xml" />
     <import file="build.test.xml" />
-    <import file="resources/build.custom.xml" />
 
     <import file="./vendor/continuousphp/aws-sdk-phing/tasks.xml" />
     <property name="aws.profile" value="" />
