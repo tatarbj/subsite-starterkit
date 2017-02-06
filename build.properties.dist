@@ -189,6 +189,9 @@ dist.build.composer.lock = ${dist.build.dir}/composer.lock
 # Rebuild configuration
 # ---------------------
 
+# Automatically rebuild without asking confirmation.
+platform.rebuild.auto = 0
+
 # Rebuild backup destination.
 platform.rebuild.backup.destination = ${phing.project.tmp.dir}/backup-site
 
