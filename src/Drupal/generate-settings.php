@@ -36,7 +36,6 @@ $variables = array(
   'stage_file_proxy_origin' => '%%stage_file_proxy_origin%%',
   'stage_file_proxy_origin_dir' => '%%stage_file_proxy_origin_dir%%',
   'stage_file_proxy_hotlink' => '%%stage_file_proxy_hotlink%%',
-  'theme_default' => '%%theme_default%%',
   'file_public_path' => '%%file_public_path%%',
   'file_private_path' => '%%file_private_path%%',
   'file_temporary_path' => '%%file_temporary_path%%',
