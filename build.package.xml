@@ -385,7 +385,7 @@
             <istrue value="${platform.build.files.dir}" />
             <then>
                 <mkdir dir="${platform.build.files.dir}/private_files" />
-                <mkdir dir="${platform.build.files.dir.tmp}" />
+                <mkdir dir="${platform.build.tmp.dir}" />
             </then>
         </if>
     </target>
