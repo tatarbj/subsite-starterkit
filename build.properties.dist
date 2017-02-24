@@ -195,7 +195,7 @@ platform.rebuild.auto = 0
 platform.rebuild.backup.destination = ${phing.project.tmp.dir}/backup-site
 
 # Semicolon separated list of folders to backup.
-platform.rebuild.backup.folders = ${platform.build.files.dir},${platform.build.tmp.dir}
+platform.rebuild.backup.folders = ${platform.build.files.dir};${platform.build.tmp.dir}
 
 # Semicolon separated list of files to backup.
 platform.rebuild.backup.files = ${platform.build.settings.dir}/settings.php
