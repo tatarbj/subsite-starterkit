@@ -143,8 +143,7 @@
                     <token key="stage_file_proxy_hotlink" value="${development.variables.stage_file_proxy_hotlink}" />
                     <token key="file_public_path" value="${platform.build.files.dir}" />
                     <token key="file_private_path" value="${platform.build.files.dir}/private_files" />
-                    <!-- Still thinking on wether a new property is needed for this. -->
-                    <token key="file_temporary_path" value="@todo" />
+                    <token key="file_temporary_path" value="${platform.build.tmp.dir}" />
                 </replacetokens>
             </filterchain>
         </copy>
