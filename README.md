@@ -26,6 +26,9 @@ of the European Commission.
 
 ## Recent notable changes
 
+- **2017-02-06**: The resources/build.custom.xml is now the master build file.
+    This allows you to override starterkit build targets in this file. The phing
+    calls build-custom in build-dist and build-dev have been removed.
 - **2017-01-19**: Subsites now have a dedicated phpcs-custom.xml file in their
     resources folder to add excludes if they wish not to clutter their code with
     codingStandardsIgnore tags.

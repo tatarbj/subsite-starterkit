@@ -141,7 +141,6 @@
                     <token key="stage_file_proxy_origin" value="${development.variables.stage_file_proxy_origin}" />
                     <token key="stage_file_proxy_origin_dir" value="${development.variables.stage_file_proxy_origin_dir}" />
                     <token key="stage_file_proxy_hotlink" value="${development.variables.stage_file_proxy_hotlink}" />
-                    <token key="theme_default" value="${development.variables.theme_default}" />
                     <token key="file_public_path" value="${platform.build.files.dir}" />
                     <token key="file_private_path" value="${platform.build.files.dir}/private_files" />
                     <token key="file_temporary_path" value="${platform.build.files.dir.tmp}" />
