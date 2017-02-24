@@ -101,9 +101,9 @@
             <then>
                 <!-- If we can not find default settings in the build settings folder, prompt to ask user to rebuild. -->
                 <echo msg="No default settings detected at ${platform.build.settings.dir}/default.settings.php." level="warning" />
-                <propertyprompt propertyName="platform.rebuild" defaultValue="no" promptText="Do you wish to rebuild? (y/n)" />
+                <propertyprompt propertyName="platform-rebuild" defaultValue="no" promptText="Do you wish to rebuild? (y/n)" />
                 <if>
-                    <equals arg1="${platform.rebuild}" arg2="y" />
+                    <equals arg1="${platform-rebuild}" arg2="y" />
                     <then>
                         <phingcall target="build-dev" />
                     </then>
