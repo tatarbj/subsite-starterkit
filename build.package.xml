@@ -9,21 +9,20 @@
             protected. Ensure it is writeable so it can be removed.
          -->
         <phingcall target="unprotect-folder">
-            <property name="folder.to.unprotect"
-                      value="${platform.build.settings.dir}"/>
+            <property name="folder.to.unprotect" value="${platform.build.settings.dir}" />
         </phingcall>
 
-        <echo msg="Delete previous build."/>
+        <echo msg="Delete previous build." />
         <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${platform.build.dir}"/>
+            <property name="folder.to.delete" value="${platform.build.dir}" />
         </phingcall>
     </target>
 
     <!-- Delete the previous distribution build. -->
     <target name="delete-dist">
-        <echo msg="Delete previous build."/>
+        <echo msg="Delete previous build." />
         <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${dist.build.dir}"/>
+            <property name="folder.to.delete" value="${dist.build.dir}" />
         </phingcall>
     </target>
 
@@ -31,19 +30,18 @@
     <target name="delete-folder">
         <!-- Use the faster native command on UNIX systems. -->
         <if>
-            <os family="unix"/>
+            <os family="unix" />
             <then>
-                <echo msg='rm -rf "${folder.to.delete}"'/>
+                <echo msg='rm -rf "${folder.to.delete}"' />
                 <exec
-                        command='rm -rf "${folder.to.delete}"'
-                        dir="${project.basedir}"
-                        passthru="true"
-                        checkreturn="true"
+                    command='rm -rf "${folder.to.delete}"'
+                    dir="${project.basedir}"
+                    passthru="true"
+                    checkreturn="true"
                 />
             </then>
             <else>
-                <delete dir="${folder.to.delete}" includeemptydirs="true"
-                        failonerror="false"/>
+                <delete dir="${folder.to.delete}" includeemptydirs="true" failonerror="false" />
             </else>
         </if>
     </target>
@@ -52,10 +50,10 @@
     <target name="unprotect-folder">
         <!-- This should only be used on folders that need to be removed. -->
         <if>
-            <available file="${folder.to.unprotect}" type="dir"/>
+            <available file="${folder.to.unprotect}" type="dir" />
             <then>
                 <chmod mode="0777" failonerror="true" verbose="false" quiet="true">
-                    <fileset dir="${folder.to.unprotect}"/>
+                    <fileset dir="${folder.to.unprotect}" />
                 </chmod>
             </then>
         </if>
@@ -63,115 +61,107 @@
 
     <!-- Copies a given folder to a new location. -->
     <target name="copy-folder">
-        <copy todir="${copy.destination.path}"
-              haltonerror="${copy.path.haltonerror}">
-            <fileset dir="${copy.source.path}" defaultexcludes="false"/>
+        <copy todir="${copy.destination.path}" haltonerror="${copy.path.haltonerror}">
+            <fileset dir="${copy.source.path}" defaultexcludes="false" />
         </copy>
     </target>
 
     <!-- Generate the makefile used to download development modules. -->
     <target name="generate-development-makefile">
-        <echo msg="Generate the makefile for development modules."/>
+        <echo msg="Generate the makefile for development modules." />
         <if>
-            <available file="${subsite.temporary.development.make}" type="file"
-                       property="development.makefile.available"/>
+            <available file="${subsite.temporary.development.make}" type="file" property="development.makefile.available" />
             <then>
-                <echo message="Deleting existing makefile."/>
-                <delete file="${subsite.temporary.development.make}"
-                        failonerror="false"/>
+                <echo message="Deleting existing makefile." />
+                <delete file="${subsite.temporary.development.make}" failonerror="false" />
             </then>
         </if>
         <drushmakefile
-                makeFile="${subsite.temporary.development.make}"
-                coreVersion="${drupal.core.version}"
-                projects="${development.modules.download}"
-                defaultProjectDir="${development.modules.location}"
+            makeFile="${subsite.temporary.development.make}"
+            coreVersion="${drupal.core.version}"
+            projects="${development.modules.download}"
+            defaultProjectDir="${development.modules.location}"
         />
     </target>
 
     <!-- Download development modules. -->
-    <target name="download-development-modules"
-            depends="generate-development-makefile">
-        <echo msg="Download development modules."/>
+    <target name="download-development-modules" depends="generate-development-makefile">
+        <echo msg="Download development modules." />
         <phingcall target="drush-make-no-core">
-            <property name="drush.make.target.file"
-                      value="${subsite.temporary.development.make}"/>
-            <property name="drush.make.root" value="${platform.build.dir}"/>
+            <property name="drush.make.target.file" value="${subsite.temporary.development.make}" />
+            <property name="drush.make.root" value="${platform.build.dir}" />
         </phingcall>
     </target>
 
     <!-- Make the development version of the subsite. -->
     <target name="make-dev" depends="retrieve-platform">
         <if>
-            <available file="${subsite.make}" type="file"/>
-            <then>
-                <echo msg="Make the subsite."/>
-                <phingcall target="drush-make-no-core">
-                    <property name="drush.make.target.file" value="${subsite.make}"/>
-                    <property name="drush.make.root" value="${platform.build.dir}"/>
-                </phingcall>
-            </then>
+            <available file="${subsite.make}" type="file" />
+                <then>
+                    <echo msg="Make the subsite." />
+                    <phingcall target="drush-make-no-core">
+                        <property name="drush.make.target.file" value="${subsite.make}" />
+                        <property name="drush.make.root" value="${platform.build.dir}" />
+                    </phingcall>
+                </then>
             <else>
-                <echo msg="No make file found. Skipping..."/>
+                <echo msg="No make file found. Skipping..." />
             </else>
         </if>
     </target>
 
     <!-- Make the distribution version of the subsite. -->
     <target name="make-dist">
-        <echo msg="Delete temporary build folder."/>
+        <echo msg="Delete temporary build folder." />
         <phingcall target="delete-folder">
-            <property name="folder.to.delete"
-                      value="${phing.project.tmp.dir}/build"/>
+            <property name="folder.to.delete" value="${phing.project.tmp.dir}/build" />
         </phingcall>
 
-        <echo msg="Make the subsite."/>
+        <echo msg="Make the subsite." />
         <!--
             Drush make builds the site as if it is part of a complete Drupal
             installation. The actual build is in the /sites/all subfolder. Build
             in a temporary folder and move the subsite into place when done.
          -->
         <if>
-            <available file="${subsite.make}" type="file"/>
+            <available file="${subsite.make}" type="file" />
             <then>
                 <phingcall target="drush-make-no-core">
-                    <property name="drush.make.target.file" value="${subsite.make}"/>
-                    <property name="drush.make.root"
-                              value="${phing.project.tmp.dir}/build"/>
+                    <property name="drush.make.target.file" value="${subsite.make}" />
+                    <property name="drush.make.root" value="${phing.project.tmp.dir}/build" />
                 </phingcall>
             </then>
             <else>
-                <echo msg="No make file found. Skipping..."/>
-                <mkdir dir="${phing.project.tmp.dir}/build/sites/all"/>
+                <echo msg="No make file found. Skipping..." />
+                <mkdir dir="${phing.project.tmp.dir}/build/sites/all" />
             </else>
         </if>
 
         <!-- Move the subsite to its destination. -->
-        <echo msg='mv "${phing.project.tmp.dir}/build/sites/all/" "${dist.build.dir}"'/>
+        <echo msg='mv "${phing.project.tmp.dir}/build/sites/all/" "${dist.build.dir}"' />
         <exec
-                command='mv "${phing.project.tmp.dir}/build/sites/all/" "${dist.build.dir}"'
-                dir="${project.basedir}"
-                passthru="true"
-                checkreturn="true"
+            command='mv "${phing.project.tmp.dir}/build/sites/all/" "${dist.build.dir}"'
+            dir="${project.basedir}"
+            passthru="true"
+            checkreturn="true"
         />
 
-        <echo msg="Clean up temporary build folder."/>
+        <echo msg="Clean up temporary build folder." />
         <phingcall target="delete-folder">
-            <property name="folder.to.delete"
-                      value="${phing.project.tmp.dir}/build"/>
+            <property name="folder.to.delete" value="${phing.project.tmp.dir}/build" />
         </phingcall>
     </target>
 
     <!-- Subtarget: execute a makefile with the no-core option. -->
     <target name="drush-make-no-core">
-        <echo message="Running make file ${drush.make.target.file} into folder ${drush.make.root}."/>
+        <echo message="Running make file ${drush.make.target.file} into folder ${drush.make.root}." />
         <drush
-                command="make"
-                assume="yes"
-                bin="${drush.bin}"
-                pipe="yes"
-                verbose="${drush.verbose}"
-                root="${drush.make.root}">
+            command="make"
+            assume="yes"
+            bin="${drush.bin}"
+            pipe="yes"
+            verbose="${drush.verbose}"
+            root="${drush.make.root}">
             <param>${drush.make.target.file}</param>
             <param>${drush.make.root}</param>
             <!--
@@ -190,114 +180,96 @@
     <!-- Symlink the source folders for easy development. -->
     <target name="link-dev-resources">
         <!-- Symlink our custom modules. -->
-        <symlink link="${platform.build.subsite.modules.custom.dir}"
-                 target="${subsite.resources.modules.dir}"/>
+        <symlink link="${platform.build.subsite.modules.custom.dir}" target="${subsite.resources.modules.dir}" />
         <!-- Symlink our custom features. -->
-        <symlink link="${platform.build.subsite.modules.features.dir}"
-                 target="${subsite.resources.features.dir}"/>
+        <symlink link="${platform.build.subsite.modules.features.dir}" target="${subsite.resources.features.dir}" />
         <!-- Symlink our custom themes. Delete the empty folder which is created during Drush make. -->
-        <delete dir="${platform.build.subsite.themes.dir}" includeemptydirs="true"
-                failonerror="false"/>
-        <symlink link="${platform.build.subsite.themes.dir}"
-                 target="${subsite.resources.themes.dir}"/>
+        <delete dir="${platform.build.subsite.themes.dir}" includeemptydirs="true" failonerror="false" />
+        <symlink link="${platform.build.subsite.themes.dir}" target="${subsite.resources.themes.dir}" />
         <!-- Symlink our custom PSR-4 code. -->
-        <symlink link="${platform.build.subsite.source.dir}"
-                 target="${subsite.resources.source.dir}"/>
+        <symlink link="${platform.build.subsite.source.dir}" target="${subsite.resources.source.dir}" />
         <!-- Symlink composer configuration. -->
-        <symlink link="${platform.build.subsite.composer.json}"
-                 target="${subsite.resources.composer.json}"/>
-        <symlink link="${platform.build.subsite.composer.lock}"
-                 target="${subsite.resources.composer.lock}"/>
+        <symlink link="${platform.build.subsite.composer.json}" target="${subsite.resources.composer.json}" />
+        <symlink link="${platform.build.subsite.composer.lock}" target="${subsite.resources.composer.lock}" />
     </target>
 
     <!-- Symlink the Behat bin and test directory in the subsite folder. -->
     <target name="link-behat">
-        <echo msg="Symlink the Behat bin and test directory in './sites/all'."/>
-        <symlink link="bin/behat"
-                 target="${platform.build.subsite.dir}/vendor/bin/behat"
-                 overwrite="true"/>
-        <symlink link="${platform.build.subsite.dir}/tests"
-                 target="${project.basedir}/tests" overwrite="true"/>
+        <echo msg="Symlink the Behat bin and test directory in './sites/all'." />
+        <symlink link="bin/behat" target="${platform.build.subsite.dir}/vendor/bin/behat" overwrite="true"/>
+        <symlink link="${platform.build.subsite.dir}/tests" target="${project.basedir}/tests" overwrite="true"/>
     </target>
 
     <!-- Copy subsite resources into the build folder. -->
     <target name="copy-dist-resources">
-        <echo msg="Copy custom resources."/>
+        <echo msg="Copy custom resources." />
         <!-- Copy our custom modules. -->
         <phingcall target="copy-folder">
-            <property name="copy.source.path"
-                      value="${subsite.resources.modules.dir}"/>
-            <property name="copy.destination.path"
-                      value="${dist.build.modules.custom.dir}"/>
+            <property name="copy.source.path" value="${subsite.resources.modules.dir}" />
+            <property name="copy.destination.path" value="${dist.build.modules.custom.dir}" />
             <property name="copy.path.haltonerror" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom features. -->
         <phingcall target="copy-folder">
-            <property name="copy.source.path"
-                      value="${subsite.resources.features.dir}"/>
-            <property name="copy.destination.path"
-                      value="${dist.build.modules.features.dir}"/>
+            <property name="copy.source.path" value="${subsite.resources.features.dir}" />
+            <property name="copy.destination.path" value="${dist.build.modules.features.dir}" />
             <property name="copy.path.haltonerror" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom themes. -->
         <phingcall target="copy-folder">
-            <property name="copy.source.path"
-                      value="${subsite.resources.themes.dir}"/>
-            <property name="copy.destination.path" value="${dist.build.themes.dir}"/>
+            <property name="copy.source.path" value="${subsite.resources.themes.dir}" />
+            <property name="copy.destination.path" value="${dist.build.themes.dir}" />
             <property name="copy.path.haltonerror" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom PSR-4 code. -->
         <phingcall target="copy-folder">
-            <property name="copy.source.path"
-                      value="${subsite.resources.source.dir}"/>
-            <property name="copy.destination.path" value="${dist.build.source.dir}"/>
+            <property name="copy.source.path" value="${subsite.resources.source.dir}" />
+            <property name="copy.destination.path" value="${dist.build.source.dir}" />
             <property name="copy.path.haltonerror" value="false" override="true"/>
         </phingcall>
         <!-- Copy composer configuration. -->
-        <copy todir="${dist.build.dir}" file="${subsite.resources.composer.json}"/>
-        <copy todir="${dist.build.dir}" file="${subsite.resources.composer.lock}"/>
+        <copy todir="${dist.build.dir}" file="${subsite.resources.composer.json}" />
+        <copy todir="${dist.build.dir}" file="${subsite.resources.composer.lock}" />
     </target>
 
     <!-- Install Composer dependencies for the build system. -->
     <target name="install-build-dependencies">
-        <echo msg="Run 'composer install' in platform root."/>
+        <echo msg="Run 'composer install' in platform root." />
         <composer command="install" composer="${composer.bin}">
-            <arg value="--working-dir=${project.basedir}"/>
+            <arg value="--working-dir=${project.basedir}" />
         </composer>
     </target>
 
     <!-- Install Composer dev dependencies for the subsite. -->
     <target name="install-dev-dependencies">
-        <echo msg="Run 'composer install' in the subsite folder for development purposes."/>
+        <echo msg="Run 'composer install' in the subsite folder for development purposes." />
         <composer command="install" composer="${composer.bin}">
-            <arg value="--working-dir=${platform.build.subsite.dir}"/>
+            <arg value="--working-dir=${platform.build.subsite.dir}" />
         </composer>
     </target>
 
     <!-- Install Composer dist dependencies for the subsite. -->
     <target name="install-dist-dependencies">
-        <echo msg="Run 'composer install --no-dev' in the build destination folder."/>
+        <echo msg="Run 'composer install --no-dev' in the build destination folder." />
         <composer command="install" composer="${composer.bin}">
-            <arg value="--working-dir=${dist.build.dir}"/>
-            <arg value="--no-dev"/>
+            <arg value="--working-dir=${dist.build.dir}" />
+            <arg value="--no-dev" />
         </composer>
     </target>
 
     <!-- Link site document root to Webserver document root. -->
     <target
-            name="link-docroot"
-            description="Create a symlink from the build folder to the webserver document root.">
-        <symlink link="${server.docroot}" target="${platform.build.dir}"
-                 overwrite="true"/>
+        name="link-docroot"
+        description="Create a symlink from the build folder to the webserver document root.">
+        <symlink link="${server.docroot}" target="${platform.build.dir}" overwrite="true" />
     </target>
 
     <!-- Update .htaccess. -->
     <target name="update-htaccess">
         <if>
-            <istrue value="${drupal.htaccess.append.text}"/>
+            <istrue value="${drupal.htaccess.append.text}" />
             <then>
-                <append destfile="${drupal.htaccess.path}"
-                        text="${drupal.htaccess.append.text}"/>
+                <append destfile="${drupal.htaccess.path}" text="${drupal.htaccess.append.text}" />
             </then>
         </if>
     </target>
@@ -401,6 +373,7 @@
         </if>
     </target>
 
+    <!-- Move download to the available temp dir. The global cachedir precedes the local cachedir. -->
     <target name="move-download-to-tmp-dir">
         <if>
             <and>
@@ -408,30 +381,24 @@
                 <available file="${platform.package.destination}/deploy-package.tar.gz" type="file"/>
             </and>
             <then>
+                <!-- Move package to the global cachedir location. -->
                 <move file="${platform.package.destination}/deploy-package.tar.gz" tofile="${platform.package.cachedir}/${platform.package.tarball}" overwrite="true"/>
-            </then>
-            <elseif>
-                <available file="${platform.package.destination}/deploy-package.tar.gz" type="file"/>
-                <then>
-                    <move file="${platform.package.destination}/deploy-package.tar.gz" tofile="${platform.package.destination}/${platform.package.tarball}" overwrite="true"/>
-                </then>
-            </elseif>
-        </if>
-        <if>
-            <available file="${platform.package.destination}/${platform.package.tarball}" type="file" property="platform.package.download"/>
-            <then>
-                <phingcall target="unpack-platform">
-                    <property name="platform.package.download" value="${platform.package.destination}/${platform.package.tarball}"/>
-                </phingcall>
-            </then>
-        </if>
-        <if>
-            <available file="${platform.package.cachedir}/${platform.package.tarball}" type="file" property="platform.package.download"/>
-            <then>
+                <!-- Unpack the platform. -->
                 <phingcall target="unpack-platform">
                     <property name="platform.package.download" value="${platform.package.cachedir}/${platform.package.tarball}"/>
                 </phingcall>
             </then>
+            <elseif>
+                <available file="${platform.package.destination}/deploy-package.tar.gz" type="file"/>
+                <then>
+                    <!-- Move package to the local cachedir location. -->
+                    <move file="${platform.package.destination}/deploy-package.tar.gz" tofile="${platform.package.destination}/${platform.package.tarball}" overwrite="true"/>
+                    <!-- Unpack the platform. -->
+                    <phingcall target="unpack-platform">
+                        <property name="platform.package.download" value="${platform.package.destination}/${platform.package.tarball}"/>
+                    </phingcall>
+                </then>
+            </elseif>
         </if>
     </target>
 
@@ -462,10 +429,159 @@
         </if>
     </target>
 
+    <!-- Backs up files and folders listed in platform.rebuild properties in order to rebuild. -->
+    <target name="backup-site">
+        <if>
+            <available file="${platform.build.settings.dir}/settings.php" type="file"/>
+            <then>
+                <if>
+                    <equals arg1="${platform.rebuild.auto}" arg2="0"/>
+                    <then>
+                        <echo msg="Installed site detected." level="warning"/>
+                        <propertyprompt propertyName="backup-site-activated" promptText="Do you wish to backup site for this build? (y/n)" />
+                        <if>
+                            <equals arg1="${backup-site-activated}" arg2="y" />
+                            <then>
+                                <property name="platform.rebuild.auto" value="1" override="true"/>
+                            </then>
+                        </if>
+                    </then>
+                </if>
+            </then>
+        </if>
+        <if>
+            <equals arg1="${platform.rebuild.auto}" arg2="1"/>
+            <then>
+                <if>
+                    <!-- Delete any remains of previous backup attempts. -->
+                    <available file="${platform.rebuild.backup.destination}" type="dir"/>
+                    <then>
+                        <delete dir="${platform.rebuild.backup.destination}" includeemptydirs="true"/>
+                    </then>
+                </if>
+                <!-- Create backup directory. -->
+                <mkdir dir="${platform.rebuild.backup.destination}"/>
+                <!-- Back up folders list. -->
+                <foreach list="${platform.rebuild.backup.folders}" param="site-item" target="backup-site-item" delimiter=";">
+                    <property name="site-item-type" value="dir"/>
+                </foreach>
+                <!-- Back up files list. -->
+                <foreach list="${platform.rebuild.backup.files}" param="site-item" target="backup-site-item" delimiter=";">
+                    <property name="site-item-type" value="file"/>
+                </foreach>
+            </then>
+        </if>
+        <if>
+            <equals arg1="${backup-site-activated}" arg2="y" />
+            <then>
+                <property name="platform.rebuild.auto" value="0" override="true"/>
+            </then>
+        </if>
+    </target>
+
+    <!-- Restoring sites directory if backed up before rebuild-dev. -->
+    <target name="restore-site">
+        <if>
+            <available file="${platform.rebuild.backup.destination}" type="dir"/>
+            <then>
+                <if>
+                    <equals arg1="${platform.rebuild.auto}" arg2="0"/>
+                    <then>
+                        <echo msg="Site backup detected." level="warning"/>
+                        <propertyprompt propertyName="restore-site-activated" promptText="Do you wish to restore site for this build? (y/n)" />
+                        <if>
+                            <equals arg1="${restore-site-activated}" arg2="y" />
+                            <then>
+                                <property name="platform.rebuild.auto" value="1" override="true"/>
+                            </then>
+                        </if>
+                    </then>
+                </if>
+            </then>
+        </if>
+        <if>
+            <equals arg1="${platform.rebuild.auto}" arg2="1"/>
+            <then>
+                <echo msg="Restoring site files and folders from ${platform.rebuild.backup.destination}"/>
+                <!-- Restore folders list. -->
+                <foreach list="${platform.rebuild.backup.folders}" param="site-item" target="restore-site-item" delimiter=";">
+                    <property name="site-item-type" value="dir"/>
+                </foreach>
+                <!-- Restore files list. -->
+                <foreach list="${platform.rebuild.backup.files}" param="site-item" target="restore-site-item" delimiter=";">
+                    <property name="site-item-type" value="file"/>
+                </foreach>
+                <!-- Delete the site backup directory. -->
+                <delete dir="${platform.rebuild.backup.destination}" includeemptydirs="true"/>
+            </then>
+        </if>
+    </target>
+
+    <!-- Backs up a site item from the platform that will be removed in order to rebuild. -->
+    <target name="backup-site-item">
+        <php expression='dirname("${site-item}")' returnProperty="site-item-dir"/>
+        <property name="site-item-backup-dir" value="${site-item-dir}">
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="${platform.build.dir}" replace="${platform.rebuild.backup.destination}" ignoreCase="false"/>
+                </replaceregexp>
+            </filterchain>
+        </property>
+        <if>
+            <available file="${site-item}" type="${site-item-type}"/>
+            <then>
+                <if>
+                    <not>
+                        <available file="${site-item-backup-dir}" type="dir"/>
+                    </not>
+                    <then>
+                        <mkdir dir="${site-item-backup-dir}"/>
+                    </then>
+                </if>
+                <move file="${site-item}" todir="${site-item-backup-dir}" includeemptydirs="true"/>
+            </then>
+            <else>
+                <php expression='ucwords("${site-item-type}")' returnProperty="site-item-type-capitalized"/>
+                <echo msg="Skipping ${site-item}. ${site-item-type-capitalized} not found." level="warning"/>
+            </else>
+        </if>
+    </target>
+
+    <!-- Restores a site item from the platform.rebuild.backup.destination to the new build. -->
+    <target name="restore-site-item">
+        <property name="site-item-backup" value="${site-item}">
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="${platform.build.dir}" replace="${platform.rebuild.backup.destination}" ignoreCase="false"/>
+                </replaceregexp>
+            </filterchain>
+        </property>
+        <if>
+            <available file="${site-item-backup}" type="${site-item-type}"/>
+            <then>
+                <php expression='dirname("${site-item}")' returnProperty="site-item-dir"/>
+                <if>
+                    <not>
+                        <available file="${site-item-dir}" type="dir"/>
+                    </not>
+                    <then>
+                        <mkdir dir="${site-item-dir}"/>
+                    </then>
+                </if>
+                <move file="${site-item-backup}" todir="${site-item-dir}" includeemptydirs="true"/>
+            </then>
+            <else>
+                <php expression='ucwords("${site-item-type}")' returnProperty="site-item-type-capitalized"/>
+                <echo msg="Skipping ${site-item}. ${site-item-type-capitalized} not found." level="warning"/>
+            </else>
+        </if>
+    </target>
+
     <target
             name="build-dev"
             description="Build a local development version of the subsite."
             depends="
+            backup-site,
             install-build-dependencies,
             delete-dev,
             make-dev,
@@ -477,27 +593,34 @@
             setup-files-directory,
             setup-php-codesniffer,
             download-development-modules,
-            build-custom"
+            restore-site"
     />
 
+    <target name="rebuild-dev" description="Build a local development version of the subsite and automatically backup site if there is one in place.">
+        <!-- Execute build-dev with automatic rebuild enabled. -->
+        <phingcall target="build-dev">
+            <property name="platform.rebuild.auto" value="1" override="true"/>
+        </phingcall>
+    </target>
+
     <target
-            name="build-dist"
-            description="Build a version of the subsite intended to distribute as a release package."
-            depends="
+        name="build-dist"
+        description="Build a version of the subsite intended to distribute as a release package."
+        depends="
             install-build-dependencies,
             delete-dist,
             make-dist,
             copy-dist-resources,
-            install-dist-dependencies,
-            build-custom"
+            install-dist-dependencies"
     />
 
-    <!-- Setup file directory -->
+	<!-- Setup file directory -->
     <target name="setup-files-directory">
-        <if>
-            <istrue value="${platform.build.files.dir}"/>
+		 <if>
+            <istrue value="${platform.build.files.dir}" />
             <then>
-                <mkdir dir="${platform.build.files.dir}/private_files"/>
+                <mkdir dir="${platform.build.files.dir}/private_files" />
+                <mkdir dir="${platform.build.tmp.dir}" />
             </then>
         </if>
     </target>
