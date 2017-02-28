@@ -346,11 +346,11 @@
                     <try>
                         <continuousphp-config token="${platform.package.token}"/>
                         <continuousphp-package
-                                provider="${platform.package.provider}"
-                                repository="${platform.package.repository}"
-                                reference="${platform.package.reference}"
-                                destination="${platform.package.destination}"
-                                property="platform.package.property"
+                            provider="${platform.package.provider}"
+                            repository="${platform.package.repository}"
+                            reference="${platform.package.reference}"
+                            destination="${platform.package.destination}"
+                            property="platform.package.property"
                         />
                         <echo msg="Downloaded platform package reference ${platform.package.property}"/>
                     </try>
@@ -410,16 +410,16 @@
             <then>
                 <echo msg='mkdir "${platform.build.dir}"'/>
                 <exec
-                        command='mkdir "${platform.build.dir}"'
-                        dir="${project.basedir}"
-                        passthru="true"
+                    command='mkdir "${platform.build.dir}"'
+                    dir="${project.basedir}"
+                    passthru="true"
                 />
                 <echo msg='tar xzf "${platform.package.download}" -C "${platform.build.dir}"'/>
                 <exec
-                        command='tar xzf "${platform.package.download}" -C "${platform.build.dir}"'
-                        dir="${project.basedir}"
-                        passthru="true"
-                        checkreturn="true"
+                    command='tar xzf "${platform.package.download}" -C "${platform.build.dir}"'
+                    dir="${project.basedir}"
+                    passthru="true"
+                    checkreturn="true"
                 />
             </then>
             <else>
