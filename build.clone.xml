@@ -6,9 +6,9 @@
     <target name="import-prod-db" description="Import production database." depends="download-prod-db">
         <echo msg="Import production database." />
         <!-- Drop database, create if necessary and import the dump. -->
-        <exec command="echo y | mysqladmin -u${drupal.db.user} -p${drupal.db.password} drop ${drupal.db.name}" logoutput="true" />
-        <exec command="mysqladmin -u${drupal.db.user} -p${drupal.db.password} create ${drupal.db.name}" logoutput="true" />
-        <exec command="mysql -u${drupal.db.user} -p${drupal.db.password} ${drupal.db.name} &lt; tmp/${gunzipped.filename}" checkreturn="false" passthru="false" logoutput="true" />
+        <exec command="echo y | mysqladmin -h${drupal.db.host} -u${drupal.db.user} -p${drupal.db.password} drop ${drupal.db.name}" logoutput="true" />
+        <exec command="mysqladmin -h${drupal.db.host} -u${drupal.db.user} -p${drupal.db.password} create ${drupal.db.name}" logoutput="true" />
+        <exec command="mysql -h${drupal.db.host} -u${drupal.db.user} -p${drupal.db.password} ${drupal.db.name} &lt; tmp/${gunzipped.filename}" checkreturn="false" passthru="false" logoutput="true" />
         <!-- Rebuild Registry. -->
         <drush command="registry-rebuild" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}">
             <param>--fire-bazooka</param>
