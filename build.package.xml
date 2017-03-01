@@ -94,7 +94,7 @@
     </target>
 
     <!-- Make the development version of the subsite. -->
-    <target name="make-dev" depends="unpack-platform">
+    <target name="make-dev" depends="retrieve-platform">
         <if>
             <available file="${subsite.make}" type="file" />
                 <then>
@@ -108,7 +108,6 @@
                 <echo msg="No make file found. Skipping..." />
             </else>
         </if>
-
     </target>
 
     <!-- Make the distribution version of the subsite. -->
@@ -275,26 +274,77 @@
         </if>
     </target>
 
-    <!-- Download the platform. -->
-    <target name="download-platform">
+    <target name="create-tmp-dirs">
+        <if>
+            <!-- Create the global cache directory if it doesn't exist. -->
+            <not>
+                <available file="${platform.package.cachedir}" type="dir"/>
+            </not>
+            <then>
+                <mkdir dir="${platform.package.cachedir}"/>
+            </then>
+            <else>
+                <echo msg="Directory ${platform.package.cachedir} exists."/>
+            </else>
+        </if>
+        <if>
+            <!-- Create the destination directory if it doesn't exist. -->
+            <not>
+                <available file="${platform.package.destination}" type="dir"/>
+            </not>
+            <then>
+                <mkdir dir="${platform.package.destination}"/>
+            </then>
+            <else>
+                <echo msg="Directory ${platform.package.destination} exists."/>
+            </else>
+        </if>
+    </target>
+
+    <!-- Retrieve the platform (from tmp dirs or download). -->
+    <target name="retrieve-platform" depends="create-tmp-dirs" hidden="true">
         <!--
             The platform is very large so downloading it can take a long time.
             Only download it when it hasn't yet been downloaded.
          -->
         <if>
+            <!-- First check the primary global cache directory -->
+            <available file="${platform.package.cachedir}/${platform.package.tarball}" type="file" property="platform.package.download"/>
+            <then>
+                <echo msg="Skipping platform download, it is already downloaded at ${platform.package.cachedir}/${platform.package.tarball}."/>
+                <echo msg="Delete this file if you want to download the latest version."/>
+            </then>
+            <elseif>
+                <!-- Then check the projects cache directory -->
+                <available file="${platform.package.destination}/${platform.package.tarball}" type="file" property="platform.package.download"/>
+                <then>
+                    <echo msg="Skipping platform download, it is already downloaded at ${platform.package.destination}/${platform.package.tarball}."/>
+                    <echo msg="Delete this file if you want to download the latest version."/>
+                </then>
+            </elseif>
+            <else>
+                <!-- Lastly download the platform if we haven't found any previous downloads -->
+                <phingcall target="download-platform" />
+            </else>
+        </if>
+        <!-- Move our package to the cache directory -->
+        <phingcall target="move-download-to-tmp-dir"/>
+    </target>
+
+    <!-- Download the platform. -->
+    <target name="download-platform">
+        <if>
             <not>
-                <available file="${platform.package.tarball}" type="file" />
+                <available file="${platform.package.destination}/deploy-package.tar.gz" type="file"/>
             </not>
             <then>
-                <!-- Create the destination directory if it doesn't exist. -->
-                <mkdir dir="${platform.package.destination}" />
-                <echo msg="Starting to download the platform. Depending on your connection this can take between 5-15 minutes. Go get some coffee." />
-                <echo msg="This file will only be downloaded once and will be cached in ${platform.package.tarball}." />
-                <echo msg="You can delete this cached file whenever you want to download a new version of the platform." />
+                <echo msg="Starting to download the platform. Depending on your connection this can take between 5-15 minutes. Go get some coffee."/>
+                <echo msg="This file will only be downloaded once and will be cached in ${platform.package.tarball}."/>
+                <echo msg="You can delete this cached file whenever you want to download a new version of the platform."/>
                 <trycatch>
                     <!-- Try downloading platform through continuousphp api. -->
                     <try>
-                        <continuousphp-config token="${platform.package.token}" />
+                        <continuousphp-config token="${platform.package.token}"/>
                         <continuousphp-package
                             provider="${platform.package.provider}"
                             repository="${platform.package.repository}"
@@ -302,51 +352,100 @@
                             destination="${platform.package.destination}"
                             property="platform.package.property"
                         />
-                        <echo msg="Downloaded platform package reference ${platform.package.property}" />
+                        <echo msg="Downloaded platform package reference ${platform.package.property}"/>
                     </try>
                     <!-- Try downloading platform with curl as backup. -->
                     <catch>
                         <if>
-                            <http url="https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz" />
+                            <http url="https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz"/>
                             <then>
-                                <exec command="curl -L -o ${platform.package.destination}/deploy-package.tar.gz https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz" passthru="true" />
-                                <echo msg="Downloaded platform package reference ${platform.package.reference}" />
+                                <exec command="curl -L -o ${platform.package.destination}/deploy-package.tar.gz https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz"
+                                      passthru="true"/>
+                                <echo msg="Downloaded platform package reference ${platform.package.reference}"/>
                             </then>
                             <else>
-                                <fail msg="Failed downloading platform package reference ${platform.package.reference}" />
+                                <fail msg="Failed downloading platform package reference ${platform.package.reference}"/>
                             </else>
                         </if>
                     </catch>
                 </trycatch>
             </then>
+        </if>
+    </target>
+
+    <!-- Move download to the available temp dir. The global cachedir precedes the local cachedir. -->
+    <target name="move-download-to-tmp-dir">
+        <if>
+            <and>
+                <available file="${platform.package.cachedir}" type="dir"/>
+                <available file="${platform.package.destination}/deploy-package.tar.gz" type="file"/>
+            </and>
+            <then>
+                <!-- Move package to the global cachedir location. -->
+                <move file="${platform.package.destination}/deploy-package.tar.gz" tofile="${platform.package.cachedir}/${platform.package.tarball}" overwrite="true"/>
+                <!-- Unpack the platform. -->
+                <phingcall target="unpack-platform">
+                    <property name="platform.package.download" value="${platform.package.cachedir}/${platform.package.tarball}"/>
+                </phingcall>
+            </then>
+            <elseif>
+                <available file="${platform.package.destination}/deploy-package.tar.gz" type="file"/>
+                <then>
+                    <!-- Move package to the local cachedir location. -->
+                    <move file="${platform.package.destination}/deploy-package.tar.gz" tofile="${platform.package.destination}/${platform.package.tarball}" overwrite="true"/>
+                    <!-- Unpack the platform. -->
+                    <phingcall target="unpack-platform">
+                        <property name="platform.package.download" value="${platform.package.destination}/${platform.package.tarball}"/>
+                    </phingcall>
+                </then>
+            </elseif>
+        </if>
+        <if>
+            <available file="${platform.package.cachedir}/${platform.package.tarball}" type="file"/>
+            <then>
+                <!-- Unpack the platform. -->
+                <phingcall target="unpack-platform">
+                    <property name="platform.package.download" value="${platform.package.cachedir}/${platform.package.tarball}"/>
+                </phingcall>
+            </then>
+            <elseif>
+                <available file="${platform.package.destination}/${platform.package.tarball}" type="file"/>
+                <then>
+                    <!-- Unpack the platform. -->
+                    <phingcall target="unpack-platform">
+                        <property name="platform.package.download" value="${platform.package.destination}/${platform.package.tarball}"/>
+                    </phingcall>
+                </then>
+            </elseif>
             <else>
-                <echo msg="Skipping platform download, it is already downloaded at ${platform.package.tarball}. Delete this file if you want to download the latest version." />
+                <fail msg="No deploy package found to unpack."/>
             </else>
         </if>
     </target>
 
     <!-- Unpack the platform. -->
-    <target name="unpack-platform" depends="download-platform">
+    <target name="unpack-platform">
         <!-- Use the faster native commands on UNIX systems. -->
         <if>
-            <os family="unix" />
+            <os family="unix"/>
             <then>
-                <echo msg='mkdir "${platform.build.dir}"' />
+                <echo msg='mkdir "${platform.build.dir}"'/>
                 <exec
                     command='mkdir "${platform.build.dir}"'
                     dir="${project.basedir}"
                     passthru="true"
                 />
-                <echo msg='tar xzf "${platform.package.tarball}" -C "${platform.build.dir}"' />
+                <echo msg='tar xzf "${platform.package.download}" -C "${platform.build.dir}"'/>
                 <exec
-                    command='tar xzf "${platform.package.tarball}" -C "${platform.build.dir}"'
+                    command='tar xzf "${platform.package.download}" -C "${platform.build.dir}"'
                     dir="${project.basedir}"
                     passthru="true"
                     checkreturn="true"
                 />
             </then>
             <else>
-                <untar file="${platform.package.tarball}" todir="${platform.build.dir}" />
+                <untar file="${platform.package.download}"
+                       todir="${platform.build.dir}"/>
             </else>
         </if>
     </target>
