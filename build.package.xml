@@ -400,6 +400,27 @@
                 </then>
             </elseif>
         </if>
+        <if>
+            <available file="${platform.package.cachedir}/${platform.package.tarball}" type="file"/>
+            <then>
+                <!-- Unpack the platform. -->
+                <phingcall target="unpack-platform">
+                    <property name="platform.package.download" value="${platform.package.cachedir}/${platform.package.tarball}"/>
+                </phingcall>
+            </then>
+            <elseif>
+                <available file="${platform.package.destination}/${platform.package.tarball}" type="file"/>
+                <then>
+                    <!-- Unpack the platform. -->
+                    <phingcall target="unpack-platform">
+                        <property name="platform.package.download" value="${platform.package.destination}/${platform.package.tarball}"/>
+                    </phingcall>
+                </then>
+            </elseif>
+            <else>
+                <fail msg="No deploy package found to unpack."/>
+            </else>
+        </if>
     </target>
 
     <!-- Unpack the platform. -->

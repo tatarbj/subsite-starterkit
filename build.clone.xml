@@ -87,9 +87,6 @@
 
     <!-- Simple prompt for user credentials and recurse into wget-prod-db. -->
     <target name="prompt-for-credentials-and-retry">
-        <echo msg"You are trying to download: ${project.database.url.scheme}://${project.database.url}${project.database.filename}." />
-        <echo msg"This location is .htaccess protected. Please provide correct credentials." />
-        <echo msg"You will be reprompted untill access is granted. To exit build process press ctrl + c." />
         <propertyprompt propertyName="project.database.url.htaccess.username" promptText="Please enter your username." />
         <propertyprompt propertyName="project.database.url.htaccess.password" promptText="Please enter your password." />
         <phingcall target="wget-prod-db" />
