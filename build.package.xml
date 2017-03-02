@@ -477,6 +477,9 @@
                     <!-- Delete any remains of previous backup attempts. -->
                     <available file="${platform.rebuild.backup.destination}" type="dir"/>
                     <then>
+                        <phingcall target="unprotect-folder">
+                            <property name="folder.to.unprotect" value="${platform.rebuild.backup.destination}" />
+                        </phingcall>
                         <delete dir="${platform.rebuild.backup.destination}" includeemptydirs="true"/>
                     </then>
                 </if>
