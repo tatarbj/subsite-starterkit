@@ -13,5 +13,3 @@
   * MULTISITE-16650 - Missing host parameter caused build-clone and install-dev to fail
   * MULTISITE-16522 - Removed obsolete theme_default parameter for build-clone command
   * MULTISITE-16209 - Added forgotten file_temporary_path parameter to build-clone command
-  * MULTISITE-15888 - Fixed compatibility for platform integration
- 
