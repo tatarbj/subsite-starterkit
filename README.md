@@ -12,6 +12,12 @@ This is a starting point for creating new websites for the [NextEuropa
 platform](https://blogs.ec.europa.eu/eu-digital/content/next-europa-it-platform)
 of the European Commission.
 
+> The subsite-starterkit in combination with platform-dev has limited
+> Windows support. Issues regarding setting up the platform within this
+> operating system can be submitted either:
+> * internally by following our [contribution guide](docs/contributing.md)
+> * externally via the [issue queue on github](issues)
+
 
 ## Features
 
