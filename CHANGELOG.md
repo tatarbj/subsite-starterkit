@@ -1,6 +1,6 @@
 # Subsite Starterkit change log
 
-## Version 2.2.3 + [qa-automation 2.4](https://github.com/ec-europa/qa-automation/blob/master/CHANGELOG.md#version-24
+## Version 2.2.3
 
 ### New features:
   * MULTISITE-16043 - Allow developers to override phing targets through resources/build.custom.xml
