@@ -319,7 +319,7 @@
                 <available file="${platform.package.destination}/${platform.package.tarball}" type="file" property="platform.package.download"/>
                 <then>
                     <echo msg="Skipping platform download, it is already downloaded at:"/>
-                    <echo msg="{platform.package.destination}/${platform.package.tarball}"/>
+                    <echo msg="${platform.package.destination}/${platform.package.tarball}"/>
                 </then>
             </elseif>
             <else>
@@ -534,6 +534,9 @@
                     <property name="site-item-type" value="file"/>
                 </foreach>
                 <!-- Delete the site backup directory. -->
+                <phingcall target="unprotect-folder">
+                    <property name="folder.to.unprotect" value="${platform.rebuild.backup.destination}" />
+                </phingcall>
                 <delete dir="${platform.rebuild.backup.destination}" includeemptydirs="true"/>
             </then>
         </if>
