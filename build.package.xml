@@ -603,9 +603,9 @@
     </target>
 
     <target
-            name="build-dev"
-            description="Build a local development version of the subsite."
-            depends="
+        name="build-dev"
+        description="Build a local development version of the subsite."
+        depends="
             backup-site,
             install-build-dependencies,
             delete-dev,
