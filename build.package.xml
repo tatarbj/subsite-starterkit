@@ -311,15 +311,15 @@
             <!-- First check the primary global cache directory -->
             <available file="${platform.package.cachedir}/${platform.package.tarball}" type="file" property="platform.package.download"/>
             <then>
-                <echo msg="Skipping platform download, it is already downloaded at ${platform.package.cachedir}/${platform.package.tarball}."/>
-                <echo msg="Delete this file if you want to download the latest version."/>
+                <echo msg="Skipping platform download, it is already downloaded at:"/>
+                <echo msg="${platform.package.cachedir}/${platform.package.tarball}"/>
             </then>
             <elseif>
                 <!-- Then check the projects cache directory -->
                 <available file="${platform.package.destination}/${platform.package.tarball}" type="file" property="platform.package.download"/>
                 <then>
-                    <echo msg="Skipping platform download, it is already downloaded at ${platform.package.destination}/${platform.package.tarball}."/>
-                    <echo msg="Delete this file if you want to download the latest version."/>
+                    <echo msg="Skipping platform download, it is already downloaded at:"/>
+                    <echo msg="{platform.package.destination}/${platform.package.tarball}"/>
                 </then>
             </elseif>
             <else>
@@ -338,9 +338,9 @@
                 <available file="${platform.package.destination}/deploy-package.tar.gz" type="file"/>
             </not>
             <then>
-                <echo msg="Starting to download the platform. Depending on your connection this can take between 5-15 minutes. Go get some coffee."/>
-                <echo msg="This file will only be downloaded once and will be cached in ${platform.package.tarball}."/>
-                <echo msg="You can delete this cached file whenever you want to download a new version of the platform."/>
+                <!-- Create the destination directory if it doesn't exist. -->
+                <mkdir dir="${platform.package.destination}" />
+                <echo msg="Starting platform download. Depending on your connection this can take between 5-15 minutes. Go get some coffee."/>
                 <trycatch>
                     <!-- Try downloading platform through continuousphp api. -->
                     <try>
@@ -359,8 +359,7 @@
                         <if>
                             <http url="https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz"/>
                             <then>
-                                <exec command="curl -L -o ${platform.package.destination}/deploy-package.tar.gz https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz"
-                                      passthru="true"/>
+                                <exec command="curl -L -o ${platform.package.destination}/deploy-package.tar.gz https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz" passthru="true"/>
                                 <echo msg="Downloaded platform package reference ${platform.package.reference}"/>
                             </then>
                             <else>
@@ -444,8 +443,7 @@
                 />
             </then>
             <else>
-                <untar file="${platform.package.download}"
-                       todir="${platform.build.dir}"/>
+                <untar file="${platform.package.download}" todir="${platform.build.dir}"/>
             </else>
         </if>
     </target>
