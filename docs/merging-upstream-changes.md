@@ -13,6 +13,6 @@ to resources/site.make.example. This will be fixed in a future release.
 When you have completed the update of your starterkit you must also run
 
 ```
-$ git composer install
+$ composer install
 ```
 to get the latest composer packages defined in the composer.lock file.
