@@ -475,14 +475,15 @@
                     <!-- Delete any remains of previous backup attempts. -->
                     <available file="${platform.rebuild.backup.destination}" type="dir"/>
                     <then>
-                        <phingcall target="unprotect-folder">
-                            <property name="folder.to.unprotect" value="${platform.rebuild.backup.destination}" />
-                        </phingcall>
                         <delete dir="${platform.rebuild.backup.destination}" includeemptydirs="true"/>
                     </then>
                 </if>
                 <!-- Create backup directory. -->
                 <mkdir dir="${platform.rebuild.backup.destination}"/>
+                <!-- Make the settings directory writable because we can not delete it otherwise -->
+                <phingcall target="unprotect-folder">
+                    <property name="folder.to.unprotect" value="${platform.build.settings.dir}" />
+                </phingcall>
                 <!-- Back up folders list. -->
                 <foreach list="${platform.rebuild.backup.folders}" param="site-item" target="backup-site-item" delimiter=";">
                     <property name="site-item-type" value="dir"/>
@@ -534,9 +535,6 @@
                     <property name="site-item-type" value="file"/>
                 </foreach>
                 <!-- Delete the site backup directory. -->
-                <phingcall target="unprotect-folder">
-                    <property name="folder.to.unprotect" value="${platform.rebuild.backup.destination}" />
-                </phingcall>
                 <delete dir="${platform.rebuild.backup.destination}" includeemptydirs="true"/>
             </then>
         </if>
