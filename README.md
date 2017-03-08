@@ -12,6 +12,12 @@ This is a starting point for creating new websites for the [NextEuropa
 platform](https://blogs.ec.europa.eu/eu-digital/content/next-europa-it-platform)
 of the European Commission.
 
+> The subsite-starterkit in combination with platform-dev has limited
+> Windows support. Issues regarding setting up the platform within this
+> operating system can be submitted either:
+> * internally by following our [contribution guide](docs/contributing.md)
+> * externally via the [issue queue on github](issues)
+
 
 ## Features
 
@@ -26,6 +32,13 @@ of the European Commission.
 
 ## Recent notable changes
 
+- **2017-02-04**: The build-dev target now has backup and restore support for
+    when you have a site installed. This allows you to make a selection of
+    certain files and folders to backup before build-dev and restore them after.
+    The added functionality also comes with a dedicated target "rebuild-dev".
+- **2017-02-06**: The resources/build.custom.xml is now the master build file.
+    This allows you to override starterkit build targets in this file. The phing
+    calls build-custom in build-dist and build-dev have been removed.
 - **2017-01-19**: Subsites now have a dedicated phpcs-custom.xml file in their
     resources folder to add excludes if they wish not to clutter their code with
     codingStandardsIgnore tags.

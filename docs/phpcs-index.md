@@ -1,4 +1,4 @@
-phpcs.xml standard contains 149 sniffs
+The phpcs.xml standard contains 151 sniffs
 
 DrupalPractice (24 sniffs)
 --------------------------
@@ -132,14 +132,16 @@ PSR2 (2 sniffs)
 * PSR2.Classes.PropertyDeclaration
 * PSR2.Namespaces.UseDeclaration
 
-QualityAssurance (13 sniffs)
+QualityAssurance (15 sniffs)
 ----------------------------
 * QualityAssurance.FeaturesFiles.DatestampFields
 * QualityAssurance.FeaturesFiles.FieldNameLength
 * QualityAssurance.FeaturesFiles.ForbiddenPermissions
 * QualityAssurance.FeaturesFiles.LockedFields
+* QualityAssurance.Functions.DrupalHttpRequest
 * QualityAssurance.Functions.DrupalWrappers
 * QualityAssurance.Functions.HardcodedImage
+* QualityAssurance.Generic.HardcodedPath
 * QualityAssurance.InfoFiles.Features
 * QualityAssurance.InfoFiles.Forbidden
 * QualityAssurance.InfoFiles.Required
