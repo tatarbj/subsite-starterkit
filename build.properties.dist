@@ -37,6 +37,10 @@ project.database.url = webgate.ec.europa.eu/fpfis/files-for/${project.id}/
 # compressed in .gz format. Thus ending in .sql.gz.
 project.database.filename =
 
+# The information of the project reference repository.
+project.reference.repository =
+project.reference.branch = master
+project.reference.remote = reference
 
 # Development configuration
 # ---------------------------------------
