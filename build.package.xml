@@ -34,10 +34,10 @@
             <then>
                 <echo msg='rm -rf "${folder.to.delete}"' />
                 <exec
-                    command='rm -rf "${folder.to.delete}"'
-                    dir="${project.basedir}"
-                    passthru="true"
-                    checkreturn="true"
+                        command='rm -rf "${folder.to.delete}"'
+                        dir="${project.basedir}"
+                        passthru="true"
+                        checkreturn="true"
                 />
             </then>
             <else>
@@ -77,10 +77,10 @@
             </then>
         </if>
         <drushmakefile
-            makeFile="${subsite.temporary.development.make}"
-            coreVersion="${drupal.core.version}"
-            projects="${development.modules.download}"
-            defaultProjectDir="${development.modules.location}"
+                makeFile="${subsite.temporary.development.make}"
+                coreVersion="${drupal.core.version}"
+                projects="${development.modules.download}"
+                defaultProjectDir="${development.modules.location}"
         />
     </target>
 
@@ -97,13 +97,13 @@
     <target name="make-dev" depends="retrieve-platform">
         <if>
             <available file="${subsite.make}" type="file" />
-                <then>
-                    <echo msg="Make the subsite." />
-                    <phingcall target="drush-make-no-core">
-                        <property name="drush.make.target.file" value="${subsite.make}" />
-                        <property name="drush.make.root" value="${platform.build.dir}" />
-                    </phingcall>
-                </then>
+            <then>
+                <echo msg="Make the subsite." />
+                <phingcall target="drush-make-no-core">
+                    <property name="drush.make.target.file" value="${subsite.make}" />
+                    <property name="drush.make.root" value="${platform.build.dir}" />
+                </phingcall>
+            </then>
             <else>
                 <echo msg="No make file found. Skipping..." />
             </else>
@@ -126,10 +126,26 @@
         <if>
             <available file="${subsite.make}" type="file" />
             <then>
-                <phingcall target="drush-make-no-core">
-                    <property name="drush.make.target.file" value="${subsite.make}" />
-                    <property name="drush.make.root" value="${phing.project.tmp.dir}/build" />
-                </phingcall>
+                <loadfile property="sitemake" file="${subsite.make}"/>
+                <propertyregex property="not.empty"
+                               subject="${sitemake}"
+                               pattern="(libraries\[|projects\[)"
+                               match="$1"
+                               casesensitive="false"
+                               defaultvalue="empty"/>
+                <if>
+                    <not><equals arg1="${not.empty}" arg2="empty" /></not>
+                    <then>
+                        <phingcall target="drush-make-no-core">
+                            <property name="drush.make.target.file" value="${subsite.make}" />
+                            <property name="drush.make.root" value="${phing.project.tmp.dir}/build" />
+                        </phingcall>
+                    </then>
+                    <else>
+                       <echo msg="Empty  make file found. Skipping... ${not.empty}" />
+                       <mkdir dir="${phing.project.tmp.dir}/build/sites/all" />
+                    </else>
+                </if>
             </then>
             <else>
                 <echo msg="No make file found. Skipping..." />
@@ -140,10 +156,10 @@
         <!-- Move the subsite to its destination. -->
         <echo msg='mv "${phing.project.tmp.dir}/build/sites/all/" "${dist.build.dir}"' />
         <exec
-            command='mv "${phing.project.tmp.dir}/build/sites/all/" "${dist.build.dir}"'
-            dir="${project.basedir}"
-            passthru="true"
-            checkreturn="true"
+                command='mv "${phing.project.tmp.dir}/build/sites/all/" "${dist.build.dir}"'
+                dir="${project.basedir}"
+                passthru="true"
+                checkreturn="true"
         />
 
         <echo msg="Clean up temporary build folder." />
@@ -156,12 +172,12 @@
     <target name="drush-make-no-core">
         <echo message="Running make file ${drush.make.target.file} into folder ${drush.make.root}." />
         <drush
-            command="make"
-            assume="yes"
-            bin="${drush.bin}"
-            pipe="yes"
-            verbose="${drush.verbose}"
-            root="${drush.make.root}">
+                command="make"
+                assume="yes"
+                bin="${drush.bin}"
+                pipe="yes"
+                verbose="${drush.verbose}"
+                root="${drush.make.root}">
             <param>${drush.make.target.file}</param>
             <param>${drush.make.root}</param>
             <!--
@@ -259,8 +275,8 @@
 
     <!-- Link site document root to Webserver document root. -->
     <target
-        name="link-docroot"
-        description="Create a symlink from the build folder to the webserver document root.">
+            name="link-docroot"
+            description="Create a symlink from the build folder to the webserver document root.">
         <symlink link="${server.docroot}" target="${platform.build.dir}" overwrite="true" />
     </target>
 
@@ -346,11 +362,11 @@
                     <try>
                         <continuousphp-config token="${platform.package.token}"/>
                         <continuousphp-package
-                            provider="${platform.package.provider}"
-                            repository="${platform.package.repository}"
-                            reference="${platform.package.reference}"
-                            destination="${platform.package.destination}"
-                            property="platform.package.property"
+                                provider="${platform.package.provider}"
+                                repository="${platform.package.repository}"
+                                reference="${platform.package.reference}"
+                                destination="${platform.package.destination}"
+                                property="platform.package.property"
                         />
                         <echo msg="Downloaded platform package reference ${platform.package.property}"/>
                     </try>
@@ -430,16 +446,16 @@
             <then>
                 <echo msg='mkdir "${platform.build.dir}"'/>
                 <exec
-                    command='mkdir "${platform.build.dir}"'
-                    dir="${project.basedir}"
-                    passthru="true"
+                        command='mkdir "${platform.build.dir}"'
+                        dir="${project.basedir}"
+                        passthru="true"
                 />
                 <echo msg='tar xzf "${platform.package.download}" -C "${platform.build.dir}"'/>
                 <exec
-                    command='tar xzf "${platform.package.download}" -C "${platform.build.dir}"'
-                    dir="${project.basedir}"
-                    passthru="true"
-                    checkreturn="true"
+                        command='tar xzf "${platform.package.download}" -C "${platform.build.dir}"'
+                        dir="${project.basedir}"
+                        passthru="true"
+                        checkreturn="true"
                 />
             </then>
             <else>
@@ -601,9 +617,9 @@
     </target>
 
     <target
-        name="build-dev"
-        description="Build a local development version of the subsite."
-        depends="
+            name="build-dev"
+            description="Build a local development version of the subsite."
+            depends="
             backup-site,
             install-build-dependencies,
             delete-dev,
@@ -627,9 +643,9 @@
     </target>
 
     <target
-        name="build-dist"
-        description="Build a version of the subsite intended to distribute as a release package."
-        depends="
+            name="build-dist"
+            description="Build a version of the subsite intended to distribute as a release package."
+            depends="
             install-build-dependencies,
             delete-dist,
             make-dist,
@@ -637,9 +653,9 @@
             install-dist-dependencies"
     />
 
-	<!-- Setup file directory -->
+    <!-- Setup file directory -->
     <target name="setup-files-directory">
-		 <if>
+        <if>
             <istrue value="${platform.build.files.dir}" />
             <then>
                 <mkdir dir="${platform.build.files.dir}/private_files" />
