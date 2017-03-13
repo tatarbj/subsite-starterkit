@@ -18,6 +18,7 @@ reside. The enabled composer hooks are:
 An example implementation can be found in platform extensions like:
  - [ec-reps-platform](https://github.com/ec-europa/ec-reps-platform)
  - [ec-nems-platform](https://github.com/ec-europa/ec-nems-platform)
+
 Where by copying it's script to `resources/composer/scripts/post-install-cmd/` it
 will run an extra composer install and copy the needed source code to the `lib/`
 folder of the subsite project on the composer post-install-cmd hook.
