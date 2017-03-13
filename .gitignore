@@ -14,4 +14,4 @@ bin/
 build/
 platform/
 tmp/
-**/vendor/
+vendor/
