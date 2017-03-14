@@ -79,7 +79,10 @@
     }
   ],
   "scripts": {
-    "post-install-cmd": "resources/scripts/composer/post-install.sh"
+    "pre-install-cmd": "resources/composer/scripts/execute.sh pre-install-cmd",
+    "post-install-cmd": "resources/composer/scripts/execute.sh post-install-cmd",
+    "pre-update-cmd": "resources/composer/scripts/execute.sh pre-update-cmd",
+    "post-update-cmd": "resources/composer/scripts/execute.sh post-update-cmd"
   },
   "config": {
     "bin-dir": "bin/"
