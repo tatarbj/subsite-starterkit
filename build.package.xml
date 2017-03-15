@@ -127,12 +127,13 @@
             <available file="${subsite.make}" type="file" />
             <then>
                 <loadfile property="sitemake" file="${subsite.make}"/>
-                <propertyregex property="not.empty"
-                               subject="${sitemake}"
-                               pattern="([^#; ])(libraries\[|projects\[)"
-                               match="$1"
-                               casesensitive="false"
-                               defaultvalue="empty"/>
+                <propertyregex
+                    property="not.empty"
+                    subject="${sitemake}"
+                    pattern="([^#; ])(libraries\[|projects\[)"
+                    match="$1"
+                    casesensitive="false"
+                    defaultvalue="empty"/>
                 <if>
                     <not><equals arg1="${not.empty}" arg2="empty" /></not>
                     <then>
