@@ -34,10 +34,10 @@
             <then>
                 <echo msg='rm -rf "${folder.to.delete}"' />
                 <exec
-                        command='rm -rf "${folder.to.delete}"'
-                        dir="${project.basedir}"
-                        passthru="true"
-                        checkreturn="true"
+                    command='rm -rf "${folder.to.delete}"'
+                    dir="${project.basedir}"
+                    passthru="true"
+                    checkreturn="true"
                 />
             </then>
             <else>
@@ -77,10 +77,10 @@
             </then>
         </if>
         <drushmakefile
-                makeFile="${subsite.temporary.development.make}"
-                coreVersion="${drupal.core.version}"
-                projects="${development.modules.download}"
-                defaultProjectDir="${development.modules.location}"
+            makeFile="${subsite.temporary.development.make}"
+            coreVersion="${drupal.core.version}"
+            projects="${development.modules.download}"
+            defaultProjectDir="${development.modules.location}"
         />
     </target>
 
