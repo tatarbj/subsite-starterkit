@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Symlink the phpcs to the pre-push hook directory..
+if [ ! -h "resources/git/hooks/pre-push/phpcs" ] ; then
+  mkdir "resources/git/hooks/pre-push"
+  ln -sf "../../../../vendor/pfrenssen/phpcs-pre-push/pre-push" "resources/git/hooks/pre-push/phpcs"
+fi
+
+./bin/phing setup-phpcs-pre-push >/dev/null
+
