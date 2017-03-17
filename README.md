@@ -32,6 +32,9 @@ of the European Commission.
 
 ## Recent notable changes
 
+- **2017-03-13**: The resources folder is expanded with a composer and git
+    folder where you can place scripts that will be executed on the name of the
+    hook that matches the folder name.
 - **2017-02-04**: The build-dev target now has backup and restore support for
     when you have a site installed. This allows you to make a selection of
     certain files and folders to backup before build-dev and restore them after.
@@ -153,3 +156,6 @@ This README is divided in different parts, please read the relevant section:
    new features to the Subsite Starterkit.
 6. [Upgrading from 1.0.x to 2.0.x](docs/upgrading.md): How to upgrade to the
    2.0.x and enjoy full Composer support.
+7. [Running scripts on composer and/or git hooks](docs/scripts.md): Add your
+   own scripts that will be called when a composer hook or git hook is
+   executed.
