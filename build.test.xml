@@ -103,7 +103,7 @@
             <equals arg1="${phpcs.prepush.enable}" arg2="1" />
             <then>
                 <mkdir dir="${project.basedir}/resources/git/hooks/pre-push"/>
-                <symlink link="${phpcs.prepush.destination}" target="${phpcs.prepush.source}" overwrite="true" />
+                <rel-sym link="${phpcs.prepush.destination}" target="${phpcs.prepush.source}" overwrite="true" />
             </then>
         </if>
     </target>
