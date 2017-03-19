@@ -22,13 +22,13 @@ node('linux') {
 
     try {
         stage('Check') {
+            sh 'composer install --no-suggest'
             sh './bin/phing setup-php-codesniffer qa-automation'
         }
 
 
         stage('Build') {
             //sh 'COMPOSER_CACHE_DIR=/dev/null composer install --no-suggest'
-            sh 'composer install --no-suggest'
             withCredentials([
                 [$class: 'UsernamePasswordMultiBinding', credentialsId: 'mysql', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASS']
             ]) {
