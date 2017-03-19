@@ -44,7 +44,7 @@ node('linux') {
                         sh "phantomjs --webdriver=${env.WD_HOST}:${env.WD_PORT} &"
                     }
                     sh './bin/phing setup-behat link-behat'
-                    sh './bin/behat -c behat.yml --colors --strict'
+                    sh './bin/behat -c tests/behat.yml --colors --strict'
                 }
             }
         }
