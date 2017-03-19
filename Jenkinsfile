@@ -24,10 +24,9 @@ node('linux') {
         stage('Build') {
             sh 'COMPOSER_CACHE_DIR=/dev/null composer install --no-suggest'
             withCredentials([
-                [$class: 'UsernamePasswordMultiBinding', credentialsId: 'mysql', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASS'],
-                [$class: 'UsernamePasswordMultiBinding', credentialsId: 'flickr', usernameVariable: 'FLICKR_KEY', passwordVariable: 'FLICKR_SECRET']
+                [$class: 'UsernamePasswordMultiBinding', credentialsId: 'mysql', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASS']
             ]) {
-                sh "./bin/phing build-dev -Dcomposer.bin=`which composer` -D'behat.base_url'='$BASE_URL/$SITE_PATH/build'"
+                sh "./bin/phing build-dev -Dcomposer.bin=`which composer`"
                 sh "./bin/phing install-dev -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='$DB_USER' -D'drupal.db.password'='$DB_PASS'"
             }
         }
