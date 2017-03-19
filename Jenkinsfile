@@ -26,7 +26,7 @@ node('linux') {
             withCredentials([
                 [$class: 'UsernamePasswordMultiBinding', credentialsId: 'mysql', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASS']
             ]) {
-                sh "./bin/phing build-dev -Dcomposer.bin=`which composer` -Dplatform.package.cachedir='/tmp/jenkins/platform-dev'"
+                sh "./bin/phing build-dev -Dcomposer.bin=`which composer`"
                 sh "./bin/phing install-dev -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='$DB_USER' -D'drupal.db.password'='$DB_PASS'"
             }
         }
