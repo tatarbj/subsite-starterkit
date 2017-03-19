@@ -1,5 +1,6 @@
 node('linux') {
 
+    load "/var/lib/jenkins/.envvars/subsite-starterkit.groovy"
     Random random = new Random()
     env.PROJECT = 'subsite-starterkit'
     tokens = "${env.WORKSPACE}".tokenize('/')
