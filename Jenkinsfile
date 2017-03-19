@@ -23,7 +23,7 @@ node('linux') {
     try {
         stage('Check') {
             sh 'composer install --no-suggest'
-            sh './bin/phing setup-php-codesniffer qa-automation'
+            sh './bin/phing setup-php-codesniffer quality-assurance'
         }
 
 
