@@ -21,6 +21,11 @@ node('linux') {
     }
 
     try {
+        stage('Check') {
+            sh './bin/phing setup-php-codesniffer qa-automation'
+        }
+
+
         stage('Build') {
             //sh 'COMPOSER_CACHE_DIR=/dev/null composer install --no-suggest'
             sh 'composer install --no-suggest'
@@ -32,16 +37,13 @@ node('linux') {
             }
         }
 
-        stage('Check') {
-            sh './bin/phpcs'
-        }
-
         stage('Test') {
             wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
                 timeout(time: 2, unit: 'HOURS') {
                     if (env.WD_BROWSER_NAME == 'phantomjs') {
                         sh "phantomjs --webdriver=${env.WD_HOST}:${env.WD_PORT} &"
                     }
+                    sh './bin/phing setup-behat'
                     sh './bin/behat -c build/behat.yml --colors --strict'
                 }
             }
