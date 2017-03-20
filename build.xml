@@ -2,10 +2,16 @@
 
 <project name="My subsite" default="help">
 
-    <property file="build.properties.local" />
-    <property file="build.properties" />
-    <property file="build.properties.dist" />
+    <!-- Shut down output after initial target. -->
+    <property name="logoutput" value="true" />
+    <property name="level" value="info" />
 
+    <!-- Load build properties. -->
+    <property file="build.properties.local" logoutput="${logoutput}" />
+    <property file="build.properties" logoutput="${logoutput}" />
+    <property file="build.properties.dist" logoutput="${logoutput}" />
+
+    <!-- Help target to list commands. -->
     <target name="help" description="Phing target list">
         <exec executable="${phing.bin}"
               passthru="true">
@@ -13,29 +19,28 @@
         </exec>
     </target>
 
-    <includepath classpath="src/Phing" />
-
-    <echo msg="Loading Drush task." />
+    <!-- @todo: update? -->
+    <echo msg="Loading Drush task." level="${level}" />
     <taskdef name="drush" classname="DrushTask" />
 
-    <echo msg="Loading Behat task." />
+    <!-- @todo: update? -->
+    <echo msg="Loading Behat task." level="${level}"  />
     <taskdef name="behat" classname="BehatTask" />
 
-    <echo msg="Importing the ContinuousPHP specific Phing tasks." />
-    <import file="vendor/continuousphp/phing-tasks/tasks.xml" />
+    <!-- Set include path for custom tasks. -->
+    <includepath classpath="src/Phing" />
 
-    <echo msg="Loading PHP Codesniffer Configuration task." />
+    <echo msg="Loading PHP Codesniffer Configuration task." level="${level}"  />
     <taskdef name="phpcodesnifferconfiguration" classname="\NextEuropa\Phing\PhpCodeSnifferConfigurationTask" />
 
-    <echo msg="Loading Drush Makefile task." />
+    <echo msg="Loading Drush Makefile task." level="${level}"  />
     <taskdef name="drushmakefile" classname="\NextEuropa\Phing\DrushMakeFileTask" />
 
-    <import file="resources/build.custom.xml" />
-    <import file="build.clone.xml" />
-    <import file="build.package.xml" />
-    <import file="build.test.xml" />
+    <!-- Import CPHP tasks @todo refractor when jenkins is active. -->
+    <echo msg="Importing the ContinuousPHP specific Phing tasks." level="${level}"  />
+    <import file="vendor/continuousphp/phing-tasks/tasks.xml" />
+    <import file="vendor/continuousphp/aws-sdk-phing/tasks.xml" />
 
-    <import file="./vendor/continuousphp/aws-sdk-phing/tasks.xml" />
     <property name="aws.profile" value="" />
 
     <target name="setup-aws">
@@ -116,5 +121,14 @@
     <target name="provision-stack"
             description="Provision a stack on AWS"
             depends="setup-aws, run-stack, setup-deployment-group" />
+
+    <property name="logoutput" value="false" override="true" />
+    <property name="level" value="verbose" override="true" />
+
+    <!-- Import build xml files. -->
+    <import file="resources/build.custom.xml" />
+    <import file="build.clone.xml" />
+    <import file="build.package.xml" />
+    <import file="build.test.xml" />
 
 </project>
