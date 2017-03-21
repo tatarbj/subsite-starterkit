@@ -21,42 +21,39 @@ node('linux') {
     }
 
     try {
-        stage('Check') {
-            sh 'composer install --no-suggest --ansi'
-            sh './bin/phing setup-php-codesniffer quality-assurance -logger phing.listener.AnsiColorLogger'
-        }
+        wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
+            stage('Check') {
+                sh 'composer install --no-suggest --ansi'
+                sh './bin/phing setup-php-codesniffer quality-assurance -logger phing.listener.AnsiColorLogger'
+            }
 
 
-        stage('Build') {
-            //sh 'COMPOSER_CACHE_DIR=/dev/null composer install --no-suggest'
-            withCredentials([
-                [$class: 'UsernamePasswordMultiBinding', credentialsId: 'mysql', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASS']
-            ]) {
-                wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
+            stage('Build') {
+                //sh 'COMPOSER_CACHE_DIR=/dev/null composer install --no-suggest'
+                withCredentials([
+                    [$class: 'UsernamePasswordMultiBinding', credentialsId: 'mysql', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASS']
+                ]) {
                     sh "./bin/phing build-dev -Dcomposer.bin=`which composer` -D'behat.base_url'='$BASE_URL/$SITE_PATH/platform/' -logger phing.listener.AnsiColorLogger"
                     sh "./bin/phing install-dev -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='$DB_USER' -D'drupal.db.password'='$DB_PASS' -logger phing.listener.AnsiColorLogger"
                 }
             }
-        }
 
-        stage('Test') {
-            wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
+            stage('Test') {
                 timeout(time: 2, unit: 'HOURS') {
                     if (env.WD_BROWSER_NAME == 'phantomjs') {
                         sh "phantomjs --webdriver=${env.WD_HOST}:${env.WD_PORT} &"
                     }
-                    sh "./bin/behat -c tests/behat.yml --strict"
+                    sh "./bin/behat -c tests/behat.yml --color --strict"
                 }
             }
-        }
 
-        stage('Package') {
-            sh "./bin/phing build-dist -Dcomposer.bin=`which composer` -logger phing.listener.AnsiColorLogger"
-            sh "cd build && tar -czf ${env.RELEASE_PATH}/${env.RELEASE_NAME}.tar.gz ."
-            setBuildStatus("Build complete.", "SUCCESS");
-            slackSend color: "good", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> complete."
+            stage('Package') {
+                sh "./bin/phing build-dist -Dcomposer.bin=`which composer` -logger phing.listener.AnsiColorLogger"
+                sh "cd build && tar -czf ${env.RELEASE_PATH}/${env.RELEASE_NAME}.tar.gz ."
+                setBuildStatus("Build complete.", "SUCCESS");
+                slackSend color: "good", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> complete."
+            }
         }
-
     } catch(err) {
         setBuildStatus("Build failed.", "FAILURE");
         slackSend color: "danger", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> failed."
