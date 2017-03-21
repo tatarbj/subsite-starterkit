@@ -22,8 +22,8 @@ node('linux') {
 
     try {
         stage('Check') {
-            sh 'composer install --no-suggest'
-            sh './bin/phing setup-php-codesniffer quality-assurance'
+            sh 'composer install --no-suggest --ansi'
+            sh './bin/phing setup-php-codesniffer quality-assurance -logger phing.listener.AnsiColorLogger'
         }
 
 
@@ -40,7 +40,7 @@ node('linux') {
         }
 
         stage('Test') {
-            wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
+            wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
                 timeout(time: 2, unit: 'HOURS') {
                     if (env.WD_BROWSER_NAME == 'phantomjs') {
                         sh "phantomjs --webdriver=${env.WD_HOST}:${env.WD_PORT} &"
@@ -51,7 +51,7 @@ node('linux') {
         }
 
         stage('Package') {
-            sh "./bin/phing build-dist -Dcomposer.bin=`which composer`"
+            sh "./bin/phing build-dist -Dcomposer.bin=`which composer` -logger phing.listener.AnsiColorLogger"
             sh "cd build && tar -czf ${env.RELEASE_PATH}/${env.RELEASE_NAME}.tar.gz ."
             setBuildStatus("Build complete.", "SUCCESS");
             slackSend color: "good", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> complete."

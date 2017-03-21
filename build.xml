@@ -15,7 +15,12 @@
     <property name="level" value="info" />
 
     <!-- Load build properties. -->
-    <property file="build.properties.local" logoutput="${logoutput}" />
+    <if>
+        <available file="build.properties.local" type="file" />
+        <then>
+            <property file="build.properties.local" logoutput="${logoutput}" />
+        </then>
+    </if>
     <property file="build.properties" logoutput="${logoutput}" />
     <property file="build.properties.dist" logoutput="${logoutput}" />
 
