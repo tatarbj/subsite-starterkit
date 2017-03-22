@@ -10,7 +10,7 @@ node('linux') {
     }
 
     Random random = new Random()
-    env.PROJECT = sh(returnStdout: true, script: "git remote -v | head -n1 | awk '{print $2}' | sed 's/.*\///' | sed 's/-[^-]*$//'")
+    env.PROJECT = sh(returnStdout: true, script: $(git remote -v | head -n1 | awk '{print $2}' | sed 's/.*\///' | sed 's/-[^-]*$//'))
     tokens = "${env.WORKSPACE}".tokenize('/')
     env.SITE_PATH = tokens[tokens.size()-1]
     env.DB_NAME = "${env.PROJECT}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
