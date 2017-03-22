@@ -1,16 +1,8 @@
 node('linux') {
 
     load "/var/lib/jenkins/.envvars/subsite-starterkit.groovy"
-
-    stage('Init') {
-        deleteDir()
-        checkout scm
-        setBuildStatus("Build started.", "PENDING");
-        slackSend color: "good", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> started."
-    }
-
     Random random = new Random()
-    env.PROJECT = sh "git remote -v | head -n1 | awk '{print \\$2}' | sed 's/.*\///' | sed 's/-[^-]*\\$//')"
+    env.PROJECT = 'subsite-starterkit'
     tokens = "${env.WORKSPACE}".tokenize('/')
     env.SITE_PATH = tokens[tokens.size()-1]
     env.DB_NAME = "${env.PROJECT}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
@@ -20,6 +12,13 @@ node('linux') {
         env.WD_PORT = env.HTTP_MOCK_PORT.toInteger() + 1
     }
     env.WD_HOST_URL = "http://${env.WD_HOST}:${env.WD_PORT}/wd/hub"
+
+    stage('Init') {
+        deleteDir()
+        checkout scm
+        setBuildStatus("Build started.", "PENDING");
+        slackSend color: "good", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> started."
+    }
 
     try {
         wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
