@@ -4,9 +4,6 @@
 # The site name.
 subsite.name = My Project
 
-# Site ID.
-subsite.id = subsite-starterkit
-
 # The make file containing the dependencies of the subsite.
 subsite.make = ${subsite.resources.dir}/site.make
 
