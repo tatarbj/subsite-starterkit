@@ -23,7 +23,8 @@ node('linux') {
     try {
         wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
             stage('Check') {
-                sh 'COMPOSER_CACHE_DIR=/dev/null composer install --no-suggest --ansi'
+                sh 'composer install --no-suggest --ansi'
+                //sh 'COMPOSER_CACHE_DIR=/dev/null composer install --no-suggest --ansi'
                 sh './bin/phing setup-php-codesniffer quality-assurance -logger phing.listener.AnsiColorLogger'
             }
 
