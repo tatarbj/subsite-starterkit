@@ -2,10 +2,8 @@ node('linux') {
 
     load "/var/lib/jenkins/.envvars/subsite-starterkit.groovy"
     Random random = new Random()
-    env.PROJECT = sh(returnStdout: true, script: 'grep -Po "(?<=project.id = ).+" build.properties.dist')
     tokens = "${env.WORKSPACE}".tokenize('/')
     env.SITE_PATH = tokens[tokens.size()-1]
-    env.DB_NAME = "${env.PROJECT}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
     env.RELEASE_NAME = "${env.JOB_NAME}".replaceAll('%2F','-').replaceAll('/','-').trim()
     env.HTTP_MOCK_PORT = random.nextInt(50000) + 10000
     if (env.WD_PORT == '0') {
@@ -16,6 +14,8 @@ node('linux') {
     stage('Init') {
         deleteDir()
         checkout scm
+        env.PROJECT = sh(returnStdout: true, script: 'grep -Po "(?<=project.id = ).+" build.properties.dist')
+        env.DB_NAME = "${env.PROJECT}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
         setBuildStatus("Build started.", "PENDING");
         slackSend color: "good", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> started."
     }
