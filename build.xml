@@ -33,6 +33,9 @@
     <echo msg="Loading Drush Makefile task." level="${level}"  />
     <taskdef name="drushmakefile" classname="\NextEuropa\Phing\DrushMakeFileTask" />
 
+    <echo msg="Loading Composer task." level="${level}"  />
+    <taskdef name="composer" classname="\NextEuropa\Phing\ComposerFallbackTask" />
+
     <echo msg="Importing the Drush task." level="${level}" />
     <import file="${project.basedir}/vendor/drupal/phingdrushtask/import.xml"/>
 

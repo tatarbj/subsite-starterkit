@@ -33,7 +33,7 @@ node('linux') {
                 withCredentials([
                     [$class: 'UsernamePasswordMultiBinding', credentialsId: 'mysql', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASS']
                 ]) {
-                    sh "./bin/phing build-dev -Dcomposer.bin=`which composer` -D'behat.base_url'='$BASE_URL/$SITE_PATH/platform/' -logger phing.listener.AnsiColorLogger"
+                    sh "./bin/phing build-dev -D'behat.base_url'='$BASE_URL/$SITE_PATH/platform/' -logger phing.listener.AnsiColorLogger"
                     sh "./bin/phing install-dev -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='$DB_USER' -D'drupal.db.password'='$DB_PASS' -logger phing.listener.AnsiColorLogger"
                 }
             }
@@ -48,7 +48,7 @@ node('linux') {
             }
 
             stage('Package') {
-                sh "./bin/phing build-dist -Dcomposer.bin=`which composer` -logger phing.listener.AnsiColorLogger"
+                sh "./bin/phing build-dist -logger phing.listener.AnsiColorLogger"
                 sh "cd build && tar -czf ${env.RELEASE_PATH}/${env.RELEASE_NAME}.tar.gz ."
                 setBuildStatus("Build complete.", "SUCCESS");
                 slackSend color: "good", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> complete."
