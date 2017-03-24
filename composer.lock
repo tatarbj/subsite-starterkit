@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f9e277082d2efa527dadbd26520ee60c",
-    "content-hash": "8a8746bcc5b40a827cb2ef66b9541868",
+    "hash": "99b0c8a264ad7519e6a126c272e28f45",
+    "content-hash": "b57c094aaad134678f280f327a15c9fa",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1610,7 +1610,9 @@
                 "branch-alias": {
                     "dev-master": "2.16.x-dev"
                 },
-                "patches_applied": []
+                "patches_applied": {
+                    "https://github.com/phingofficial/phing/pull/701": "src/Phing/patches/phing-composer-task_automatic-path.patch"
+                }
             },
             "autoload": {
                 "classmap": [
