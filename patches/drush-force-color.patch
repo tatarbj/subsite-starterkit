@@ -1,0 +1,47 @@
+diff --git a/includes/drush.inc b/includes/drush.inc
+index e40b4f4..248564e 100644
+--- a/includes/drush.inc
++++ b/includes/drush.inc
+@@ -296,6 +296,7 @@ function drush_get_global_options($brief = FALSE) {
+     $options['ignored-modules']     = array('description' => "Exclude some modules from consideration when searching for drush command files.", 'example-value' => 'token,views');
+     $options['no-label']            = array('description' => "Remove the site label that drush includes in multi-site command output (e.g. `drush @site1,@site2 status`).");
+     $options['label-separator']     = array('description' => "Specify the separator to use in multi-site command output (e.g. `drush @sites pm-list --label-separator=',' --format=csv`).");
++    $options['color']               = array('context' => 'DRUSH_NOCOLOR', 'propagate-cli-value' => TRUE, 'description' => "Force color highlighting on log messages.");
+     $options['nocolor']             = array('context' => 'DRUSH_NOCOLOR', 'propagate-cli-value' => TRUE, 'description' => "Suppress color highlighting on log messages.");
+     $options['show-passwords']      = array('description' => "Show database passwords in commands that display connection information.");
+     $options['show-invoke']         = array('description' => "Show all function names which could have been called for the current command. See drush_invoke().");
+diff --git a/includes/preflight.inc b/includes/preflight.inc
+index 767c926..dbc0d5b 100644
+--- a/includes/preflight.inc
++++ b/includes/preflight.inc
+@@ -370,15 +370,21 @@ function _drush_preflight_global_options() {
+   drush_set_context('DRUSH_QUIET', drush_get_option(array('quiet', 'pipe')));
+   drush_set_context('DRUSH_PIPE', drush_get_option('pipe'));
+ 
+-  // Suppress colored logging if --nocolor option is explicitly given or if
+-  // terminal does not support it.
+-  $nocolor = (drush_get_option('nocolor', FALSE));
+-  if (!$nocolor) {
+-    // Check for colorless terminal.  If there is no terminal, then
+-    // 'tput colors 2>&1' will return "tput: No value for $TERM and no -T specified",
+-    // which is not numeric and therefore will put us in no-color mode.
+-    $colors = exec('tput colors 2>&1');
+-    $nocolor = !($colors === FALSE || (is_numeric($colors) && $colors >= 3));
++  // Force color output is the --color option is given.
++  if (drush_get_option('color', FALSE)) {
++    $nocolor = FALSE;
++  }
++  else {
++    // Suppress colored logging if --nocolor option is explicitly given or if
++    // terminal does not support it.
++    $nocolor = (drush_get_option('nocolor', FALSE));
++    if (!$nocolor) {
++      // Check for colorless terminal.  If there is no terminal, then
++      // 'tput colors 2>&1' will return "tput: No value for $TERM and no -T specified",
++      // which is not numeric and therefore will put us in no-color mode.
++      $colors = exec('tput colors 2>&1');
++      $nocolor = !($colors === FALSE || (is_numeric($colors) && $colors >= 3));
++    }
+   }
+   drush_set_context('DRUSH_NOCOLOR', $nocolor);
+ }
