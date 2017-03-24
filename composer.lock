@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "99b0c8a264ad7519e6a126c272e28f45",
-    "content-hash": "b57c094aaad134678f280f327a15c9fa",
+    "hash": "0d9c16a44de600cdbd7051ac2764f22f",
+    "content-hash": "6f2ab2d5213488dd54c0e8defc6e5f21",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -412,6 +412,11 @@
                 "satooshi/php-coveralls": "^1.0"
             },
             "type": "library",
+            "extra": {
+                "patches_applied": {
+                    "Support forcing of color with drush": "patches/phingdrushtask-color-support.patch"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Phing\\Drush\\": "src/",
@@ -578,6 +583,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "8.0.x-dev"
+                },
+                "patches_applied": {
+                    "https://github.com/drush-ops/drush/pull/2215": "patches/drush-force-color.patch"
                 }
             },
             "autoload": {
@@ -1611,7 +1619,7 @@
                     "dev-master": "2.16.x-dev"
                 },
                 "patches_applied": {
-                    "https://github.com/phingofficial/phing/pull/701": "src/Phing/patches/phing-composer-task_automatic-path.patch"
+                    "https://github.com/phingofficial/phing/pull/701": "patches/phing-composer-task_automatic-path.patch"
                 }
             },
             "autoload": {
