@@ -309,7 +309,7 @@ server.docroot = /var/www
 drush.verbose = FALSE
 
 # Activate or de-activate terminal color.
-drush.color = TRUE
+drush.color = 0
 
 # Verbosity of PHP Codesniffer. Set to 0 for standard output, 1 for progress
 # report, 2 for debugging info.
