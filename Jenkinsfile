@@ -14,7 +14,7 @@ node('linux') {
     stage('Init') {
         deleteDir()
         checkout scm
-        env.PROJECT = sh(returnStdout: true, script: 'grep -Po "(?<=project.id = ).+" build.properties.dist')
+        env.PROJECT = sh(returnStdout: true, script: 'grep -Po "(?<=project.id = ).+" build.properties')
         env.DB_NAME = "${env.PROJECT}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
         setBuildStatus("Build started.", "PENDING");
         slackSend color: "good", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> started."
