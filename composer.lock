@@ -1610,9 +1610,7 @@
                 "branch-alias": {
                     "dev-master": "2.16.x-dev"
                 },
-                "patches_applied": {
-                    "https://github.com/phingofficial/phing/pull/701": "src/Phing/patches/phing-composer-task_automatic-path.patch"
-                }
+                "patches_applied": []
             },
             "autoload": {
                 "classmap": [
