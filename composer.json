@@ -69,6 +69,7 @@
     "post-update-cmd": "resources/composer/scripts/execute.sh post-update-cmd"
   },
   "config": {
-    "bin-dir": "bin/"
+    "bin-dir": "bin/",
+    "discard-changes": true
   }
 }
