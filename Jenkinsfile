@@ -12,12 +12,14 @@ node('linux') {
     env.WD_HOST_URL = "http://${env.WD_HOST}:${env.WD_PORT}/wd/hub"
 
     stage('Init') {
-        deleteDir()
-        checkout scm
-        env.PROJECT = sh(returnStdout: true, script: 'grep -Po "(?<=project.id = ).+" build.properties')
-        env.DB_NAME = "${env.PROJECT}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
-        setBuildStatus("Build started.", "PENDING");
-        slackSend color: "good", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> started."
+        wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
+            deleteDir()
+            checkout scm
+            env.PROJECT = sh(returnStdout: true, script: 'grep -Po "(?<=project.id = ).+" build.properties')
+            env.DB_NAME = "${env.PROJECT}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
+            setBuildStatus("Build started.", "PENDING");
+            slackSend color: "good", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> started."
+        }
     }
 
     try {
