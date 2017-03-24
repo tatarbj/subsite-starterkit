@@ -16,7 +16,8 @@
             assume="yes"
             root="${platform.build.dir}"
             bin="${drush.bin}"
-            verbose="${drush.verbose}">
+            verbose="${drush.verbose}"
+            color="${drush.color}">
             <option name="db-url" value="${drupal.db.url}" />
             <option name="site-name" value="'${subsite.name}'" />
             <option name="account-name" value="${drupal.admin.username}" />
@@ -58,7 +59,8 @@
             assume="yes"
             root="${platform.build.dir}"
             bin="${drush.bin}"
-            verbose="${drush.verbose}">
+            verbose="${drush.verbose}"
+            color="${drush.color}">
             <param>${drupal.modules}</param>
         </drush>
     </target>
@@ -187,7 +189,8 @@
             assume="yes"
             root="${platform.build.dir}"
             bin="${drush.bin}"
-            verbose="${drush.verbose}">
+            verbose="${drush.verbose}"
+            color="${drush.color}">
             <param>"node_access_rebuild()"</param>
         </drush>
     </target>

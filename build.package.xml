@@ -161,7 +161,8 @@
             bin="${drush.bin}"
             pipe="yes"
             verbose="${drush.verbose}"
-            root="${drush.make.root}">
+            root="${drush.make.root}"
+            color="${drush.color}">
             <param>${drush.make.target.file}</param>
             <param>${drush.make.root}</param>
             <!--
