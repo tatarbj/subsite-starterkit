@@ -45,3 +45,20 @@ index 767c926..dbc0d5b 100644
    }
    drush_set_context('DRUSH_NOCOLOR', $nocolor);
  }
+diff --git a/lib/Drush/Log/Logger.php b/lib/Drush/Log/Logger.php
+index ff2680f..88841d1 100644
+--- a/lib/Drush/Log/Logger.php
++++ b/lib/Drush/Log/Logger.php
+@@ -52,9 +52,9 @@ class Logger extends AbstractLogger {
+         $green = "[%s]";
+       }
+       else {
+-        $red = "\033[31;40m\033[1m[%s]\033[0m";
+-        $yellow = "\033[1;33;40m\033[1m[%s]\033[0m";
+-        $green = "\033[1;32;40m\033[1m[%s]\033[0m";
++        $red = "\033[31m[%s]\033[0m";
++        $yellow = "\033[33m[%s]\033[0m";
++        $green = "\033[32m[%s]\033[0m";
+       }
+ 
+       $verbose = drush_get_context('DRUSH_VERBOSE');
