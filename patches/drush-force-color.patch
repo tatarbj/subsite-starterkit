@@ -46,7 +46,7 @@ index 767c926..dbc0d5b 100644
    drush_set_context('DRUSH_NOCOLOR', $nocolor);
  }
 diff --git a/lib/Drush/Log/Logger.php b/lib/Drush/Log/Logger.php
-index ff2680f..88841d1 100644
+index ff2680f..863a78b 100644
 --- a/lib/Drush/Log/Logger.php
 +++ b/lib/Drush/Log/Logger.php
 @@ -52,9 +52,9 @@ class Logger extends AbstractLogger {
@@ -62,3 +62,23 @@ index ff2680f..88841d1 100644
        }
  
        $verbose = drush_get_context('DRUSH_VERBOSE');
+@@ -128,14 +128,15 @@ class Logger extends AbstractLogger {
+ 
+       $width[0] = ($columns - 11);
+ 
+-      $format = sprintf("%%-%ds%%%ds", $width[0], $width[1]);
++      /* $format = sprintf("%%-%ds%%%ds", $width[0], $width[1]);
+ 
+       // Place the status message right aligned with the top line of the error message.
+       $message = wordwrap($entry['message'], $width[0]);
+       $lines = explode("\n", $message);
+-      $lines[0] = sprintf($format, $lines[0], $type_msg);
+-      $message = implode("\n", $lines);
+-      drush_print($message, 0, STDERR);
++      $lines[0] = str_pad("$type_msg ", self::LEFT_COLUMN_SIZE, " ", STR_PAD_LEFT) . $format . $lines[0];
++      $message = implode("\n", $lines); */
++      $message =  sprintf('%s %s', str_pad("$type_msg", (12 + 8), " ", STR_PAD_LEFT), $message);
++      drush_print("$message", 0, STDERR);
+ 
+     }
+ 

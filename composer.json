@@ -25,6 +25,7 @@
   "prefer-stable": true,
   "autoload": {
     "psr-4": {
+      "Drush\\Drush\\Log\\": "src/Drush/Log",
       "NextEuropa\\": "src"
     }
   },

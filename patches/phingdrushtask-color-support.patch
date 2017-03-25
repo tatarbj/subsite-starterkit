@@ -1,15 +1,17 @@
 diff --git a/src/Task.php b/src/Task.php
-index 7fae6bb..d98c114 100644
+index 7fae6bb..f1da944 100644
 --- a/src/Task.php
 +++ b/src/Task.php
-@@ -212,6 +212,10 @@ class Task extends \ExecTask {
-       $this->createOption()
-         ->setName('nocolor');
-     }
-+    else {
+@@ -208,7 +208,11 @@ class Task extends \ExecTask {
+    *   The color option.
+    */
+   public function setColor($yesNo) {
+-    if (!$yesNo) {
++    if ($yesNo) {
 +      $this->createOption()
 +        ->setName('color');
 +    }
-   }
- 
-   /**
++    else {
+       $this->createOption()
+         ->setName('nocolor');
+     }
