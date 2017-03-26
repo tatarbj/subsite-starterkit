@@ -27,14 +27,13 @@ node('linux') {
     }
     env.WD_HOST_URL = "http://${env.WD_HOST}:${env.WD_PORT}/wd/hub"
     env.DB_NAME = "${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
-    env.RELEASE_NAME = "${env.PROJECT_ID}_${date}_${env.PLATFORM_PACKAGE_REFERENCE}"
-    def slackReleaseName = "${env.RELEASE_NAME}".replaceAll('_','-')
+    env.RELEASE_NAME = "${env.PROJECT_ID}_" + "${date}".trim() + "_${env.PLATFORM_PACKAGE_REFERENCE}"
 
     stage('Init') {
         deleteDir()
         checkout scm
         setBuildStatus("Build started.", "PENDING");
-        slackSend color: "good", message: "<${env.BUILD_URL}|${slackReleaseName} build ${env.BUILD_NUMBER}> started."
+        slackSend color: "good", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> started."
     }
 
     try {
@@ -68,12 +67,12 @@ node('linux') {
                 sh "./bin/phing build-dist -logger phing.listener.AnsiColorLogger"
                 sh 'cd build && tar -czf "${env.RELEASE_PATH}"/"${env.RELEASE_NAME}".tar.gz .'
                 setBuildStatus("Build complete.", "SUCCESS");
-                slackSend color: "good", message: "<${env.BUILD_URL}|${slackReleaseName} build ${env.BUILD_NUMBER}> completed."
+                slackSend color: "good", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> completed."
             }
         }
     } catch(err) {
         setBuildStatus("Build failed.", "FAILURE");
-        slackSend color: "danger", message: "<${env.BUILD_URL}|${slackReleaseName} build ${env.BUILD_NUMBER}> failed."
+        slackSend color: "danger", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> failed."
         throw(err)
     } finally {
         withCredentials([
