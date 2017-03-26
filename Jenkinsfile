@@ -19,7 +19,7 @@ node('linux') {
         sh "./bin/phing load-property-in-environment -D'property-name'='project.id'"
         sh "./bin/phing load-property-in-environment -D'property-name'='platform.package.reference'"
         env.DB_NAME = "${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
-        env.RELEASE_NAME = "sh(returnStdout: true, script: 'date +"%Y%m%d%H%M%S') + '_' + ${env.PROJECT_ID} + '_' + ${env.PLATFORM_PACKAGE_REFERENCE}"
+        env.RELEASE_NAME = sh(returnStdout: true, script: 'date + "%Y%m%d%H%M%S') + "_${env.PROJECT_ID}_${env.PLATFORM_PACKAGE_REFERENCE}"
         slackSend color: "good", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> started."
     }
 
