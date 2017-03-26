@@ -1,6 +1,22 @@
 node('linux') {
 
     load "/var/lib/jenkins/.envvars/subsite-starterkit.groovy"
+
+    /*
+     * Load build.properties file.
+     */
+    if (!fileExists('build.properties')){
+        echo 'No build properties found.'
+        exit 
+    }
+
+    // Requires "Pipeline Utility Steps" plugin.
+    def props = readProperties file: 'build.properties'
+
+    // Load needed properties into environment variables.
+    env.PROJECT_ID= props["project.id"]
+    env.PLATFORM_PACKAGE_REFERENCE= props["platform.package.reference"]
+
     Random random = new Random()
     tokens = "${env.WORKSPACE}".tokenize('/')
     env.SITE_PATH = tokens[tokens.size()-1]
@@ -9,19 +25,8 @@ node('linux') {
         env.WD_PORT = env.HTTP_MOCK_PORT.toInteger() + 1
     }
     env.WD_HOST_URL = "http://${env.WD_HOST}:${env.WD_PORT}/wd/hub"
-
-    if (!fileExists('build.properties')){
-        echo 'No build properties.'
-        exit 
-    }
-    def props = readProperties file: 'build.properties'
-    /*
-     * From build.properties file
-     */
-    env.PROJECT_ID= props["project.id"]
-    env.PLATFORM_PACKAGE_REFERENCE= props["platform.package.reference"]
     env.DB_NAME = "${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
-    env.RELEASE_NAME = "${env.PROJECT_ID}_" + sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S') + "_${env.PLATFORM_PACKAGE_REFERENCE}"
+    env.RELEASE_NAME = "${env.PROJECT_ID}_" + sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S') + "_${env.PLATFORM_PACKAGE_REFERENCE}.replaceAll('%2F','-').replaceAll('/','-').trim()"
 
 
     stage('Init') {
