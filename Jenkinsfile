@@ -4,7 +4,6 @@ node('linux') {
     Random random = new Random()
     tokens = "${env.WORKSPACE}".tokenize('/')
     env.SITE_PATH = tokens[tokens.size()-1]
-    env.RELEASE_NAME = "${env.JOB_NAME}".replaceAll('%2F','-').replaceAll('/','-').trim()
     env.HTTP_MOCK_PORT = random.nextInt(50000) + 10000
     if (env.WD_PORT == '0') {
         env.WD_PORT = env.HTTP_MOCK_PORT.toInteger() + 1
@@ -14,17 +13,19 @@ node('linux') {
     stage('Init') {
         deleteDir()
         checkout scm
-        env.PROJECT = sh(returnStdout: true, script: 'grep -Po "(?<=project.id = ).+" build.properties')
-        env.DB_NAME = "${env.PROJECT}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
         setBuildStatus("Build started.", "PENDING");
+        //sh 'composer install --no-suggest --no-interaction --ansi'
+        sh 'COMPOSER_CACHE_DIR=/dev/null composer install --no-suggest --no-interaction --ansi'
+        sh "./bin/phing load-property-in-environment -D'property-name'='project.id'"
+        sh "./bin/phing load-property-in-environment -D'property-name'='platform.package.reference'"
+        env.DB_NAME = "${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
+        env.RELEASE_NAME = "sh(returnStdout: true, script: 'date +"%Y%m%d%H%M%S') + '_' + ${env.PROJECT_ID} + '_' + ${env.PLATFORM_PACKAGE_REFERENCE}"
         slackSend color: "good", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> started."
     }
 
     try {
         wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
             stage('Check') {
-                //sh 'composer install --no-suggest --no-interaction --ansi'
-                sh 'COMPOSER_CACHE_DIR=/dev/null composer install --no-suggest --no-interaction --ansi'
                 sh './bin/phing setup-php-codesniffer quality-assurance -logger phing.listener.AnsiColorLogger'
             }
 

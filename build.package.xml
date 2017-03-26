@@ -610,6 +610,21 @@
         </if>
     </target>
 
+    <!-- Returns a loaded phing property if it exists. -->
+    <target name="load-property-in-environment" hidden="true">
+        <if>
+            <isset property="property-name" />
+            <then>
+                <php expression='str_replace(".", "_", strtoupper("${property-name}"))' returnProperty="environment-variable-name" level="debug" />
+                <exec command='sh ${environment-variable-name}=${${property-name}}' />
+                <echo msg='Setting environment variable: ${environment-variable-name}=${${property-name}}' />
+            </then>
+            <else>
+                <fail message="Build property property-name not provided." />
+            </else>
+        </if>
+    </target>
+
     <target
         name="build-dev"
         description="Build a local development version of the subsite."
