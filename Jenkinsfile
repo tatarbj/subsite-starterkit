@@ -33,7 +33,7 @@ node('linux') {
         deleteDir()
         checkout scm
         setBuildStatus("Build started.", "PENDING");
-        slackSend color: "good", message: '<"${env.BUILD_URL}"|${env.PLATFORM_PACKAGE_REFERENCE} build ${env.BUILD_NUMBER}> started.'
+        slackSend color: "good", message: "<${env.BUILD_URL}|${env.PLATFORM_PACKAGE_REFERENCE} build ${env.BUILD_NUMBER}> started."
     }
 
     try {
