@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2b9328d00b04e4aa017a8a6a2c185811",
-    "content-hash": "6f2ab2d5213488dd54c0e8defc6e5f21",
+    "hash": "fa1d3dd2bc6e939c39b68f2033949f4e",
+    "content-hash": "d74914e2374e4d3fd6ba72dbddddfe12",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1619,6 +1619,7 @@
                     "dev-master": "2.16.x-dev"
                 },
                 "patches_applied": {
+                    "Customize terminal colors": "patches/phing-customize-colors.patch",
                     "https://github.com/phingofficial/phing/pull/701": "patches/phing-composer-task_automatic-path.patch"
                 }
             },
