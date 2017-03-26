@@ -27,7 +27,7 @@ node('linux') {
     }
     env.WD_HOST_URL = "http://${env.WD_HOST}:${env.WD_PORT}/wd/hub"
     env.DB_NAME = "${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
-    env.RELEASE_NAME = "${env.PROJECT_ID}_" + date
+    env.RELEASE_NAME = "${env.PROJECT_ID}_".trim() + date + "_${env.PLATFORM_PACKAGE_RELEASE}".trim()
 
 
     stage('Init') {
