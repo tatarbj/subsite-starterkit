@@ -21,16 +21,14 @@ node('linux') {
     env.PROJECT_ID= props["project.id"]
     env.PLATFORM_PACKAGE_REFERENCE= props["platform.package.reference"]
     env.DB_NAME = "${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
-    env.RELEASE_NAME = "${env.PROJECT_ID}_" + sh(returnStdout: true, script: 'date + %Y%m%d%H%M%S') + "_${env.PLATFORM_PACKAGE_REFERENCE}"
+    env.RELEASE_NAME = "${env.PROJECT_ID}_" + sh(returnStdout: true, script: 'date + "%Y%m%d%H%M%S"') + "_${env.PLATFORM_PACKAGE_REFERENCE}"
 
 
     stage('Init') {
-        wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
-            deleteDir()
-            checkout scm
-            setBuildStatus("Build started.", "PENDING");
-            slackSend color: "good", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> started."
-        }
+        deleteDir()
+        checkout scm
+        setBuildStatus("Build started.", "PENDING");
+        slackSend color: "good", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> started."
     }
 
     try {
