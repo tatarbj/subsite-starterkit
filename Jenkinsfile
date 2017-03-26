@@ -33,7 +33,7 @@ node('linux') {
         deleteDir()
         checkout scm
         setBuildStatus("Build started.", "PENDING");
-        slackSend color: "good", message: "<${env.BUILD_URL}|${env.PLATFORM_PACKAGE_REFERENCE} build ${env.BUILD_NUMBER}> started."
+        slackSend color: "good", message: "<${env.BUILD_URL}|${env.PLATFORM_PACKAGE_REFERENCE} build ${env.BUILD_NUMBER}> started.", "mrkdwn": false
     }
 
     try {
@@ -67,12 +67,12 @@ node('linux') {
                 sh "./bin/phing build-dist -logger phing.listener.AnsiColorLogger"
                 sh 'cd build && tar -czf "${env.RELEASE_PATH}"/"${env.RELEASE_NAME}".tar.gz .'
                 setBuildStatus("Build complete.", "SUCCESS");
-                slackSend color: "good", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> complete."
+                slackSend color: "good", message: "<${env.BUILD_URL}|${env.PLATFORM_PACKAGE_REFERENCE} build ${env.BUILD_NUMBER}> completed.", "mrkdwn": false
             }
         }
     } catch(err) {
         setBuildStatus("Build failed.", "FAILURE");
-        slackSend color: "danger", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> failed."
+        slackSend color: "danger", message: "<${env.BUILD_URL}|${env.PLATFORM_PACKAGE_REFERENCE} build ${env.BUILD_NUMBER}> failed.", "mrkdwn": false
         throw(err)
     } finally {
         withCredentials([
