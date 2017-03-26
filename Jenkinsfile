@@ -69,9 +69,9 @@ node('linux') {
                 sh "./bin/phing build-dist -logger phing.listener.AnsiColorLogger"
                 sh "cd build"
 
-                def projectDir = new File("${env.RELEASE_PATH}/${PROJECT_ID}");
-                if (!projectDir.exists()) {
-                    projectDir.mkdirs()
+                def projectDir = "${env.RELEASE_PATH}/${PROJECT_ID}"
+                if (!"${projectDir}".exists()) {
+                    "${projectDir}".mkdirs()
                 }
 
                 sh "tar -czf ${projectDir}/${env.RELEASE_NAME}.tar.gz ."
