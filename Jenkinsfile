@@ -19,7 +19,7 @@ node('linux') {
 
     Random random = new Random()
     tokens = "${env.WORKSPACE}".tokenize('/')
-    date = sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S')
+    def date = sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S')
     env.SITE_PATH = tokens[tokens.size()-1]
     env.HTTP_MOCK_PORT = random.nextInt(50000) + 10000
     if (env.WD_PORT == '0') {
@@ -28,7 +28,7 @@ node('linux') {
     env.WD_HOST_URL = "http://${env.WD_HOST}:${env.WD_PORT}/wd/hub"
     env.DB_NAME = "${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
     env.RELEASE_NAME = "${env.PROJECT_ID}_".trim() + "${date}" + "_${env.PLATFORM_PACKAGE_REFERENCE}".replaceAll('%2F','-').replaceAll('/','-').trim()
-    slackReleaseName = ${env.RELEASE_NAME}.replaceAll('.','&middot;')
+    def slackReleaseName = ${env.RELEASE_NAME}.replaceAll('.','&middot;')
 
     stage('Init') {
         deleteDir()
