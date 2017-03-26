@@ -67,7 +67,14 @@ node('linux') {
 
             stage('Package') {
                 sh "./bin/phing build-dist -logger phing.listener.AnsiColorLogger"
-                sh "cd build && tar -czf ${env.RELEASE_PATH}/${env.RELEASE_NAME}.tar.gz ."
+                sh "cd build"
+
+                def projectDir = new File("${env.RELEASE_PATH}/${PROJECT_ID}");
+                if (!projectDir.exists()) {
+                    projectDir.mkdirs()
+                }
+
+                sh "tar -czf ${projectDir}/${env.RELEASE_NAME}.tar.gz ."
                 setBuildStatus("Build complete.", "SUCCESS");
                 slackSend color: "good", message: "${env.SUBSITE_NAME} build ${buildLink} completed."
             }
