@@ -10,6 +10,18 @@ node('linux') {
     }
     env.WD_HOST_URL = "http://${env.WD_HOST}:${env.WD_PORT}/wd/hub"
 
+    if (!fileExists('build.properties')){
+        echo 'No build properties.'
+        exit 
+    }
+    def props = readProperties file: 'build.properties'
+    /*
+     * From build.properties file
+     */
+    env.PROJECT_ID= props["project.id"]
+    env.PLATFORM_PACKAGE_REFERENCE= props["platform.package.reference"]
+
+
     stage('Init') {
         wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
             deleteDir()
@@ -20,7 +32,7 @@ node('linux') {
             sh "./bin/phing load-property-in-environment -D'property-name'='project.id'"
             sh "./bin/phing load-property-in-environment -D'property-name'='platform.package.reference'"
             env.DB_NAME = "${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
-            env.RELEASE_NAME = sh(returnStdout: true, script: 'date + "%Y%m%d%H%M%S') + "_${env.PROJECT_ID}_${env.PLATFORM_PACKAGE_REFERENCE}"
+            env.RELEASE_NAME = "${env.PROJECT_ID}_" + sh(returnStdout: true, script: 'date + %Y%m%d%H%M%S') + "_${env.PLATFORM_PACKAGE_REFERENCE}"
             slackSend color: "good", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> started."
         }
     }
@@ -28,6 +40,8 @@ node('linux') {
     try {
         wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
             stage('Check') {
+                //sh 'composer install --no-suggest --no-interaction --ansi'
+                sh 'COMPOSER_CACHE_DIR=/dev/null composer install --no-suggest --no-interaction --ansi'
                 sh './bin/phing setup-php-codesniffer quality-assurance -logger phing.listener.AnsiColorLogger'
             }
 
