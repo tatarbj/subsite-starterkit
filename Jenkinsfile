@@ -15,7 +15,8 @@ node('linux') {
 
     // Load needed properties into environment variables.
     env.PROJECT_ID= props["project.id"]
-    env.PLATFORM_PACKAGE_REFERENCE= props["platform.package.reference"]
+    env.PLATFORM_PACKAGE_REFERENCE = props["platform.package.reference"]
+    env.SUBSITE_NAME = props["subsite.name"]
 
     Random random = new Random()
     tokens = "${env.WORKSPACE}".tokenize('/')
@@ -28,12 +29,13 @@ node('linux') {
     env.WD_HOST_URL = "http://${env.WD_HOST}:${env.WD_PORT}/wd/hub"
     env.DB_NAME = "${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
     env.RELEASE_NAME = "${env.PROJECT_ID}_" + "${date}".trim() + "_${env.PLATFORM_PACKAGE_REFERENCE}"
+    def buildLink = "<${env.BUILD_URL}|${env.PROJECT_ID} #${env.BUILD_NUMBER}>"
 
     stage('Init') {
         deleteDir()
         checkout scm
         setBuildStatus("Build started.", "PENDING");
-        slackSend color: "good", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> started."
+        slackSend color: "good", message: "${env.SUBSITE_NAME} build ${buildLink} started."
     }
 
     try {
@@ -65,14 +67,14 @@ node('linux') {
 
             stage('Package') {
                 sh "./bin/phing build-dist -logger phing.listener.AnsiColorLogger"
-                sh 'cd build && tar -czf "${env.RELEASE_PATH}"/"${env.RELEASE_NAME}".tar.gz .'
+                sh 'cd build && tar -czf "${env.RELEASE_PATH}/${env.RELEASE_NAME}.tar.gz" .'
                 setBuildStatus("Build complete.", "SUCCESS");
-                slackSend color: "good", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> completed."
+                slackSend color: "good", message: "${env.SUBSITE_NAME} build ${buildLink} completed."
             }
         }
     } catch(err) {
         setBuildStatus("Build failed.", "FAILURE");
-        slackSend color: "danger", message: "<${env.BUILD_URL}|${env.RELEASE_NAME} build ${env.BUILD_NUMBER}> failed."
+        slackSend color: "danger", message: "<${env.PROJECT_ID} build ${buildLink} failed."
         throw(err)
     } finally {
         withCredentials([
