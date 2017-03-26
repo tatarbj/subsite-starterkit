@@ -29,7 +29,7 @@ node('linux') {
     env.WD_HOST_URL = "http://${env.WD_HOST}:${env.WD_PORT}/wd/hub"
     env.DB_NAME = "${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
     env.RELEASE_NAME = "${env.PROJECT_ID}_" + "${date}".trim() + "_${env.PLATFORM_PACKAGE_REFERENCE}"
-    def buildLink = "<${env.BUILD_URL}|${env.PROJECT_ID} #${env.BUILD_NUMBER}>"
+    def buildLink = "<${env.BUILD_URL}consoleFull|${env.PROJECT_ID} #${env.BUILD_NUMBER}>"
 
     stage('Init') {
         deleteDir()
@@ -67,7 +67,7 @@ node('linux') {
 
             stage('Package') {
                 sh "./bin/phing build-dist -logger phing.listener.AnsiColorLogger"
-                sh 'cd build && tar -czf "${env.RELEASE_PATH}/${env.RELEASE_NAME}.tar.gz" .'
+                sh "cd build && tar -czf ${env.RELEASE_PATH}/${env.RELEASE_NAME}.tar.gz ."
                 setBuildStatus("Build complete.", "SUCCESS");
                 slackSend color: "good", message: "${env.SUBSITE_NAME} build ${buildLink} completed."
             }
