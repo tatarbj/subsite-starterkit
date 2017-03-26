@@ -14,7 +14,7 @@ node('linux') {
     def props = readProperties file: 'build.properties'
 
     // Load needed properties into environment variables.
-    env.PROJECT_ID= props["project.id"]
+    env.PROJECT_ID = props["project.id"]
     env.PLATFORM_PACKAGE_REFERENCE = props["platform.package.reference"]
     env.SUBSITE_NAME = props["subsite.name"]
 
