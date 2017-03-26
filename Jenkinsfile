@@ -27,13 +27,13 @@ node('linux') {
     }
     env.WD_HOST_URL = "http://${env.WD_HOST}:${env.WD_PORT}/wd/hub"
     env.DB_NAME = "${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
-    env.RELEASE_NAME = "${env.PROJECT_ID}_".trim() + "${date}" + "_${env.PLATFORM_PACKAGE_REFERENCE}".trim()
+    env.RELEASE_NAME = "${env.PROJECT_ID}".trim() + '_' + "${date}" + '_' + "${env.PLATFORM_PACKAGE_REFERENCE}".trim()
 
     stage('Init') {
         deleteDir()
         checkout scm
         setBuildStatus("Build started.", "PENDING");
-        slackSend color: "good", message: '<"${env.BUILD_URL}"|"${env.PLATFORM_PACKAGE_REFERENCE}" build "${env.BUILD_NUMBER}"> started.'
+        slackSend color: "good", message: '<"${env.BUILD_URL}"|${env.PLATFORM_PACKAGE_REFERENCE} build ${env.BUILD_NUMBER}> started.'
     }
 
     try {
