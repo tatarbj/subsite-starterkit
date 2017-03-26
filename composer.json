@@ -65,6 +65,7 @@
         "https://github.com/drush-ops/drush/pull/2215": "patches/drush-force-color.patch"
       },
       "phing/phing": {
+        "Customize terminal colors": "patches/phing-customize-colors.patch",
         "https://github.com/phingofficial/phing/pull/701": "patches/phing-composer-task_automatic-path.patch"
       }
     }
