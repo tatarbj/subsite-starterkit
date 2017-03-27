@@ -79,7 +79,7 @@ node('linux') {
         }
     } catch(err) {
         setBuildStatus("Build failed.", "FAILURE");
-        slackSend color: "danger", message: "<${env.PROJECT_ID} build ${buildLink} failed."
+        slackSend color: "danger", message: "${env.PROJECT_ID} build ${buildLink} failed."
         throw(err)
     } finally {
         withCredentials([
