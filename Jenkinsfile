@@ -11,12 +11,15 @@ node('linux') {
     }
 
     // Requires "Pipeline Utility Steps" plugin.
-    def props = readProperties file: 'build.properties'
+    def defaults = readProperties file: 'build.properties.dist'
+    def props = readProperties defaults: defaults, file: 'build.properties'
+    echo props["subsite.name"]
 
     // Load needed properties into environment variables.
     env.PROJECT_ID = props["project.id"]
     env.PLATFORM_PACKAGE_REFERENCE = props["platform.package.reference"]
     env.SUBSITE_NAME = props["subsite.name"]
+    env.PHING_PROJECT_BUILD_DIR = props["phing.project.build.dir"]
 
     Random random = new Random()
     tokens = "${env.WORKSPACE}".tokenize('/')
@@ -67,14 +70,9 @@ node('linux') {
 
             stage('Package') {
                 sh "./bin/phing build-dist -logger phing.listener.AnsiColorLogger"
-                sh "cd build"
+                sh "cd ${PHING_PROJECT_BUILD_DIR}"
 
-                def projectDir = "${env.RELEASE_PATH}/${PROJECT_ID}"
-                if (!"${projectDir}".exists()) {
-                    "${projectDir}".mkdirs()
-                }
-
-                sh "tar -czf ${projectDir}/${env.RELEASE_NAME}.tar.gz ."
+                sh "tar -czf ${env.RELEASE_PATH}/${env.RELEASE_NAME}.tar.gz ."
                 setBuildStatus("Build complete.", "SUCCESS");
                 slackSend color: "good", message: "${env.SUBSITE_NAME} build ${buildLink} completed."
             }
