@@ -1,6 +1,4 @@
-node('linux') {
-
-    load "/var/lib/jenkins/.envvars/subsite-starterkit.groovy"
+node {
 
     /*
      * Load build.properties file.
