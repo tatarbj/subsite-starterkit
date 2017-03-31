@@ -1,15 +1,16 @@
 node {
 
     // Requires "Pipeline Utility Steps" plugin.
+    def pwd = pwd()
     def defaults = readProperties file: 'build.properties.dist'
 
     if (!fileExists('build.properties')) {
         echo "File build.properties not found, loading build.properties.dist."
-        def props = readProperties file: "${WORKSPACE}@script/build.properties.dist"
+        def props = readProperties file: "${pwd}/build.properties.dist"
     }
     else {
         echo "File build.properties found, merging with build.properties.dist."
-        def props = readProperties defaults: defaults, file: "${WORKSPACE}@script/build.properties"
+        def props = readProperties defaults: defaults, file: "${pwd}@script/build.properties"
     }
 
     // Load needed properties into environment variables.
