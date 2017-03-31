@@ -1,17 +1,16 @@
 node {
 
-    /*
-     * Load build.properties file.
-     */
-    if (!fileExists('build.properties')){
-        echo 'No build properties found.'
-        exit 
-    }
-
     // Requires "Pipeline Utility Steps" plugin.
     def defaults = readProperties file: 'build.properties.dist'
-    def props = readProperties defaults: defaults, file: 'build.properties'
-    echo props["subsite.name"]
+
+    if (!fileExists('build.properties')){
+        echo 'File build.properties not found, loading build.properties.dist.'
+        def props = readProperties defaults: defaults'
+    }
+    else {
+        echo 'File build.properties found, merging with build.properties.dist.'
+        def props = readProperties defaults: defaults, file: 'build.properties'
+    }
 
     // Load needed properties into environment variables.
     env.PROJECT_ID = props["project.id"]
