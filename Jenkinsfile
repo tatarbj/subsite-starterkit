@@ -3,9 +3,9 @@ node {
     // Requires "Pipeline Utility Steps" plugin.
     def defaults = readProperties file: 'build.properties.dist'
 
-    if (!fileExists('build.properties')){
+    if (!fileExists('build.properties')) {
         echo 'File build.properties not found, loading build.properties.dist.'
-        def props = readProperties defaults: defaults'
+        def props = readProperties defaults: defaults
     }
     else {
         echo 'File build.properties found, merging with build.properties.dist.'
