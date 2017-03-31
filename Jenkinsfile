@@ -5,7 +5,7 @@ node {
 
     if (!fileExists('build.properties')) {
         echo 'File build.properties not found, loading build.properties.dist.'
-        def props = readProperties defaults: defaults
+        def props = readProperties file: 'build.properties.dist'
     }
     else {
         echo 'File build.properties found, merging with build.properties.dist.'
