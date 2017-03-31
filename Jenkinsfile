@@ -5,11 +5,12 @@ node {
         checkout scm
 
         if (!fileExists('build.properties')) {
-            echo "File build.properties not found, loading build.properties.dist."
-            def props = readProperties file: 'build.properties.dist'
+            echo "File build.properties not found. Can not proceed."
+            exit
         }
         echo "File build.properties found, merging with build.properties.dist."
-        def props = readProperties defaults: props, file: 'build.properties'
+        def defaults = readProperties file: 'build.properties.dist'
+        def props = readProperties defaults: defaults, file: 'build.properties'
 
         // Load needed properties into environment variables.
         env.PROJECT_ID = props["project.id"]
