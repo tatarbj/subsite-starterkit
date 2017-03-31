@@ -4,15 +4,13 @@ node {
         deleteDir()
         checkout scm
 
-        // Requires "Pipeline Utility Steps" plugin.
-        def defaults = readProperties file: 'build.properties.dist'
-
         if (!fileExists('build.properties')) {
             echo "File build.properties not found, loading build.properties.dist."
             def props = readProperties file: 'build.properties.dist'
         }
         else {
             echo "File build.properties found, merging with build.properties.dist."
+            def defaults = readProperties file: 'build.properties.dist'
             def props = readProperties defaults: defaults, file: 'build.properties'
         }
 
@@ -33,10 +31,10 @@ node {
         env.WD_HOST_URL = "http://${env.WD_HOST}:${env.WD_PORT}/wd/hub"
         env.DB_NAME = "${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
         env.RELEASE_NAME = "${env.PROJECT_ID}_" + "${date}".trim() + "_${env.PLATFORM_PACKAGE_REFERENCE}"
-        def buildLink = "<${env.BUILD_URL}consoleFull|${env.PROJECT_ID} #${env.BUILD_NUMBER}>"
+        env.BUILDLINK = "<${env.BUILD_URL}consoleFull|${env.PROJECT_ID} #${env.BUILD_NUMBER}>"
 
         setBuildStatus("Build started.", "PENDING");
-        slackSend color: "good", message: "${env.SUBSITE_NAME} build ${buildLink} started."
+        slackSend color: "good", message: "${env.SUBSITE_NAME} build ${env.BUILDLINK} started."
     }
 
     try {
@@ -72,12 +70,12 @@ node {
 
                 sh "tar -czf ${env.RELEASE_PATH}/${env.RELEASE_NAME}.tar.gz ."
                 setBuildStatus("Build complete.", "SUCCESS");
-                slackSend color: "good", message: "${env.SUBSITE_NAME} build ${buildLink} completed."
+                slackSend color: "good", message: "${env.SUBSITE_NAME} build ${env.BUILDLINK} completed."
             }
         }
     } catch(err) {
         setBuildStatus("Build failed.", "FAILURE");
-        slackSend color: "danger", message: "${env.PROJECT_ID} build ${buildLink} failed."
+        slackSend color: "danger", message: "${env.PROJECT_ID} build ${env.BUILDLINK} failed."
         throw(err)
     } finally {
         withCredentials([
