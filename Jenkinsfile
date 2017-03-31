@@ -1,43 +1,41 @@
 node {
 
-    // Requires "Pipeline Utility Steps" plugin.
-    def pwd = pwd()
-    sh "ls -la ${pwd}"
-    def defaults = readProperties file: "${pwd}@script/build.properties.dist"
-
-    if (!fileExists('build.properties')) {
-        echo "File build.properties not found, loading build.properties.dist."
-        def props = readProperties file: "${pwd}@script/build.properties.dist"
-    }
-    else {
-        echo "File build.properties found, merging with build.properties.dist."
-        def props = readProperties defaults: defaults, file: "${pwd}@script/build.properties"
-    }
-
-    // Load needed properties into environment variables.
-    env.PROJECT_ID = props["project.id"]
-    env.PLATFORM_PACKAGE_REFERENCE = props["platform.package.reference"]
-    env.SUBSITE_NAME = props["subsite.name"]
-    env.PHING_PROJECT_BUILD_DIR = props["phing.project.build.dir"]
-
-    Random random = new Random()
-    tokens = "${env.WORKSPACE}".tokenize('/')
-    def date = sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S')
-    env.SITE_PATH = tokens[tokens.size()-1]
-    env.HTTP_MOCK_PORT = random.nextInt(50000) + 10000
-    if (env.WD_PORT == '0') {
-        env.WD_PORT = env.HTTP_MOCK_PORT.toInteger() + 1
-    }
-    env.WD_HOST_URL = "http://${env.WD_HOST}:${env.WD_PORT}/wd/hub"
-    env.DB_NAME = "${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
-    env.RELEASE_NAME = "${env.PROJECT_ID}_" + "${date}".trim() + "_${env.PLATFORM_PACKAGE_REFERENCE}"
-    def buildLink = "<${env.BUILD_URL}consoleFull|${env.PROJECT_ID} #${env.BUILD_NUMBER}>"
-
     stage('Init') {
         deleteDir()
         checkout scm
         setBuildStatus("Build started.", "PENDING");
         slackSend color: "good", message: "${env.SUBSITE_NAME} build ${buildLink} started."
+
+        // Requires "Pipeline Utility Steps" plugin.
+        def defaults = readProperties file: 'build.properties.dist'
+
+        if (!fileExists('build.properties')) {
+            echo "File build.properties not found, loading build.properties.dist."
+            def props = readProperties file: 'build.properties.dist'
+        }
+        else {
+            echo "File build.properties found, merging with build.properties.dist."
+            def props = readProperties defaults: defaults, file: 'build.properties'
+        }
+
+        // Load needed properties into environment variables.
+        env.PROJECT_ID = props["project.id"]
+        env.PLATFORM_PACKAGE_REFERENCE = props["platform.package.reference"]
+        env.SUBSITE_NAME = props["subsite.name"]
+        env.PHING_PROJECT_BUILD_DIR = props["phing.project.build.dir"]
+
+        Random random = new Random()
+        tokens = "${env.WORKSPACE}".tokenize('/')
+        def date = sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S')
+        env.SITE_PATH = tokens[tokens.size()-1]
+        env.HTTP_MOCK_PORT = random.nextInt(50000) + 10000
+        if (env.WD_PORT == '0') {
+             env.WD_PORT = env.HTTP_MOCK_PORT.toInteger() + 1
+        }
+        env.WD_HOST_URL = "http://${env.WD_HOST}:${env.WD_PORT}/wd/hub"
+        env.DB_NAME = "${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
+        env.RELEASE_NAME = "${env.PROJECT_ID}_" + "${date}".trim() + "_${env.PLATFORM_PACKAGE_REFERENCE}"
+        def buildLink = "<${env.BUILD_URL}consoleFull|${env.PROJECT_ID} #${env.BUILD_NUMBER}>"
     }
 
     try {
