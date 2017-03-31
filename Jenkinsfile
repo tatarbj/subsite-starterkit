@@ -2,6 +2,7 @@ node {
 
     // Requires "Pipeline Utility Steps" plugin.
     def pwd = pwd()
+    sh "ls -la ${pwd}"
     def defaults = readProperties file: "${pwd}@script/build.properties.dist"
 
     if (!fileExists('build.properties')) {
