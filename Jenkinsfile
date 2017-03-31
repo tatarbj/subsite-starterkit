@@ -3,8 +3,6 @@ node {
     stage('Init') {
         deleteDir()
         checkout scm
-        setBuildStatus("Build started.", "PENDING");
-        slackSend color: "good", message: "${env.SUBSITE_NAME} build ${buildLink} started."
 
         // Requires "Pipeline Utility Steps" plugin.
         def defaults = readProperties file: 'build.properties.dist'
@@ -36,6 +34,9 @@ node {
         env.DB_NAME = "${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
         env.RELEASE_NAME = "${env.PROJECT_ID}_" + "${date}".trim() + "_${env.PLATFORM_PACKAGE_REFERENCE}"
         def buildLink = "<${env.BUILD_URL}consoleFull|${env.PROJECT_ID} #${env.BUILD_NUMBER}>"
+
+        setBuildStatus("Build started.", "PENDING");
+        slackSend color: "good", message: "${env.SUBSITE_NAME} build ${buildLink} started."
     }
 
     try {
