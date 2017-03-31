@@ -5,11 +5,11 @@ node {
 
     if (!fileExists('build.properties')) {
         echo "File build.properties not found, loading build.properties.dist."
-        def props = readProperties file: "${WORKSPACE}/build.properties.dist"
+        def props = readProperties file: "${WORKSPACE}@script/build.properties.dist"
     }
     else {
         echo "File build.properties found, merging with build.properties.dist."
-        def props = readProperties defaults: defaults, file: "${WORKSPACE}/build.properties"
+        def props = readProperties defaults: defaults, file: "${WORKSPACE}@script/build.properties"
     }
 
     // Load needed properties into environment variables.
