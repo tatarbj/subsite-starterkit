@@ -65,7 +65,10 @@ node {
             stage('Package') {
                 sh "./bin/phing build-dist -logger phing.listener.AnsiColorLogger"
                 sh "cd ${PHING_PROJECT_BUILD_DIR}"
-
+                env.RELEASE_PATH = "/var/jenkins_home/releases/${env.PROJECT_ID}"
+                if (!fileExist(env.RELEASE_PATH)) {
+                    sh "mkdir ${env.RELEASE_PATH}"
+                }
                 sh "tar -czf ${env.RELEASE_PATH}/${env.RELEASE_NAME}.tar.gz ."
                 setBuildStatus("Build complete.", "SUCCESS");
                 slackSend color: "good", message: "${env.SUBSITE_NAME} build ${env.BUILDLINK} completed."
