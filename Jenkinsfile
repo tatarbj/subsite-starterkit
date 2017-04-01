@@ -40,7 +40,7 @@ node {
             stage('Check') {
                 sh 'composer install --no-suggest --no-interaction --ansi'
                 //sh 'COMPOSER_CACHE_DIR=/dev/null composer install --no-suggest --no-interaction --ansi'
-                sh './bin/phing setup-php-codesniffer quality-assurance -logger phing.listener.AnsiColorLogger'
+                //sh './bin/phing setup-php-codesniffer quality-assurance -logger phing.listener.AnsiColorLogger'
             }
 
 
@@ -49,11 +49,11 @@ node {
                     [$class: 'UsernamePasswordMultiBinding', credentialsId: 'mysql', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASS']
                 ]) {
                     sh "./bin/phing build-dev -D'behat.base_url'='$BASE_URL/$SITE_PATH/platform/' -logger phing.listener.AnsiColorLogger"
-                    sh "./bin/phing install-dev -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='$DB_USER' -D'drupal.db.password'='$DB_PASS' -logger phing.listener.AnsiColorLogger"
                 }
             }
-
+/*
             stage('Test') {
+                sh "./bin/phing install-dev -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='$DB_USER' -D'drupal.db.password'='$DB_PASS' -logger p$
                 timeout(time: 2, unit: 'HOURS') {
                     if (env.WD_BROWSER_NAME == 'phantomjs') {
                         sh "phantomjs --webdriver=${env.WD_HOST}:${env.WD_PORT} &"
@@ -61,7 +61,7 @@ node {
                     sh "./bin/behat -c tests/behat.yml --colors --strict"
                 }
             }
-
+*/
             stage('Package') {
                 sh "./bin/phing build-dist -logger phing.listener.AnsiColorLogger"
                 sh "cd ${PHING_PROJECT_BUILD_DIR}"
