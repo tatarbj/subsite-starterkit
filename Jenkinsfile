@@ -45,7 +45,7 @@ node {
 
 
             stage('Build') {
-                sh "./bin/phing build-dev -D'behat.base_url'='$BASE_URL/$SITE_PATH/platform/' -logger phing.listener.AnsiColorLogger"
+                sh "./bin/phing build-dev -logger phing.listener.AnsiColorLogger"
             }
 /*
             stage('Test') {
