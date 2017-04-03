@@ -47,21 +47,20 @@ node {
             stage('Build') {
                 sh "./bin/phing build-dev -logger phing.listener.AnsiColorLogger"
             }
-/*
+
             stage('Test') {
-                withCredentials([
-                    [$class: 'UsernamePasswordMultiBinding', credentialsId: 'mysql', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASS']
-                ]) {
-                    sh "./bin/phing install-dev -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='$DB_USER' -D'drupal.db.password'='$DB_PASS' -logger p$
-                    timeout(time: 2, unit: 'HOURS') {
-                        if (env.WD_BROWSER_NAME == 'phantomjs') {
-                            sh "phantomjs --webdriver=${env.WD_HOST}:${env.WD_PORT} &"
-                        }
-                        sh "./bin/behat -c tests/behat.yml --colors --strict"
+                sh 'bin/phing start-containers'
+                sh 'sleep 60'
+
+                sh "./bin/phing install-dev -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='$DB_USER' -D'drupal.db.password'='$DB_PASS' -logger p$
+                timeout(time: 2, unit: 'HOURS') {
+                    if (env.WD_BROWSER_NAME == 'phantomjs') {
+                        sh "phantomjs --webdriver=${env.WD_HOST}:${env.WD_PORT} &"
                     }
+                    sh "./bin/behat -c tests/behat.yml --colors --strict"
                 }
             }
-*/
+
             stage('Package') {
                 sh "./bin/phing build-dist -logger phing.listener.AnsiColorLogger"
                 sh "cd ${PHING_PROJECT_BUILD_DIR}"
@@ -79,11 +78,7 @@ node {
         slackSend color: "danger", message: "${env.PROJECT_ID} build ${env.BUILDLINK} failed."
         throw(err)
     } finally {
-/*        withCredentials([
-            [$class: 'UsernamePasswordMultiBinding', credentialsId: 'mysql', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASS']
-        ]) {
-            sh 'mysql -u $DB_USER --password=$DB_PASS -e "DROP DATABASE IF EXISTS $DB_NAME;"'
-        }*/
+        sh 'bin/phing stop-containers'
     }
 }
 

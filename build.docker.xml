@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="My subsite" default="help">
+
+<target name="setup-docker-compose" description="Setup Docker-compose">
+  <copy todir="${phing.project.build.dir}" overwrite="true">
+    <fileset dir="${phing.project.resources.dir}" casesensitive="yes">
+      <include name="docker-compose.yml.dist"/>
+    </fileset>
+    <filterchain>
+      <replacetokens begintoken="{{" endtoken="}}">
+        <token key="MYSQL_DATABASE" value="${MYSQL_DATABASE}" />
+        <token key="MYSQL_USER" value="${MYSQL_USER}" />
+        <token key="MYSQL_PASSWORD" value="${MYSQL_PASSWORD}" />
+        <token key="MYSQL_ROOT_PASSWORD" value="${MYSQL_ROOT_PASSWORD}" />
+      </replacetokens>
+    </filterchain>
+    <mapper type="glob" from="docker-compose.yml.dist" to="docker-compose.yml" />
+  </copy>
+</target>
+
+<target name="start-containers" description="Start all docker containers using docker-compose">
+  <exec command="docker-compose -f ${subsite.resources.dir}/docker/docker-compose.yml up -d" />
+</target>
+
+<target name="stop-containers" description="Stop all docker containers and clean up">
+  <exec command="docker-compose -f ${subsite.resources.dir}/docker/docker-compose.yml stop; docker rm $(docker ps -aq)" />
+</target>
+
+</project>
