@@ -19,11 +19,11 @@
 </target>
 
 <target name="start-containers" description="Start all docker containers using docker-compose">
-  <exec command="docker-compose -f ${subsite.resources.dir}/docker/docker-compose.yml up -d" />
+  <exec command="sudo docker-compose -f ${subsite.resources.dir}/docker/docker-compose.yml up -d" />
 </target>
 
 <target name="stop-containers" description="Stop all docker containers and clean up">
-  <exec command="docker-compose -f ${subsite.resources.dir}/docker/docker-compose.yml stop; docker rm $(docker ps -aq)" />
+  <exec command="sudo docker-compose -f ${subsite.resources.dir}/docker/docker-compose.yml stop; docker rm $(docker ps -aq)" />
 </target>
 
 </project>
