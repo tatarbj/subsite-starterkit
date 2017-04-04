@@ -1,5 +1,5 @@
-dockerNode(image: "php:5.6-apache", sideContainers: ["mysql:5.7"]) {
-//node {
+//dockerNode(image: "php:5.6-apache", sideContainers: ["mysql:5.7"]) {
+node {
 
     stage('Init') {
         deleteDir()
@@ -52,7 +52,7 @@ dockerNode(image: "php:5.6-apache", sideContainers: ["mysql:5.7"]) {
             stage('Test') {
                 sh './bin/phing start-containers'
                 sh 'sleep 60'
-
+                sh 'docker exec docker_php_1 ls -la /var/www/html'
                 sh "./bin/phing install-dev -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='$DB_USER' -D'drupal.db.password'='$DB_PASS' -logger phing.listener.AnsiColorLogger"
                 timeout(time: 2, unit: 'HOURS') {
                     if (env.WD_BROWSER_NAME == 'phantomjs') {
