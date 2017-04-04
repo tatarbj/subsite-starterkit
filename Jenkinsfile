@@ -52,7 +52,7 @@ node {
             stage('Test') {
                 sh './bin/phing start-containers'
                 sh 'sleep 60'
-                sh 'docker exec docker_php_1 ls -la /var/www/html'
+                sh 'sudo docker exec docker_php_1 ls -la /var/www/html'
                 sh "./bin/phing install-dev -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='$DB_USER' -D'drupal.db.password'='$DB_PASS' -logger phing.listener.AnsiColorLogger"
                 timeout(time: 2, unit: 'HOURS') {
                     if (env.WD_BROWSER_NAME == 'phantomjs') {
