@@ -1,4 +1,5 @@
-node {
+dockerNode(image: "php:5.6-apache", sideContainers: ["mysql:5.7"]) {
+//node {
 
     stage('Init') {
         deleteDir()
