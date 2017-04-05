@@ -34,7 +34,7 @@ node {
          
         env.DB_USER = "docker"
         env.DB_NAME = "database"
-        env.DB_PASS = "password"
+        env.DB_PASS = "passtoor"
 
         setBuildStatus("Build started.", "PENDING");
         slackSend color: "good", message: "${env.SUBSITE_NAME} build ${env.BUILDLINK} started."
