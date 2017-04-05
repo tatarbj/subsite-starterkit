@@ -7,15 +7,15 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ../../platform:/var/www/html
+      - ./:/var/www/html
     links:
       - db
   db:
-    image: mysql:5.7
+    image: mysql:5.6.26
     ports:
       - "3306:3306"
-    volumes:
-      - /var/lib/mysql
+#    volumes:
+#      - /var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=passtoor
       - MYSQL_USER=docker

@@ -31,6 +31,10 @@ node {
         env.DB_NAME = "${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
         env.RELEASE_NAME = "${env.PROJECT_ID}_" + "${date}".trim() + "_${env.PLATFORM_PACKAGE_REFERENCE}"
         env.BUILDLINK = "<${env.BUILD_URL}consoleFull|${env.PROJECT_ID} #${env.BUILD_NUMBER}>"
+         
+        env.DB_USER = "docker"
+        env.DB_NAME = "database"
+        env.DB_PASS = "password"
 
         setBuildStatus("Build started.", "PENDING");
         slackSend color: "good", message: "${env.SUBSITE_NAME} build ${env.BUILDLINK} started."
