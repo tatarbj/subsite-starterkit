@@ -9,7 +9,7 @@ docker-php-mysql-mysql:
     - MYSQL_ROOT_PASSWORD=password
     - MYSQL_DATABASE=database
     - MYSQL_USER=root
-    - MYSQL_PASSWORD=passwor
+    - MYSQL_PASSWORD=password
 
 docker-php-mysql-webserver:
   image: phpdockerio/nginx:latest

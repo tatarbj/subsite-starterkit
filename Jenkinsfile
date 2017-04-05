@@ -54,7 +54,7 @@ node {
             }
 
             stage('Test') {
-                docker.image("docker_php").inside {
+                docker.image("b2021e51bd27").inside {
                     sh "./bin/phing install-dev -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='$DB_USER' -D'drupal.db.password'='$DB_PASS' -logger phing.listener.AnsiColorLogger"
                 } 
                 timeout(time: 2, unit: 'HOURS') {
