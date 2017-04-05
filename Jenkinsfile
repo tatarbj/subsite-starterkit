@@ -32,7 +32,7 @@ node {
         env.RELEASE_NAME = "${env.PROJECT_ID}_" + "${date}".trim() + "_${env.PLATFORM_PACKAGE_REFERENCE}"
         env.BUILDLINK = "<${env.BUILD_URL}consoleFull|${env.PROJECT_ID} #${env.BUILD_NUMBER}>"
          
-        env.DB_USER = "docker"
+        env.DB_USER = "root"
         env.DB_NAME = "database"
         env.DB_PASS = "passtoor"
 
