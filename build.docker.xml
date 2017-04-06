@@ -3,7 +3,7 @@
 
 <target name="setup-docker-compose" description="Setup Docker-compose">
   <copy todir="${phing.project.build.dir}" overwrite="true">
-    <fileset dir="${phing.project.resources.dir}" casesensitive="yes">
+    <fileset dir="${phing.project.resources.dir}/docker" casesensitive="yes">
       <include name="docker-compose.yml.dist"/>
     </fileset>
     <filterchain>
