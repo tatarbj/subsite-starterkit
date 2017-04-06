@@ -19,6 +19,8 @@
             verbose="${drush.verbose}"
             color="${drush.color}">
             <option name="db-url" value="${drupal.db.url}" />
+            <option name="db-su" value="${drupal.db.su}" />
+            <option name="db-su-pw" value="${drupal.db.su.pw}" />
             <option name="site-name" value="'${subsite.name}'" />
             <option name="account-name" value="${drupal.admin.username}" />
             <option name="account-pass" value="${drupal.admin.password}" />
