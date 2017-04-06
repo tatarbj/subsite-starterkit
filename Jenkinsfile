@@ -56,8 +56,8 @@ node {
             }
 
             stage('Test') {
-                sh 'bin/phing setup-docker-compose'
-                sh 'bin/phing start-containers'
+                sh 'bin/phing setup-docker-compose -logger phing.listener.AnsiColorLogger'
+                sh 'bin/phing start-containers -logger phing.listener.AnsiColorLogger'
                 sh "./bin/phing install-dev -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='$DB_USER' -D'drupal.db.password'='$DB_PASS' -logger phing.listener.AnsiColorLogger"
                 timeout(time: 2, unit: 'HOURS') {
                     if (env.WD_BROWSER_NAME == 'phantomjs') {
@@ -84,7 +84,7 @@ node {
         slackSend color: "danger", message: "${env.PROJECT_ID} build ${env.BUILDLINK} failed."
         throw(err)
     } finally {
-        sh 'bin/phing start-containers'
+        //sh 'bin/phing start-containers'
     }
 }
 
