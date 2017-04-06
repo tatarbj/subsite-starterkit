@@ -2,8 +2,8 @@
 <project name="My subsite" default="help">
 
 <target name="setup-docker-compose" description="Setup Docker-compose">
-  <copy todir="${phing.project.build.dir}" overwrite="true">
-    <fileset dir="${phing.project.resources.dir}/docker" casesensitive="yes">
+  <copy todir="${platform.build.dir}" overwrite="true">
+    <fileset dir="${subsite.resources.dir}/docker" casesensitive="yes">
       <include name="docker-compose.yml.dist"/>
     </fileset>
     <filterchain>
@@ -49,11 +49,11 @@
 </target>
 
 <target name="start-containers" description="Start all docker containers using docker-compose">
-  <exec command="docker-compose -f ${subsite.resources.dir}/docker/docker-compose.yml up -d" />
+  <exec command="docker-compose -f ${platform.build.dir}/docker-compose.yml up -d" />
 </target>
 
 <target name="stop-containers" description="Stop all docker containers and clean up">
-  <exec command="docker-compose -f ${subsite.resources.dir}/docker/docker-compose.yml stop; docker rm $(docker ps -aq)" />
+  <exec command="docker-compose -f ${platform.build.dir}/docker-compose.yml stop; docker rm $(docker ps -aq)" />
 </target>
 
 </project>
