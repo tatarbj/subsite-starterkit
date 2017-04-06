@@ -6,4 +6,4 @@ RUN apt-get update \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 
-WORKDIR "/var/www/php5-6"
+WORKDIR "/ec/prod/app/webroot/home/reference-sources/multisite/multisite_master_production.2.2"

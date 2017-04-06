@@ -55,7 +55,7 @@ node {
 
             stage('Test') {
                 //sh 'bin/phing setup-docker-compose -logger phing.listener.AnsiColorLogger'
-                sh 'docker-compose -f resources/docker/docker-compose.yml up -d'
+                sh 'docker-compose -f resources/docker/phpdocker/docker-compose.yml up -d'
                 //sh 'bin/phing start-containers -logger phing.listener.AnsiColorLogger'
                 sh "./bin/phing install-dev -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='$DB_USER' -D'drupal.db.password'='$DB_PASS' -D'drupal.db.su'='root' -D 'drupal.db.su.pw'='password' -logger phing.listener.AnsiColorLogger"
                 timeout(time: 2, unit: 'HOURS') {
