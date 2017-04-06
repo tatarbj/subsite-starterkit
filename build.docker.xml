@@ -49,11 +49,11 @@
 </target>
 
 <target name="start-containers" description="Start all docker containers using docker-compose">
-  <exec command="sudo docker-compose -f ${platform.build.dir}/docker-compose.yml up -d" />
+  <exec command="docker-compose -f ${platform.build.dir}/docker-compose.yml up -d" />
 </target>
 
 <target name="stop-containers" description="Stop all docker containers and clean up">
-  <exec command="sudo docker-compose -f ${platform.build.dir}/docker-compose.yml stop; docker rm $(docker ps -aq)" />
+  <exec command="docker-compose -f ${platform.build.dir}/docker-compose.yml stop; docker rm $(docker ps -aq)" />
 </target>
 
 </project>
