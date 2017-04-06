@@ -37,6 +37,10 @@ node {
         env.DB_PASS = "password"
         env.WEB_HOST_RELEASE = pwd()
         env.WEB_CONTAINER_RELEASE = "/ec/prod/app/webroot/home/reference-sources/multisite/multisite_master_production.2.2"
+        env.WEB_CONTAINER = "fpfis-acpcloud622hotmail.azurecr.io/ccc"
+        env.WEB_CONTAINER_NAME = "web"
+        env.MYSQL_CONTAINER = "mariadb"
+        env.MYSQL_CONTAINER_NAME = "db"
 
         setBuildStatus("Build started.", "PENDING");
         slackSend color: "good", message: "${env.SUBSITE_NAME} build ${env.BUILDLINK} started."
