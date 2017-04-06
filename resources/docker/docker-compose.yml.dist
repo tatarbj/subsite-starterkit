@@ -5,8 +5,8 @@ services:
   # web container with apache and php-fpm
   # test: curl -v http://localhost
   web:
-    image: {{WEB_CONTAINER}}
-    container_name: {{WEB_CONTAINER_NAME}}
+    image: fpfis-acpcloud622hotmail.azurecr.io/ccc
+    container_name: web
     links:
       - mysql
     volumes:
@@ -15,7 +15,7 @@ services:
       # mounts production project '/files' to container in readonly mode
       #- {{WEB_HOST_FILES}}:{{WEB_CONTAINER_FILES}}:ro
       # mounts build related 'test' release to container
-      - {{WEB_HOST_RELEASE}}/platform:{{WEB_CONTAINER_RELEASE}}
+      - /var/lib/jenkins/workspace/kit_feature_MULTISITE-16216-SZHFFXUBDHOQWOFARSPFSE6X37AAQMSHE77KQ3HYAFFCPN3KCICQ/platform:/ec/prod/app/webroot/home/reference-sources/multisite/multisite_master_production.2.2
       # mounts multisite specific 'sites.php' to container
       # - {{WEB_HOST_SITES_PHP}}:{{WEB_CONTAINER_RELEASE}}/sites/sites.php
       # mounts site drupal data to container
@@ -47,13 +47,13 @@ services:
   # database server (mysql or mariadb)
   # test: mysql -udev -pved mydev -e 'show tables;'
   mysql:
-    image: {{MYSQL_CONTAINER}}
-    container_name: {{MYSQL_CONTAINER_NAME}}
+    image: mariadb
+    container_name: db
     environment:
-      - MYSQL_DATABASE={{MYSQL_DATABASE}}
-      - MYSQL_USER={{MYSQL_USER}}
-      - MYSQL_PASSWORD={{MYSQL_PASSWORD}}
-      - MYSQL_ROOT_PASSWORD={{MYSQL_ROOT_PASSWORD}}
+      - MYSQL_DATABASE=database
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
     ports:
       - "3306:3306"
   #    - {{MYSQL_CONTAINER_EXT_PORT}}:{{MYSQL_CONTAINER_INT_PORT}}
@@ -64,20 +64,20 @@ services:
     networks:
       - INT
 
-  tools:
-    image: {{TOOLS_CONTAINER}}
-    container_name: {{TOOLS_CONTAINER_NAME}}
-    stdin_open: true
-    tty: true
-    links:
-      - proxy
-      - mysql
-      - web
-    volumes:
-      - {{WEB_HOST_RELEASE}}:/app
-      - {{WEB_HOST_FILES}}:{{WEB_CONTAINER_FILES}}:ro
-    networks:
-      - INT
+  #tools:
+  #  image: {{TOOLS_CONTAINER}}
+  #  container_name: {{TOOLS_CONTAINER_NAME}}
+  #  stdin_open: true
+  #  tty: true
+  #  links:
+  #    - proxy
+  #    - mysql
+  #    - web
+  #  volumes:
+  #    - {{WEB_HOST_RELEASE}}:/app
+  #    - {{WEB_HOST_FILES}}:{{WEB_CONTAINER_FILES}}:ro
+  #  networks:
+  #    - INT
 
 # networks details
 networks:
