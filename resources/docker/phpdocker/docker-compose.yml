@@ -16,7 +16,7 @@ php5-6-webserver:
   container_name: php5-6-webserver
   volumes:
       - ../../../platform:/ec/prod/app/webroot/home/reference-sources/multisite/multisite_master_production.2.2
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
   ports:
    - "1025:80"
   links:
