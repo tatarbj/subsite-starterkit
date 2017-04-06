@@ -16,7 +16,7 @@ php5-6-webserver:
   container_name: php5-6-webserver
   volumes:
       - ../../../platform:/ec/prod/app/webroot/home/reference-sources/multisite/multisite_master_production.2.2
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
   ports:
    - "1025:80"
   links:
@@ -28,6 +28,6 @@ php5-6-php-fpm:
   container_name: php5-6-php-fpm
   volumes:
     - ../../../platform:/ec/prod/app/webroot/home/reference-sources/multisite/multisite_master_production.2.2
-    - ./php-fpm/php-ini-overrides.ini:/etc/php5/fpm/conf.d/99-overrides.ini
+    - ./php-fpm/php-ini-overrides.ini:/etc/php5/fpm/conf.d/99-overrides.ini:ro
   links:
     - php5-6-mysql
