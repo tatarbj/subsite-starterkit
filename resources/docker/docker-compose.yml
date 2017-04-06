@@ -7,7 +7,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - platform:/var/www/html
+      - ./platform:/ec/prod/app/webroot/home/reference-sources/multisite/multisite_master_production.2.2
     links:
       - db
   db:
