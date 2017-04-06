@@ -83,7 +83,7 @@ node {
         slackSend color: "danger", message: "${env.PROJECT_ID} build ${env.BUILDLINK} failed."
         throw(err)
     } finally {
-        sh "docker-compose ${env.DB_NAME} stop"
+        sh "docker-compose stop ${env.DB_NAME}"
     }
 }
 
