@@ -24,8 +24,8 @@ services:
       # - {{WEB_HOST_SETTINGS}}:{{WEB_CONTAINER_SETTINGS}}
     # Internal network access
     # * created: docker network create INT --internal=true
-    networks:
-      - INT
+    #networks:
+    #  - INT
 
   # privoxy "proxy server" container (depend on web container and its name)
   # test: curl -x http://localhost:8118 http://ec.europa.eu
@@ -61,8 +61,8 @@ services:
   #    - {{MYSQL_HOST_DATA}}:{{MYSQL_CONTAINER_DATA}}
     # Internal network access
     # * created: docker network create INT --internal=true
-    networks:
-      - INT
+    #networks:
+    #  - INT
 
   #tools:
   #  image: {{TOOLS_CONTAINER}}
@@ -80,10 +80,10 @@ services:
   #    - INT
 
 # networks details
-networks:
-  EXT:
-    external: true
-  INT:
-    external: true
+#networks:
+#  EXT:
+#    external: true
+#  INT:
+#    external: true
 
 
