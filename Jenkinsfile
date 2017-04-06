@@ -32,15 +32,15 @@ node {
         env.RELEASE_NAME = "${env.PROJECT_ID}_" + "${date}".trim() + "_${env.PLATFORM_PACKAGE_REFERENCE}"
         env.BUILDLINK = "<${env.BUILD_URL}consoleFull|${env.PROJECT_ID} #${env.BUILD_NUMBER}>"
          
-        env.DB_USER = "root"
-        env.DB_NAME = "database"
-        env.DB_PASS = "password"
-        env.WEB_HOST_RELEASE = pwd()
-        env.WEB_CONTAINER_RELEASE = "/ec/prod/app/webroot/home/reference-sources/multisite/multisite_master_production.2.2"
-        env.WEB_CONTAINER = "fpfis-acpcloud622hotmail.azurecr.io/ccc"
-        env.WEB_CONTAINER_NAME = "web"
-        env.MYSQL_CONTAINER = "mariadb"
-        env.MYSQL_CONTAINER_NAME = "db"
+        DB_USER = "root"
+        DB_NAME = "database"
+        DB_PASS = "password"
+        WEB_HOST_RELEASE = pwd()
+        WEB_CONTAINER_RELEASE = "/ec/prod/app/webroot/home/reference-sources/multisite/multisite_master_production.2.2"
+        WEB_CONTAINER = "fpfis-acpcloud622hotmail.azurecr.io/ccc"
+        WEB_CONTAINER_NAME = "web"
+        MYSQL_CONTAINER = "mariadb"
+        MYSQL_CONTAINER_NAME = "db"
 
         setBuildStatus("Build started.", "PENDING");
         slackSend color: "good", message: "${env.SUBSITE_NAME} build ${env.BUILDLINK} started."

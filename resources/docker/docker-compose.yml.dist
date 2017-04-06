@@ -15,7 +15,7 @@ services:
       # mounts production project '/files' to container in readonly mode
       #- {{WEB_HOST_FILES}}:{{WEB_CONTAINER_FILES}}:ro
       # mounts build related 'test' release to container
-      #- {{WEB_HOST_RELEASE}}/platform:{{WEB_CONTAINER_RELEASE}}
+      - {{WEB_HOST_RELEASE}}/platform:{{WEB_CONTAINER_RELEASE}}
       # mounts multisite specific 'sites.php' to container
       # - {{WEB_HOST_SITES_PHP}}:{{WEB_CONTAINER_RELEASE}}/sites/sites.php
       # mounts site drupal data to container
