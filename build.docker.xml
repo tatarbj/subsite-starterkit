@@ -8,10 +8,40 @@
     </fileset>
     <filterchain>
       <replacetokens begintoken="{{" endtoken="}}">
+        <token key="HTTP_PROXY_USER" value="${HTTP_PROXY_USER}" />
+        <token key="HTTP_PROXY_PASS" value="${HTTP_PROXY_PASS}" />
+        <token key="HTTP_PROXY_HOST" value="${HTTP_PROXY_HOST}" />
+        <token key="HTTP_PROXY_PORT" value="${HTTP_PROXY_PORT}" />
+        <token key="PRIVOXY_CONTAINER" value="${PRIVOXY_CONTAINER}" />
+        <token key="PRIVOXY_CONTAINER_NAME" value="${PRIVOXY_CONTAINER_NAME}" />
+        <token key="PRIVOXY_CONTAINER_EXT_PORT" value="${PRIVOXY_CONTAINER_EXT_PORT}" />
+        <token key="PRIVOXY_CONTAINER_INT_PORT" value="${PRIVOXY_CONTAINER_INT_PORT}" />
+        <token key="MYSQL_CONTAINER" value="${MYSQL_CONTAINER}" />
+        <token key="MYSQL_CONTAINER_NAME" value="${MYSQL_CONTAINER_NAME}" />
+        <token key="MYSQL_CONTAINER_EXT_PORT" value="${MYSQL_CONTAINER_EXT_PORT}" />
+        <token key="MYSQL_CONTAINER_INT_PORT" value="${MYSQL_CONTAINER_INT_PORT}" />
         <token key="MYSQL_DATABASE" value="${MYSQL_DATABASE}" />
         <token key="MYSQL_USER" value="${MYSQL_USER}" />
         <token key="MYSQL_PASSWORD" value="${MYSQL_PASSWORD}" />
         <token key="MYSQL_ROOT_PASSWORD" value="${MYSQL_ROOT_PASSWORD}" />
+        <token key="MYSQL_HOST_DATA" value="${MYSQL_HOST_DATA}" />
+        <token key="MYSQL_CONTAINER_DATA" value="${MYSQL_CONTAINER_DATA}" />
+        <token key="WEB_CONTAINER" value="${WEB_CONTAINER}" />
+        <token key="WEB_CONTAINER_NAME" value="${WEB_CONTAINER_NAME}" />
+        <token key="WEB_CONTAINER_DNS_SEARCH" value="${WEB_CONTAINER_DNS_SEARCH}" />
+        <token key="WEB_HOST_FILES" value="${WEB_HOST_FILES}" />
+        <token key="WEB_CONTAINER_FILES" value="${WEB_CONTAINER_FILES}" />
+        <token key="WEB_HOST_SOURCES" value="${WEB_HOST_SOURCES}" />
+        <token key="WEB_CONTAINER_SOURCES" value="${WEB_CONTAINER_SOURCES}" />
+        <token key="WEB_HOST_RELEASE" value="${WEB_HOST_RELEASE}" />
+        <token key="WEB_HOST_SITES_PHP" value="${WEB_HOST_SITES_PHP}" />
+        <token key="WEB_CONTAINER_RELEASE" value="${WEB_CONTAINER_RELEASE}" />
+        <token key="WEB_HOST_SITE" value="${WEB_HOST_SITE}" />
+        <token key="WEB_CONTAINER_SITE" value="${WEB_CONTAINER_SITE}" />
+        <token key="WEB_HOST_SETTINGS" value="${WEB_HOST_SETTINGS}" />
+        <token key="WEB_CONTAINER_SETTINGS" value="${WEB_CONTAINER_SETTINGS}" />
+        <token key="TOOLS_CONTAINER" value="${TOOLS_CONTAINER}" />
+        <token key="TOOLS_CONTAINER_NAME" value="${TOOLS_CONTAINER_NAME}" />
       </replacetokens>
     </filterchain>
     <mapper type="glob" from="docker-compose.yml.dist" to="docker-compose.yml" />
