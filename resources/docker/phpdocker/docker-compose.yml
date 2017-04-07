@@ -18,7 +18,7 @@ php5-6-webserver:
       - ../../../platform:/ec/prod/app/webroot/home/reference-sources/multisite/multisite_master_production.2.2
       - ./nginx:/etc/nginx/conf.d
   ports:
-   - "1025:80"
+   - "8080:80"
   links:
    - php5-6-php-fpm
 
