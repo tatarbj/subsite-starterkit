@@ -14,6 +14,9 @@ php5-6-mysql:
 php5-6-webserver:
   image: phpdockerio/nginx:latest
   container_name: php5-6-webserver
+  volumes:
+    - ../../../:/var/www/php5-6
+    - ./nginx:/etc/nginx/conf.d
   ports:
    - "1025:80"
   links:
