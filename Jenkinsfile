@@ -83,7 +83,7 @@ node {
         slackSend color: "danger", message: "${env.PROJECT_ID} build ${env.BUILDLINK} failed."
         throw(err)
     } finally {
-        sh './bin/phing stop-containers'
+        //sh './bin/phing stop-containers'
     }
 }
 
