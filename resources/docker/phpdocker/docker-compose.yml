@@ -16,7 +16,7 @@ php5-6-webserver:
   dockerfile: nginx/Dockerfile
   container_name: php5-6-webserver
   volumes:
-    - ../../../:/var/www/php5-6
+    - ../../../../:/var/www/php5-6
   ports:
    - "1025:80"
   links:
@@ -27,7 +27,7 @@ php5-6-php-fpm:
   dockerfile: php-fpm/Dockerfile
   container_name: php5-6-php-fpm
   volumes:
-    - ../../../:/var/www/php5-6
+    - ../../../../:/var/www/php5-6
     - ./php-fpm:/etc/php5/fpm/conf.d
   links:
     - php5-6-mysql
