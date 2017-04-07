@@ -55,7 +55,7 @@ node {
 
             stage('Test') {
                 //sh 'bin/phing setup-docker-compose -logger phing.listener.AnsiColorLogger'
-                sh 'docker-compose -f resources/docker/phpdocker/docker-compose.yml -f up -d'
+                sh 'docker-compose -f resources/docker/phpdocker/docker-compose.yml up -d'
                 //sh 'bin/phing start-containers -logger phing.listener.AnsiColorLogger'
                 sh "docker exec php5-6-webserver ls -la /var/www/php5-6"
                 sh "docker exec php5-6-webserver ./bin/phing install-dev -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='$DB_USER' -D'drupal.db.password'='$DB_PASS' -D'drupal.db.su'='root' -D 'drupal.db.su.pw'='password' -logger phing.listener.AnsiColorLogger"
