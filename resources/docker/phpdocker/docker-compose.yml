@@ -12,7 +12,7 @@ php5-6-mysql:
     - MYSQL_PASSWORD=password
 
 php5-6-webserver:
-  image: .
+  build: .
   dockerfile: nginx/Dockerfile
   container_name: php5-6-webserver
   volumes:
