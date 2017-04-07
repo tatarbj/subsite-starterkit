@@ -55,9 +55,11 @@ node {
 
             stage('Test') {
                 //sh 'bin/phing setup-docker-compose -logger phing.listener.AnsiColorLogger'
-                sh "docker-compose -f resources/docker/phpdocker/docker-compose.yml -p ${env.DB_NAME} up -d"
+                sh "docker-compose -f resources/docker/phpdocker/docker-compose.yml up -d"
                 //sh 'bin/phing start-containers -logger phing.listener.AnsiColorLogger'
-                sh "./bin/phing install-dev -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='$DB_USER' -D'drupal.db.password'='$DB_PASS' -D'drupal.db.su'='root' -D 'drupal.db.su.pw'='password' -logger phing.listener.AnsiColorLogger"
+                sh "docker exec php5-6-webserver echo $PWD"
+                sh "docker exec php5-6-webserver ls -la"
+                sh "docker exec php5-6-webserver ./bin/phing install-dev -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='$DB_USER' -D'drupal.db.password'='$DB_PASS' -D'drupal.db.su'='root' -D 'drupal.db.su.pw'='password' -logger phing.listener.AnsiColorLogger"
                 timeout(time: 2, unit: 'HOURS') {
                     if (env.WD_BROWSER_NAME == 'phantomjs') {
                         sh "phantomjs --webdriver=${env.WD_HOST}:${env.WD_PORT} &"
@@ -83,7 +85,7 @@ node {
         slackSend color: "danger", message: "${env.PROJECT_ID} build ${env.BUILDLINK} failed."
         throw(err)
     } finally {
-        sh "docker-compose stop ${env.DB_NAME}"
+        //sh './bin/phing stop-containers'
     }
 }
 
