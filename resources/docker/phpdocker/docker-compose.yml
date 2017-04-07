@@ -16,7 +16,7 @@ php5-6-webserver:
   container_name: php5-6-webserver
   volumes:
     - ../../../:/var/www/php5-6
-    - ./nginx:/etc/nginx/conf.d
+    - ./nginx:/etc/nginx/conf.d/:ro
   ports:
    - "1025:80"
   links:
