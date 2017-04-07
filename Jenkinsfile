@@ -55,7 +55,7 @@ node {
 
             stage('Test') {
                 //sh 'bin/phing setup-docker-compose -logger phing.listener.AnsiColorLogger'
-                sh 'echo "$PWD"'
+                sh 'ls -la /var/lib/jenkins/workspace'
                 sh 'docker-compose -f resources/docker/phpdocker/docker-compose.yml up -d'
                 //sh 'bin/phing start-containers -logger phing.listener.AnsiColorLogger'
                 sh "docker exec php5-6-webserver ls -la /var/www/php5-6"
