@@ -24,7 +24,7 @@ php5-6-php-fpm:
   dockerfile: php-fpm/Dockerfile
   container_name: php5-6-php-fpm
   volumes:
-    - ../../../platform:/ec/prod/app/webroot/home/reference-sources/multisite/multisite_master_production.2.2
+    - ../../../:/ec/prod/app/webroot/home/reference-sources/multisite/multisite_master_production.2.2
     - ./php-fpm:/etc/php5/fpm/conf.d
   links:
     - php5-6-mysql
