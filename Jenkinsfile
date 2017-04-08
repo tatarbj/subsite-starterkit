@@ -51,7 +51,7 @@ node {
 
             stage('Test') {
                 def workspace = pwd() 
-                env.MYSQL_PASSWORD = password
+                env.MYSQL_PASSWORD = "password"
                 //sh 'bin/phing setup-docker-compose -logger phing.listener.AnsiColorLogger'
                 //sh 'docker-compose -f resources/docker/phpdocker/docker-compose.yml up -d'
                 //sh 'bin/phing start-containers -logger phing.listener.AnsiColorLogger'
