@@ -15,6 +15,7 @@ php5-6-webserver:
   build: .
   dockerfile: nginx/Dockerfile
   container_name: php5-6-webserver
+  working_dir: /var/www/php5-6
   volumes:
     - ../../../:/var/www/php5-6
   ports:
