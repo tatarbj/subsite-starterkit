@@ -58,7 +58,7 @@ node {
                 //sh 'bin/phing setup-docker-compose -logger phing.listener.AnsiColorLogger'
                 //sh 'docker-compose -f resources/docker/phpdocker/docker-compose.yml up -d'
                 //sh 'bin/phing start-containers -logger phing.listener.AnsiColorLogger'
-                sh "docker run --name dev-server -p 127.0.0.1:80:80 -v /opt/mysql:/var/lib/mysql -v ${workspace}:/web -d metalguardian/php-web-server"
+                sh "docker run --name dev-server -p 127.0.0.1:80:80 -v /opt/mysql:/var/lib/mysql -v ${workspace}:/web -w /web -d metalguardian/php-web-server"
                 sh "docker start dev-server"
                 sh "docker exec dev-server ./bin/phing install-dev -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='root' -D'drupal.db.password'='' -D'drupal.db.su'='root' -D 'drupal.db.su.pw'='' -logger phing.listener.AnsiColorLogger"
                 timeout(time: 2, unit: 'HOURS') {
