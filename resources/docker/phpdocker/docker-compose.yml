@@ -12,8 +12,12 @@ php5-6-mysql:
     - MYSQL_PASSWORD=password
 
 php5-6-webserver:
-  image: phpdockerio/nginx:latest
+  build: .
+  dockerfile: nginx/Dockerfile
   container_name: php5-6-webserver
+  working_dir: /var/www/php5-6
+  volumes:
+    - ../../../:/var/www/php5-6
   ports:
    - "1025:80"
   links:
@@ -24,7 +28,7 @@ php5-6-php-fpm:
   dockerfile: php-fpm/Dockerfile
   container_name: php5-6-php-fpm
   volumes:
-    - ../../../:/ec/prod/app/webroot/home/reference-sources/multisite/multisite_master_production.2.2
+    - ../../../:/var/www/php5-6
     - ./php-fpm:/etc/php5/fpm/conf.d
   links:
     - php5-6-mysql

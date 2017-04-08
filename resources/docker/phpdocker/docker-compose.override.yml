@@ -1,5 +1,0 @@
-php5-6-webserver:
-  volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ../../../:/ec/prod/app/webroot/home/reference-sources/multisite/multisite_master_production.2.2
-
