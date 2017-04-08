@@ -16,7 +16,6 @@ php5-6-webserver:
   dockerfile: nginx/Dockerfile
   container_name: php5-6-webserver
   volumes:
-    - "jenkins-data:/var/jenkins_home"
     - ../../../:/var/www/php5-6
   ports:
    - "1025:80"
@@ -28,7 +27,6 @@ php5-6-php-fpm:
   dockerfile: php-fpm/Dockerfile
   container_name: php5-6-php-fpm
   volumes:
-    - "jenkins-data:/var/jenkins_home"
     - ../../../:/var/www/php5-6
     - ./php-fpm:/etc/php5/fpm/conf.d
   links:
