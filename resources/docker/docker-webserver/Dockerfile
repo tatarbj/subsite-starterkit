@@ -51,6 +51,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y -q --no-install-recommends install
 	php5.6-gd \
 	php5.6-intl \
 	php5.6-imagick \
+        php5.6-ldap \
+        php5.6-mbstring \
 	php5.6-mcrypt \
 	php5.6-memcached \
 	php5.6-json \
@@ -67,16 +69,16 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y -q --no-install-recommends install
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # add user "docker" to use it as default user for working with files
-RUN yes "" | adduser --uid=1000 --disabled-password docker && \
-    echo "docker   ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
+RUN yes "" | adduser --uid=1000 --disabled-password jenkins && \
+    echo "jenkins   ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # install composer assets plugin
-RUN sudo -H -u docker bash -c "/usr/local/bin/composer global require fxp/composer-asset-plugin:~1.1"
+RUN sudo -H -u jenkins bash -c "/usr/local/bin/composer global require fxp/composer-asset-plugin:~1.1"
 
 # create and set access to the folder
-RUN mkdir -p /web/docker && \
-    echo "<?php echo 'web server is running';" > /web/docker/index.php && \
-    chown -R docker:docker /web
+RUN mkdir -p /web/jenkins && \
+    echo "<?php echo 'web server is running';" > /web/jenkins/index.php && \
+    chown -R jenkins:jenkins /web
 
 # add custom php configuration
 RUN php5enmod custom
