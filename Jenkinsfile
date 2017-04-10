@@ -18,7 +18,7 @@ node {
         env.PHING_PROJECT_BUILD_DIR = props["phing.project.build.dir"]
         env.WD_BROWSER_NAME = "phantomjs"
         env.WD_PORT = 0
-        env.WD_HOST = 127.0.0.1
+        env.WD_HOST = "127.0.0.1"
 
         Random random = new Random()
         tokens = "${env.WORKSPACE}".tokenize('/')
