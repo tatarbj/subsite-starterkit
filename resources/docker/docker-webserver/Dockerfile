@@ -57,6 +57,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y -q --no-install-recommends install
 	php-pear \
 	php5.6-dev \
 	php5.6-xdebug \
+        php5.6-xml \
 	php5.6-sqlite \
 	phpmyadmin \
 	unzip \
