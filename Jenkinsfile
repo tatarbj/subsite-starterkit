@@ -50,9 +50,7 @@ node {
 
             stage('Test') {
                 def workspace = pwd() 
-                //sh 'bin/phing setup-docker-compose -logger phing.listener.AnsiColorLogger'
-                //sh 'docker-compose -f resources/docker/phpdocker/docker-compose.yml up -d'
-                //sh 'bin/phing start-containers -logger phing.listener.AnsiColorLogger'
+                sh './bin/phing start-container -D'workspace'='${workspace}' -logger phing.listener.AnsiColorLogger'
                 //sh "docker build -t webserver ./resources/docker/docker-webserver"
                 //sh "docker run --name dev-server -p 127.0.0.1:80:80 -v /opt/mysql:/var/lib/mysql -v ${workspace}:/web -w /web -d webserver"
                 //sh "docker run --name dev-server -p 127.0.0.1:80:80 -v /opt/mysql:/var/lib/mysql -v ${workspace}:/web --env MYSQL_PASSWORD=password -w /web -d metalguardian/php-web-server"
