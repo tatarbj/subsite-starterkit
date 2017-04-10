@@ -16,6 +16,9 @@ node {
         env.PLATFORM_PACKAGE_REFERENCE = props["platform.package.reference"]
         env.SUBSITE_NAME = props["subsite.name"]
         env.PHING_PROJECT_BUILD_DIR = props["phing.project.build.dir"]
+        env.WD_BROWSER_NAME = "phantomjs"
+        env.WD_PORT = 0
+        env.WD_HOST = 127.0.0.1
 
         Random random = new Random()
         tokens = "${env.WORKSPACE}".tokenize('/')
@@ -50,18 +53,14 @@ node {
             stage('Test') {
                 def workspace = pwd() 
                 sh "./bin/phing start-container -D'workspace'='${workspace}' -logger phing.listener.AnsiColorLogger"
-                //sh "docker build -t webserver ./resources/docker/docker-webserver"
-                //sh "docker run --name dev-server -p 127.0.0.1:80:80 -v /opt/mysql:/var/lib/mysql -v ${workspace}:/web -w /web -d webserver"
-                //sh "docker run --name dev-server -p 127.0.0.1:80:80 -v /opt/mysql:/var/lib/mysql -v ${workspace}:/web --env MYSQL_PASSWORD=password -w /web -d metalguardian/php-web-server"
                 sh "docker start dev-server"
                 sh "sleep 15"
-                sh "docker exec -u jenkins dev-server ls -la"
                 sh "docker exec -u jenkins dev-server ./bin/phing install-dev -D'drupal.db.host'='127.0.0.1' -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='root' -D'drupal.db.password'='' -logger phing.listener.AnsiColorLogger"
                 timeout(time: 2, unit: 'HOURS') {
                     if (env.WD_BROWSER_NAME == 'phantomjs') {
-                        sh "phantomjs --webdriver=${env.WD_HOST}:${env.WD_PORT} &"
+                        sh "docker exec -u jenkins dev-server phantomjs --webdriver=${env.WD_HOST}:${env.WD_PORT} &"
                     }
-                    sh "./bin/behat -c tests/behat.yml --colors --strict"
+                    sh "docker exec -u jenkins dev-server ./bin/behat -c tests/behat.yml --colors --strict"
                 }
             }
 
