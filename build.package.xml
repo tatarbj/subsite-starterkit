@@ -97,13 +97,13 @@
     <target name="make-dev" depends="retrieve-platform">
         <if>
             <available file="${subsite.make}" type="file" />
-                <then>
-                    <echo msg="Make the subsite." />
-                    <phingcall target="drush-make-no-core">
-                        <property name="drush.make.target.file" value="${subsite.make}" />
-                        <property name="drush.make.root" value="${platform.build.dir}" />
-                    </phingcall>
-                </then>
+            <then>
+                <echo msg="Make the subsite." />
+                <phingcall target="drush-make-no-core">
+                    <property name="drush.make.target.file" value="${subsite.make}" />
+                    <property name="drush.make.root" value="${platform.build.dir}" />
+                </phingcall>
+            </then>
             <else>
                 <echo msg="No make file found. Skipping..." />
             </else>
@@ -126,10 +126,27 @@
         <if>
             <available file="${subsite.make}" type="file" />
             <then>
-                <phingcall target="drush-make-no-core">
-                    <property name="drush.make.target.file" value="${subsite.make}" />
-                    <property name="drush.make.root" value="${phing.project.tmp.dir}/build" />
-                </phingcall>
+                <loadfile property="sitemake" file="${subsite.make}"/>
+                <propertyregex
+                    property="not.empty"
+                    subject="${sitemake}"
+                    pattern="([^#; ])(libraries\[|projects\[)"
+                    match="$1"
+                    casesensitive="false"
+                    defaultvalue="empty"/>
+                <if>
+                    <not><equals arg1="${not.empty}" arg2="empty" /></not>
+                    <then>
+                        <phingcall target="drush-make-no-core">
+                            <property name="drush.make.target.file" value="${subsite.make}" />
+                            <property name="drush.make.root" value="${phing.project.tmp.dir}/build" />
+                        </phingcall>
+                    </then>
+                    <else>
+                       <echo msg="Empty make file found. Skipping... ${not.empty}" />
+                       <mkdir dir="${phing.project.tmp.dir}/build/sites/all" />
+                    </else>
+                </if>
             </then>
             <else>
                 <echo msg="No make file found. Skipping..." />
@@ -649,7 +666,7 @@
 
     <!-- Setup file directory -->
     <target name="setup-files-directory">
-		 <if>
+        <if>
             <istrue value="${platform.build.files.dir}" />
             <then>
                 <mkdir dir="${platform.build.files.dir}/private_files" />
