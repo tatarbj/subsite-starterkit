@@ -5,7 +5,7 @@ for SAMPLE in .git/hooks/*.sample
 do
   SCRIPT=${SAMPLE%.*}
   SCRIPT_NAME=$(basename $SCRIPT)
-  SCRIPTS_FOLDER=$(readlink -f "resources/git/hooks/"$SCRIPT_NAME)
+  SCRIPTS_FOLDER="resources/git/hooks/$SCRIPT_NAME"
   if [ -d $SCRIPTS_FOLDER ] ; then
     if test "$(ls -A $SCRIPTS_FOLDER)"; then
       cp -f "resources/git/hooks/execute.sh" ".git/hooks/$SCRIPT_NAME"

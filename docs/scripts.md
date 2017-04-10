@@ -8,12 +8,12 @@ You can add scripts to the `resources/composer/scripts/<hook-name>/` folder. The
 scripts will be executed in alphabetical order for the hook in which folder they 
 reside. The enabled composer hooks are:
 > - resources
-    - composer
-      - scripts
-        - pre-install-cmd
-        - post-install-cmd
-        - pre-update-cmd
-        - post-update-cmd
+>   - composer
+>     - scripts
+>       - pre-install-cmd
+>       - post-install-cmd
+>       - pre-update-cmd
+>       - post-update-cmd
 
 An example implementation can be found in platform extensions like:
  - [ec-reps-platform](https://github.com/ec-europa/ec-reps-platform)
@@ -29,17 +29,17 @@ directory for each hook defined in `.git/hooks/<hook-name>.sample`. Upon the
 command `composer install` any folder that contains scripts will have its hook
 activated. Available hooks are:
 > - resources
-    - git
-      - hooks
-        - applypatch-msg
-        - commit-msg
-        - post-update
-        - pre-applypatch
-        - pre-commit
-        - prepare-commit-msg
-        - pre-push
-        - pre-rebase
-        - update
+>   - git
+>     - hooks
+>       - applypatch-msg
+>       - commit-msg
+>       - post-update
+>       - pre-applypatch
+>       - pre-commit
+>       - prepare-commit-msg
+>       - pre-push
+>       - pre-rebase
+>       - update
 
 An example implementation can be found in `resources/git/hooks/pre-push/` after
 you perform a composer install. Then there will be a symlink to a script from the

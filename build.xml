@@ -30,6 +30,12 @@
     <echo msg="Loading Drush Makefile task." />
     <taskdef name="drushmakefile" classname="\NextEuropa\Phing\DrushMakeFileTask" />
 
+    <!-- Needs to be removed when phing adds relative symlink support -->
+    <!-- https://github.com/phingofficial/phing/issues/684 -->
+    <!-- https://github.com/phingofficial/phing/pull/695 -->
+    <echo msg="Loading Relative Symlink task." />
+    <taskdef name="rel-sym" classname="\NextEuropa\Phing\RelativeSymlinkTask" />
+
     <import file="resources/build.custom.xml" />
     <import file="build.clone.xml" />
     <import file="build.package.xml" />

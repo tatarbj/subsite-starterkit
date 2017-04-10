@@ -93,18 +93,19 @@
         />
 
         <!-- Set up the git pre-push hook. -->
-        <phingcall target="disable-pre-push"/>
+        <phingcall target="setup-phpcs-pre-push"/>
+    </target>
+
+    <!-- Setup the PHP CodeSniffer pre-push hook. -->
+    <target name="setup-phpcs-pre-push" description="Activate or de-activate phpcs on git pre-push.">
+        <delete file="${phpcs.prepush.destination}" failonerror="false" />
         <if>
             <equals arg1="${phpcs.prepush.enable}" arg2="1" />
             <then>
-                <symlink link="${phpcs.prepush.destination}" target="${phpcs.prepush.source}" overwrite="true" />
+                <mkdir dir="${project.basedir}/resources/git/hooks/pre-push"/>
+                <rel-sym link="${phpcs.prepush.destination}" target="${phpcs.prepush.source}" overwrite="true" />
             </then>
         </if>
-    </target>
-
-    <!-- Disable the PHP CodeSniffer pre-push hook. -->
-    <target name="disable-pre-push" description="Disable the coding standards check when pushing to a git repository.">
-        <delete file="${phpcs.prepush.destination}" failonerror="false" />
     </target>
 
     <!-- Set up Behat. -->

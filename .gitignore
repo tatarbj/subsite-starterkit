@@ -15,3 +15,7 @@ build/
 platform/
 tmp/
 vendor/
+resources/git/hooks/pre-push/phpcs
+
+# Ignore license for subsites
+LICENSE.md
