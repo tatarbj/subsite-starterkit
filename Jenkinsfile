@@ -54,7 +54,7 @@ node {
                 //sh "docker run --name dev-server -p 127.0.0.1:80:80 -v /opt/mysql:/var/lib/mysql -v ${workspace}:/web -w /web -d webserver"
                 //sh "docker run --name dev-server -p 127.0.0.1:80:80 -v /opt/mysql:/var/lib/mysql -v ${workspace}:/web --env MYSQL_PASSWORD=password -w /web -d metalguardian/php-web-server"
                 sh "docker start dev-server"
-                sh "docker exec -u jenkins ls -la /web/platform"
+                sh "docker exec -u jenkins dev-server ls -la /web/platform"
                 sh "docker exec -u jenkins dev-server ./bin/phing install-dev -D'drupal.db.host'='127.0.0.1' -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='root' -D'drupal.db.password'='' -logger phing.listener.AnsiColorLogger"
                 timeout(time: 2, unit: 'HOURS') {
                     if (env.WD_BROWSER_NAME == 'phantomjs') {
