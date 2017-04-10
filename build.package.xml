@@ -178,8 +178,7 @@
             bin="${drush.bin}"
             pipe="yes"
             verbose="${drush.verbose}"
-            root="${drush.make.root}"
-            color="${drush.color}">
+            root="${drush.make.root}">
             <param>${drush.make.target.file}</param>
             <param>${drush.make.root}</param>
             <!--
@@ -198,24 +197,24 @@
     <!-- Symlink the source folders for easy development. -->
     <target name="link-dev-resources">
         <!-- Symlink our custom modules. -->
-        <symlink link="${platform.build.subsite.modules.custom.dir}" target="${subsite.resources.modules.dir}" />
+        <rel-sym link="${platform.build.subsite.modules.custom.dir}" target="${subsite.resources.modules.dir}" />
         <!-- Symlink our custom features. -->
-        <symlink link="${platform.build.subsite.modules.features.dir}" target="${subsite.resources.features.dir}" />
+        <rel-sym link="${platform.build.subsite.modules.features.dir}" target="${subsite.resources.features.dir}" />
         <!-- Symlink our custom themes. Delete the empty folder which is created during Drush make. -->
         <delete dir="${platform.build.subsite.themes.dir}" includeemptydirs="true" failonerror="false" />
-        <symlink link="${platform.build.subsite.themes.dir}" target="${subsite.resources.themes.dir}" />
+        <rel-sym link="${platform.build.subsite.themes.dir}" target="${subsite.resources.themes.dir}" />
         <!-- Symlink our custom PSR-4 code. -->
-        <symlink link="${platform.build.subsite.source.dir}" target="${subsite.resources.source.dir}" />
+        <rel-sym link="${platform.build.subsite.source.dir}" target="${subsite.resources.source.dir}" />
         <!-- Symlink composer configuration. -->
-        <symlink link="${platform.build.subsite.composer.json}" target="${subsite.resources.composer.json}" />
-        <symlink link="${platform.build.subsite.composer.lock}" target="${subsite.resources.composer.lock}" />
+        <rel-sym link="${platform.build.subsite.composer.json}" target="${subsite.resources.composer.json}" />
+        <rel-sym link="${platform.build.subsite.composer.lock}" target="${subsite.resources.composer.lock}" />
     </target>
 
     <!-- Symlink the Behat bin and test directory in the subsite folder. -->
     <target name="link-behat">
         <echo msg="Symlink the Behat bin and test directory in './sites/all'." />
-        <symlink link="bin/behat" target="${platform.build.subsite.dir}/vendor/bin/behat" overwrite="true"/>
-        <symlink link="${platform.build.subsite.dir}/tests" target="${project.basedir}/tests" overwrite="true"/>
+        <rel-sym link="bin/behat" target="${platform.build.subsite.dir}/vendor/bin/behat" overwrite="true"/>
+        <rel-sym link="${platform.build.subsite.dir}/tests" target="${project.basedir}/tests" overwrite="true"/>
     </target>
 
     <!-- Copy subsite resources into the build folder. -->
@@ -255,9 +254,6 @@
         <echo msg="Run 'composer install' in platform root." />
         <composer command="install" composer="${composer.bin}">
             <arg value="--working-dir=${project.basedir}" />
-            <arg value="--no-interaction" />
-            <arg value="--no-suggest" />
-            <arg value="--ansi" />
         </composer>
     </target>
 
@@ -266,9 +262,6 @@
         <echo msg="Run 'composer install' in the subsite folder for development purposes." />
         <composer command="install" composer="${composer.bin}">
             <arg value="--working-dir=${platform.build.subsite.dir}" />
-            <arg value="--no-interaction" />
-            <arg value="--no-suggest" />
-            <arg value="--ansi" />
         </composer>
     </target>
 
@@ -277,10 +270,7 @@
         <echo msg="Run 'composer install --no-dev' in the build destination folder." />
         <composer command="install" composer="${composer.bin}">
             <arg value="--working-dir=${dist.build.dir}" />
-            <arg value="--no-interaction" />
-            <arg value="--no-suggest" />
             <arg value="--no-dev" />
-            <arg value="--ansi" />
         </composer>
     </target>
 
@@ -288,7 +278,7 @@
     <target
         name="link-docroot"
         description="Create a symlink from the build folder to the webserver document root.">
-        <symlink link="${server.docroot}" target="${platform.build.dir}" overwrite="true" />
+        <rel-sym link="${server.docroot}" target="${platform.build.dir}" overwrite="true" />
     </target>
 
     <!-- Update .htaccess. -->
@@ -301,7 +291,7 @@
         </if>
     </target>
 
-    <target name="create-tmp-dirs" hidden="true">
+    <target name="create-tmp-dirs">
         <if>
             <!-- Create the global cache directory if it doesn't exist. -->
             <not>
@@ -400,7 +390,7 @@
     </target>
 
     <!-- Move download to the available temp dir. The global cachedir precedes the local cachedir. -->
-    <target name="move-download-to-tmp-dir" hidden="true">
+    <target name="move-download-to-tmp-dir">
         <if>
             <and>
                 <available file="${platform.package.cachedir}" type="dir"/>
@@ -568,7 +558,7 @@
     </target>
 
     <!-- Backs up a site item from the platform that will be removed in order to rebuild. -->
-    <target name="backup-site-item" hidden="true">
+    <target name="backup-site-item">
         <php expression='dirname("${site-item}")' returnProperty="site-item-dir"/>
         <property name="site-item-backup-dir" value="${site-item-dir}">
             <filterchain>
@@ -598,7 +588,7 @@
     </target>
 
     <!-- Restores a site item from the platform.rebuild.backup.destination to the new build. -->
-    <target name="restore-site-item" hidden="true">
+    <target name="restore-site-item">
         <property name="site-item-backup" value="${site-item}">
             <filterchain>
                 <replaceregexp>
@@ -671,6 +661,9 @@
             <then>
                 <mkdir dir="${platform.build.files.dir}/private_files" />
                 <mkdir dir="${platform.build.tmp.dir}" />
+                <!-- Support CSS and JS injector. -->
+                <mkdir dir="${platform.build.files.dir}/css_injector" />
+                <mkdir dir="${platform.build.files.dir}/js_injector" />
             </then>
         </if>
     </target>
