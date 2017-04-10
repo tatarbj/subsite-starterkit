@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d33858f49557f07cc40ec5ab50e7cc76",
-    "content-hash": "5e16bdc88c1529623a7439f01682b7c2",
+    "hash": "d6ba142e9ad77483b55bb48213a550aa",
+    "content-hash": "9727992232155c5c1c8d0ac090136156",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -392,22 +392,155 @@
             "time": "2016-03-27 09:53:21"
         },
         {
-            "name": "drupal/phing-drush-task",
-            "version": "1.0",
+            "name": "drupal/phingdrushtask",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/phingdrushtask.git",
-                "reference": "7.x-1.0"
+                "reference": "6737f3d6c28c6c830f58d5fa09327b65acbda0a9"
+            },
+            "require": {
+                "drush/drush": "6 - 8",
+                "phing/phing": "~2.9"
+            },
+            "require-dev": {
+                "bovigo/assert": "^1.7",
+                "drupal/coder": "^8.2",
+                "mockery/mockery": "^0.9",
+                "phpunit/php-code-coverage": "^4.0",
+                "phpunit/phpunit": "^5.6",
+                "satooshi/php-coveralls": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "patches_applied": {
+                    "Support forcing of color with drush": "patches/phingdrushtask-color-support.patch"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Phing\\Drush\\": "src/",
+                    "Phing\\Drush\\Tests\\": "./tests/"
+                }
+            },
+            "scripts": {
+                "post-install-cmd": [
+                    "vendor/bin/phpcs --config-set installed_paths ../../drupal/coder/coder_sniffer",
+                    "vendor/bin/phpcs --config-set show_progress 1",
+                    "cp scripts/pre-push.sh .git/hooks/pre-push && chmod +x .git/hooks/pre-push"
+                ],
+                "post-update-cmd": [
+                    "vendor/bin/phpcs --config-set installed_paths ../../drupal/coder/coder_sniffer",
+                    "vendor/bin/phpcs --config-set show_progress 1",
+                    "cp scripts/pre-push.sh .git/hooks/pre-push && chmod +x .git/hooks/pre-push"
+                ],
+                "phpcs": [
+                    "./vendor/bin/phpcs --standard=Drupal,DrupalPractice --ignore=vendor ."
+                ],
+                "phpcbf": [
+                    "./vendor/bin/phpcbf --standard=Drupal,DrupalPractice --ignore=vendor ."
+                ],
+                "phpunit": [
+                    "./vendor/bin/phpunit --coverage-clover build/logs/clover.xml -c tests/phpunit.xml tests"
+                ],
+                "coveralls": [
+                    "./vendor/bin/coveralls"
+                ]
+            },
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Pierre Buyle",
+                    "email": "pierre@buyle.org",
+                    "role": "Author"
+                },
+                {
+                    "name": "Frederic Dewinne",
+                    "email": "frederic@continuousphp.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Pol Dellaiera",
+                    "email": "pol.dellaiera@protonmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Drush task for Phing.",
+            "homepage": "https://www.drupal.org/project/phingdrushtask",
+            "keywords": [
+                "ci",
+                "continuous integration",
+                "drupal",
+                "drush",
+                "phing"
+            ],
+            "support": {
+                "issues": "https://www.drupal.org/project/issues/phingdrushtask",
+                "source": "http://cgit.drupalcode.org/phingdrushtask"
+            },
+            "time": "2016-12-02 20:39:55"
+        },
+        {
+            "name": "drupol/phingbehattask",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drupol/phingbehattask.git",
+                "reference": "68c236e4a215856d115d55009a53c6e07d6bd294"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/drupol/phingbehattask/zipball/68c236e4a215856d115d55009a53c6e07d6bd294",
+                "reference": "68c236e4a215856d115d55009a53c6e07d6bd294",
+                "shasum": ""
+            },
+            "require": {
+                "phing/phing": "~2.1"
+            },
+            "require-dev": {
+                "behat/behat": "^3.2",
+                "bovigo/assert": "^1.7",
+                "drupal/coder": "^8.2",
+                "mockery/mockery": "^0.9",
+                "phpunit/php-code-coverage": "^4.0",
+                "phpunit/phpunit": "^5.6",
+                "satooshi/php-coveralls": "^1.0"
             },
             "type": "library",
             "autoload": {
-                "classmap": [
-                    "DrushTask.php"
-                ]
+                "psr-4": {
+                    "Phing\\Behat\\": "src/",
+                    "Phing\\Behat\\Tests\\": "./tests/"
+                }
             },
-            "include-path": [
-                "."
-            ]
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Pol Dellaiera",
+                    "email": "pol.dellaiera@protonmail.com",
+                    "role": "Author"
+                },
+                {
+                    "name": "Antonio De Marco",
+                    "email": "antonio@nuvole.org",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Behat task for Phing.",
+            "homepage": "https://github.com/drupol/phingbehattask",
+            "keywords": [
+                "Behat",
+                "ci",
+                "continuous integration",
+                "phing",
+                "test"
+            ],
+            "time": "2016-11-24 09:43:44"
         },
         {
             "name": "drush/drush",
@@ -450,6 +583,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "8.0.x-dev"
+                },
+                "patches_applied": {
+                    "https://github.com/drush-ops/drush/pull/2215": "patches/drush-force-color.patch"
                 }
             },
             "autoload": {
@@ -1481,6 +1617,10 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "2.16.x-dev"
+                },
+                "patches_applied": {
+                    "Customize terminal colors": "patches/phing-customize-colors.patch",
+                    "https://github.com/phingofficial/phing/pull/701": "patches/phing-composer-task_automatic-path.patch"
                 }
             },
             "autoload": {
@@ -2266,24 +2406,6 @@
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "time": "2017-03-20 09:45:15"
-        },
-        {
-            "name": "typhonius/behattask",
-            "version": "1.0",
-            "source": {
-                "type": "git",
-                "url": "https://gist.github.com/5719e15be9687ff7c138.git",
-                "reference": "0ea666882cba3099dfa4feeb02e1bb85b2c0bde9"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "BehatTask.php"
-                ]
-            },
-            "include-path": [
-                "."
-            ]
         }
     ],
     "packages-dev": [
