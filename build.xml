@@ -44,6 +44,12 @@
     <import file="vendor/continuousphp/phing-tasks/tasks.xml" />
     <import file="vendor/continuousphp/aws-sdk-phing/tasks.xml" />
 
+    <!-- Needs to be removed when phing adds relative symlink support -->
+    <!-- https://github.com/phingofficial/phing/issues/684 -->
+    <!-- https://github.com/phingofficial/phing/pull/695 -->
+    <echo msg="Loading Relative Symlink task." />
+    <taskdef name="rel-sym" classname="\NextEuropa\Phing\RelativeSymlinkTask" />
+
     <!-- Import build xml files. -->
     <import file="resources/build.custom.xml" />
     <import file="build.clone.xml" />
