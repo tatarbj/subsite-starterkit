@@ -1,4 +1,3 @@
-//dockerNode(image: "php:5.6-apache", sideContainers: ["mysql:5.7"]) {
 node {
 
     stage('Init') {
@@ -56,9 +55,9 @@ node {
                 //sh 'bin/phing start-containers -logger phing.listener.AnsiColorLogger'
                 //sh "docker build -t webserver ./resources/docker/docker-webserver"
                 //sh "docker run --name dev-server -p 127.0.0.1:80:80 -v /opt/mysql:/var/lib/mysql -v ${workspace}:/web -w /web -d webserver"
-                sh "docker run --name dev-server -p 127.0.0.1:80:80 -v /opt/mysql:/var/lib/mysql -v ${workspace}:/web --env MYSQL_PASSWORD=password -w /web -d metalguardian/php-web-server"
-                sh "docker start dev-server"
-                sh "docker exec dev-server ./bin/phing install-dev -D'drupal.db.host'='172.17.0.2' -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='root' -D'drupal.db.password'='password' -logger phing.listener.AnsiColorLogger"
+                //sh "docker run --name dev-server -p 127.0.0.1:80:80 -v /opt/mysql:/var/lib/mysql -v ${workspace}:/web --env MYSQL_PASSWORD=password -w /web -d metalguardian/php-web-server"
+                //sh "docker start dev-server"
+                sh "docker exec dev-server ./bin/phing install-dev -D'drupal.db.host'='localhost' -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='root' -D'drupal.db.password'='password' -logger phing.listener.AnsiColorLogger"
                 timeout(time: 2, unit: 'HOURS') {
                     if (env.WD_BROWSER_NAME == 'phantomjs') {
                         sh "phantomjs --webdriver=${env.WD_HOST}:${env.WD_PORT} &"
