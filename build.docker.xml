@@ -9,7 +9,7 @@
     </target>
 
     <target name="start-container" description="Start docker container">
-        <exec executable="docker">
+        <exec executable="/usr/bin/docker">
             <arg value="run" />
             <arg value="--name dev-server" />
             <arg value="-p 127.0.0.1:80:80" />
