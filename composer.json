@@ -5,6 +5,7 @@
     "continuousphp/phing-tasks": "~0.1.3",
     "continuousphp/sdk": "~0.6.0",
     "cpliakas/git-wrapper": "dev-master as 1.7.1",
+    "cweagans/composer-patches": "~1.0",
     "drupal/coder": "8.2.7",
     "drupal/phing-drush-task": "1.0",
     "drush/drush": "8.0.5",
@@ -78,6 +79,20 @@
       }
     }
   ],
+  "extra": {
+    "patches": {
+      "drupal/phingdrushtask": {
+       "Support forcing of color with drush": "patches/phingdrushtask-color-support.patch"
+      },
+      "drush/drush": {
+        "https://github.com/drush-ops/drush/pull/2215": "patches/drush-force-color.patch"
+      },
+      "phing/phing": {
+        "Customize terminal colors": "patches/phing-customize-colors.patch",
+        "https://github.com/phingofficial/phing/pull/701": "patches/phing-composer-task_automatic-path.patch"
+      }
+    }
+  },
   "scripts": {
     "pre-install-cmd": "resources/composer/scripts/execute.sh pre-install-cmd",
     "post-install-cmd": "resources/composer/scripts/execute.sh post-install-cmd",
