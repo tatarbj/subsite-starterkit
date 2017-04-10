@@ -1,4 +1,3 @@
-//dockerNode(image: "php:5.6-apache", sideContainers: ["mysql:5.7"]) {
 node {
 
     stage('Init') {
@@ -32,10 +31,6 @@ node {
         env.RELEASE_NAME = "${env.PROJECT_ID}_" + "${date}".trim() + "_${env.PLATFORM_PACKAGE_REFERENCE}"
         env.BUILDLINK = "<${env.BUILD_URL}consoleFull|${env.PROJECT_ID} #${env.BUILD_NUMBER}>"
          
-        DB_USER = "docker"
-        DB_NAME = "database"
-        DB_PASS = "password"
-
         setBuildStatus("Build started.", "PENDING");
         slackSend color: "good", message: "${env.SUBSITE_NAME} build ${env.BUILDLINK} started."
     }
@@ -54,11 +49,15 @@ node {
             }
 
             stage('Test') {
+                def workspace = pwd() 
                 //sh 'bin/phing setup-docker-compose -logger phing.listener.AnsiColorLogger'
-                sh "docker-compose -f resources/docker/phpdocker/docker-compose.yml up -d"
+                //sh 'docker-compose -f resources/docker/phpdocker/docker-compose.yml up -d'
                 //sh 'bin/phing start-containers -logger phing.listener.AnsiColorLogger'
-                sh "docker exec php5-6-webserver ls -la /var/www/php5-6"
-                sh "docker exec php5-6-webserver ./bin/phing install-dev -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='$DB_USER' -D'drupal.db.password'='$DB_PASS' -D'drupal.db.su'='root' -D 'drupal.db.su.pw'='password' -logger phing.listener.AnsiColorLogger"
+                //sh "docker build -t webserver ./resources/docker/docker-webserver"
+                //sh "docker run --name dev-server -p 127.0.0.1:80:80 -v /opt/mysql:/var/lib/mysql -v ${workspace}:/web -w /web -d webserver"
+                //sh "docker run --name dev-server -p 127.0.0.1:80:80 -v /opt/mysql:/var/lib/mysql -v ${workspace}:/web --env MYSQL_PASSWORD=password -w /web -d metalguardian/php-web-server"
+                //sh "docker start dev-server"
+                sh "docker exec dev-server ./bin/phing install-dev -D'drupal.db.host'='localhost' -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='root' -D'drupal.db.password'='password' -logger phing.listener.AnsiColorLogger"
                 timeout(time: 2, unit: 'HOURS') {
                     if (env.WD_BROWSER_NAME == 'phantomjs') {
                         sh "phantomjs --webdriver=${env.WD_HOST}:${env.WD_PORT} &"
