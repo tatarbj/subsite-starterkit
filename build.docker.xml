@@ -13,7 +13,7 @@
     </target>
 
     <target name="stop-containers" description="Stop all docker containers and clean up">
-        <exec command="docker-compose -f ${subsite.resources.dir}/docker/phpdocker/docker-compose.yml stop; docker rm $(docker ps -aq)" />
+        <exec command="docker stop dev-server; docker rm $(docker ps -aq)" />
     </target>
 
 </project>

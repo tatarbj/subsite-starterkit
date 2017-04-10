@@ -23,7 +23,6 @@
             <option name="account-name" value="${drupal.admin.username}" />
             <option name="account-pass" value="${drupal.admin.password}" />
             <option name="account-mail" value="${drupal.admin.email}" />
-            <option name="notify" />
             <param>${platform.profile.name}</param>
             <!-- Prevent e-mails from being sent during the installation. -->
             <param>install_configure_form.update_status_module='array(FALSE,FALSE)'</param>
