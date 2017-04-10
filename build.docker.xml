@@ -9,7 +9,7 @@
     </target>
 
     <target name="start-container" description="Start docker container">
-        <exec command="docker run --name dev-server -p 127.0.0.1:80:80 -v /opt/mysql:/var/lib/mysql -v ${workspace}:/web --env MYSQL_PASSWORD=password -w /web -d dev-server:latest" />
+        <exec command="docker run --name dev-server -p 127.0.0.1:80:80 -v /opt/mysql:/var/lib/mysql -v ${workspace}:/web -w /web -d dev-server:latest" />
     </target>
 
     <target name="stop-containers" description="Stop all docker containers and clean up">
