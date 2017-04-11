@@ -10,7 +10,7 @@
 
     <target name="stop-container" description="Drop database, stop and remove container">
         <echo msg='Stopping container "${jenkins.container.name}".' />
-        <exec command="docker exec ${jenkins.container.name} echo y | mysqladmin -h${drupal.db.host} -u${drupal.db.user} -p${drupal.db.password} DROP DATABASE IF EXISTS ${drupal.db.name}" logoutput="true" />
+        <exec command="docker exec ${jenkins.container.name}  mysql -h${drupal.db.host} -u${drupal.db.user} -p${drupal.db.password} -e'DROP DATABASE IF EXISTS ${drupal.db.name}'" logoutput="true" />
         <exec command="docker stop ${jenkins.container.name}; docker rm $(docker ps -aq)" />
     </target>
 
