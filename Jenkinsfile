@@ -46,18 +46,18 @@ node('master') {
             stage('Check') {
                 //sh 'composer clear-cache'
                 sh 'composer install --no-suggest --no-interaction --ansi'
-                //sh './bin/phing setup-php-codesniffer quality-assurance'
+                //sh './bin/phing setup-php-codesniffer quality-assurance -logger phing.listener.AnsiColorLogger'
             }
 
 
             stage('Build') {
-                sh "./bin/phing build-dev"
+                sh "./bin/phing build-dev -logger phing.listener.AnsiColorLogger"
             }
 
             stage('Test') {
                 def workspace = pwd()
                 sh "./bin/phing start-container -D'jenkins.workspace.dir'='${workspace}' -D'jenkins.container.name'='$BUILD_ID_UNIQUE' -logger phing.listener.AnsiColorLogger"
-                sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing install-dev -D'drupal.db.name'='$BUILD_ID_UNIQUE' -D' -logger phing.listener.AnsiColorLogger"
+                sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing install-dev -D'drupal.db.name'='$BUILD_ID_UNIQUE' -logger phing.listener.AnsiColorLogger"
                 sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing setup-behat -logger phing.listener.AnsiColorLogger"
                 timeout(time: 2, unit: 'HOURS') {
                     if (env.WD_BROWSER_NAME == 'phantomjs') {
@@ -83,7 +83,7 @@ node('master') {
             slackSend color: "danger", message: "${env.PROJECT_ID} build ${env.BUILDLINK} failed."
             throw(err)
         } finally {
-            //sh "./bin/phing stop-container -D'jenkins.container.name'='$BUILD_ID_UNIQUE'"
+            sh "./bin/phing stop-container -D'jenkins.container.name'='$BUILD_ID_UNIQUE' -logger phing.listener.AnsiColorLogger"
         }
     }
 }
