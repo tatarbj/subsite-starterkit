@@ -56,7 +56,7 @@ node {
 
             stage('Test') {
                 def workspace = pwd()
-                docker.image("dev-server:latest").withRun("--name=$BUILD_ID_UNIQUE -p 127.0.0.1:80:80 -v $workspace:/web -w /web -d") {
+                docker.image("dev-server:latest").withRun("--name=$BUILD_ID_UNIQUE -p 127.0.0.1:80:80 -v $workspace:/web -w /web -d").inside {
                     waitUntil {
                         sh "docker exec $BUILD_ID_UNIQUE mysqladmin ping -h'127.0.0.1' --silent"
                     }
@@ -88,7 +88,7 @@ node {
             slackSend color: "danger", message: "${env.PROJECT_ID} build ${env.BUILDLINK} failed."
             throw(err)
         } finally {
-            //sh "./bin/phing stop-container -D'jenkins.container.name'='$BUILD_ID_UNIQUE'"
+            sh "./bin/phing stop-container -D'jenkins.container.name'='$BUILD_ID_UNIQUE'"
         }
     }
 }
