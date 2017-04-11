@@ -59,7 +59,8 @@ node {
                 def server = docker.image("dev-server:latest")
                 server.inside("--name=$BUILD_ID_UNIQUE -p 127.0.0.1:80:80 -v $workspace:/web -w /web") {
                     waitUntil {
-                        sh "mysqladmin ping -h'127.0.0.1' --silent"
+                        def mysql-up = sh script: 'mysqladmin ping -h"127.0.0.1" --silent', returnStdout: true
+                        echo "$mysql-up"
                     }
                     //sh "./bin/phing start-container -D'jenkins.workspace.dir'='${workspace}' -D'jenkins.container.name'='$BUILD_ID_UNIQUE'"
                     sh "./bin/phing install-dev -D'drupal.db.name'='$BUILD_ID_UNIQUE' -D'drupal.db.password'=''"
