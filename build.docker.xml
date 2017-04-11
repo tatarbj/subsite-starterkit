@@ -5,7 +5,7 @@
         <echo msg='Starting container "${jenkins.container.name}".' />
         <exec command="docker run --name ${jenkins.container.name} -p 127.0.0.1:80:80 -v ${jenkins.workspace.dir}:/web -w /web -d dev-server:latest" />
         <exec command="docker start ${jenkins.container.name}" />
-        <exec command="docker run --rm --link ${jenkins.container.name}:mysql digit/wait-for-mysql" />
+        <exec command="sleep 15" />
     </target>
 
     <target name="stop-container" description="Drop database, stop and remove container">
