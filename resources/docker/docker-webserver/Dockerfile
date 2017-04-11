@@ -7,7 +7,7 @@ ENV TERM xterm
 ENV MYSQL_USER root
 ENV MYSQL_PASSWORD ""
 ENV MYSQL_MAJOR 5.6
-ENV HOSTNAME docker.dev
+ENV HOSTNAME platform.dev
 
 # add php configuration file in specified position
 COPY configs/custom.php.ini /etc/php5.6/mods-available/custom.ini
@@ -81,7 +81,7 @@ RUN ln -s /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local
 # install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# add user "docker" to use it as default user for working with files
+# add user "jenkins" to use it as default user for working with files
 RUN yes "" | adduser --uid=1000 --disabled-password jenkins && \
     echo "jenkins   ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
 
@@ -89,8 +89,8 @@ RUN yes "" | adduser --uid=1000 --disabled-password jenkins && \
 RUN sudo -H -u jenkins bash -c "/usr/local/bin/composer global require fxp/composer-asset-plugin:~1.1"
 
 # create and set access to the folder
-RUN mkdir -p /web/jenkins && \
-    echo "<?php echo 'web server is running';" > /web/jenkins/index.php && \
+RUN mkdir -p /web/platform && \
+    echo "<?php echo 'web server is running';" > /web/platform/index.php && \
     chown -R jenkins:jenkins /web
 
 # add custom php configuration
@@ -103,6 +103,10 @@ RUN php5enmod mcrypt
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
     ln -sf /dev/stderr /var/log/nginx/error.log
 
+# create folders for php-fpm5.6
+RUN mkdir -p /var/run/php
+RUN service php5.6-fpm start
+
 # clean apt cache and temps
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -114,7 +118,7 @@ COPY configs/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY configs/mysql.sh /opt/mysql.sh
 
 # replace php-fpm configuration file
-COPY configs/php-fpm.conf /etc/php5.6/fpm/php-fpm.conf
+COPY configs/php-fpm.conf /etc/php/5.6/fpm/php-fpm.conf
 
 # add phpmyadmin configuration file 
 COPY configs/phpmyadmin.php /etc/phpmyadmin/conf.d/phpmyadmin.php
