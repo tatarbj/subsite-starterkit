@@ -56,10 +56,10 @@ node {
             stage('Test') {
                 def workspace = pwd()
                 sh "./bin/phing start-container -D'jenkins.workspace.dir'='${workspace}' -D'jenkins.container.name'='$BUILD_ID_UNIQUE'"
-                sh "docker start dev-server"
+                sh "docker start $BUILD_ID_UNIQUE"
                 sh "sleep 15"
-                sh "docker exec -u jenkins dev-server ./bin/phing install-dev -D'drupal.db.name'='$BUILD_ID_UNIQUE' -D'drupal.db.password'=''"
-                sh "docker exec -u jenkins dev-server ./bin/phing setup-behat"
+                sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing install-dev -D'drupal.db.name'='$BUILD_ID_UNIQUE' -D'drupal.db.password'=''"
+                sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing setup-behat"
                 timeout(time: 2, unit: 'HOURS') {
                     if (env.WD_BROWSER_NAME == 'phantomjs') {
                         sh "docker exec -u jenkins dev-server phantomjs --webdriver=${env.WD_HOST}:${env.WD_PORT} &"
@@ -84,7 +84,7 @@ node {
             slackSend color: "danger", message: "${env.PROJECT_ID} build ${env.BUILDLINK} failed."
             throw(err)
         } finally {
-            sh './bin/phing stop-container'
+            sh "./bin/phing stop-container -D'jenkins.container.name'='$BUILD_ID_UNIQUE'"
         }
     }
 }
