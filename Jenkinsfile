@@ -44,21 +44,21 @@ node {
             stage('Check') {
                 //sh 'composer clear-cache'
                 sh 'composer install --no-suggest --no-interaction --ansi'
-                sh './bin/phing setup-php-codesniffer quality-assurance -logger phing.listener.TargetLogger'
+                //sh './bin/phing setup-php-codesniffer quality-assurance -logger phing.listener.AnsiColorLogger'
             }
 
 
             stage('Build') {
-                sh "./bin/phing build-dev -logger phing.listener.TargetLogger"
+                sh "./bin/phing build-dev -logger phing.listener.AnsiColorLogger"
             }
 
             stage('Test') {
-                def workspace = pwd() 
-                sh "./bin/phing start-container -D'workspace'='${workspace}' -logger phing.listener.TargetLogger"
+                def workspace = pwd()
+                sh "./bin/phing start-container -D'workspace'='${workspace}' -logger phing.listener.AnsiColorLogger"
                 sh "docker start dev-server"
                 sh "sleep 15"
-                sh "docker exec -u jenkins dev-server ./bin/phing install-dev -D'drupal.db.host'='127.0.0.1' -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='root' -D'drupal.db.password'='' -logger phing.listener.TargetLogger"
-                sh "docker exec -u jenkins dev-server ./bin/phing setup-behat -logger phing.listener.TargetLogger"
+                sh "docker exec -u jenkins dev-server ./bin/phing install-dev -D'drupal.db.host'='127.0.0.1' -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='root' -D'drupal.db.password'='' -logger phing.listener.AnsiColorLogger"
+                sh "docker exec -u jenkins dev-server ./bin/phing setup-behat -logger phing.listener.AnsiColorLogger"
                 timeout(time: 2, unit: 'HOURS') {
                     if (env.WD_BROWSER_NAME == 'phantomjs') {
                         sh "docker exec -u jenkins dev-server phantomjs --webdriver=${env.WD_HOST}:${env.WD_PORT} &"
@@ -68,7 +68,7 @@ node {
             }
 
             stage('Package') {
-                sh "./bin/phing build-dist -logger phing.listener.TargetLogger"
+                sh "./bin/phing build-dist -logger phing.listener.AnsiColorLogger"
                 sh "cd ${PHING_PROJECT_BUILD_DIR}"
                 env.RELEASE_PATH = "/var/jenkins_home/releases/${env.PROJECT_ID}"
                 if (!fileExists(env.RELEASE_PATH)) {
