@@ -1,6 +1,6 @@
 #!groovy
 
-node {
+node('master') {
     wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
         stage('Init') {
             deleteDir()
