@@ -56,8 +56,7 @@ node {
 
             stage('Test') {
                 def workspace = pwd()
-                def server = docker.image("dev-server")
-                server.inside("--name=$BUILD_ID_UNIQUE -p 127.0.0.1:80:80 -v $workspace:/web -w /web") {
+                docker.image("dev-server").withRun("--name=$BUILD_ID_UNIQUE -p 127.0.0.1:80:80 -v $workspace:/web -w /web") {
                     sh "sleep 10"
                     //sh "./bin/phing start-container -D'jenkins.workspace.dir'='${workspace}' -D'jenkins.container.name'='$BUILD_ID_UNIQUE'"
                     sh "./bin/phing install-dev -D'drupal.db.name'='$BUILD_ID_UNIQUE' -D'drupal.db.password'=''"
