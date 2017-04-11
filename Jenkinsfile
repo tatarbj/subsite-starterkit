@@ -59,7 +59,7 @@ node {
                 def server = docker.image("dev-server:latest")
                 server.inside("--name=$BUILD_ID_UNIQUE -p 127.0.0.1:80:80 -v $workspace:/web -w /web") {
                     waitUntil {
-                        def mysql-up = sh script: 'mysqladmin ping -h"127.0.0.1" --silent', returnStdout: true
+                        def mysql-up = sh(script: 'mysqladmin ping -h"127.0.0.1" --silent', returnStdout: true).trim()
                         echo "$mysql-up"
                     }
                     //sh "./bin/phing start-container -D'jenkins.workspace.dir'='${workspace}' -D'jenkins.container.name'='$BUILD_ID_UNIQUE'"
