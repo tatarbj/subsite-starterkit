@@ -71,7 +71,7 @@ node {
                 sh "cd ${PHING_PROJECT_BUILD_DIR}"
                 env.RELEASE_PATH = "/var/jenkins_home/releases/${env.PROJECT_ID}"
                 if (!fileExists(env.RELEASE_PATH)) {
-                    sh "mkdir ${env.RELEASE_PATH}"
+                    sh "mkdir -p ${env.RELEASE_PATH}"
                 }
                 sh "tar -czf ${env.RELEASE_PATH}/${env.RELEASE_NAME}.tar.gz ."
                 setBuildStatus("Build complete.", "SUCCESS");
@@ -83,7 +83,7 @@ node {
         slackSend color: "danger", message: "${env.PROJECT_ID} build ${env.BUILDLINK} failed."
         throw(err)
     } finally {
-        //sh './bin/phing stop-containers'
+        sh './bin/phing stop-containers'
     }
 }
 

@@ -47,7 +47,7 @@
     <!-- Needs to be removed when phing adds relative symlink support -->
     <!-- https://github.com/phingofficial/phing/issues/684 -->
     <!-- https://github.com/phingofficial/phing/pull/695 -->
-    <echo msg="Loading Relative Symlink task." />
+    <echo msg="Loading Relative Symlink task." level="${level}" />
     <taskdef name="rel-sym" classname="\NextEuropa\Phing\RelativeSymlinkTask" />
 
     <!-- Import build xml files. -->
