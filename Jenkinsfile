@@ -88,7 +88,7 @@ node {
             slackSend color: "danger", message: "${env.PROJECT_ID} build ${env.BUILDLINK} failed."
             throw(err)
         } finally {
-            sh "./bin/phing stop-container -D'jenkins.container.name'='$BUILD_ID_UNIQUE'"
+            //sh "./bin/phing stop-container -D'jenkins.container.name'='$BUILD_ID_UNIQUE'"
         }
     }
 }
