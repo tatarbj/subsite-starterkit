@@ -23,6 +23,7 @@ node {
             env.WD_PORT = 0
             env.WD_HOST = "127.0.0.1"
             env.TERM = "xterm"
+            TERM = "xterm"
 
             Random random = new Random()
             tokens = "${env.WORKSPACE}".tokenize('/')
@@ -56,8 +57,6 @@ node {
             stage('Test') {
                 def workspace = pwd()
                 sh "./bin/phing start-container -D'jenkins.workspace.dir'='${workspace}' -D'jenkins.container.name'='$BUILD_ID_UNIQUE'"
-                sh "docker start $BUILD_ID_UNIQUE"
-                sh "sleep 15"
                 sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing install-dev -D'drupal.db.name'='$BUILD_ID_UNIQUE' -D'drupal.db.password'=''"
                 sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing setup-behat"
                 timeout(time: 2, unit: 'HOURS') {
