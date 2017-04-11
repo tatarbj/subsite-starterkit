@@ -56,18 +56,14 @@ node('master') {
 
             stage('Test') {
                 def workspace = pwd()
-                def server = docker.image 'dev-server'
-                server.inside("-p 127.0.0.1:80:80 -v $workspace:/web") {
-                    sh "sleep 30"
-                    //sh "./bin/phing start-container -D'jenkins.workspace.dir'='${workspace}' -D'jenkins.container.name'='$BUILD_ID_UNIQUE'"
-                    sh "./bin/phing install-dev -D'drupal.db.name'='$BUILD_ID_UNIQUE' -D'drupal.db.password'=''"
-                    sh "./bin/phing setup-behat"
-                    timeout(time: 2, unit: 'HOURS') {
-                        if (env.WD_BROWSER_NAME == 'phantomjs') {
-                            sh "phantomjs --webdriver=${env.WD_HOST}:${env.WD_PORT} &"
-                        }
-                        sh "./bin/behat -c tests/behat.yml --colors --strict"
+                sh "./bin/phing start-container -D'jenkins.workspace.dir'='${workspace}' -D'jenkins.container.name'='$BUILD_ID_UNIQUE' -logger phing.listener.AnsiColorLogger"
+                sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing install-dev -D'drupal.db.name'='$BUILD_ID_UNIQUE' -D' -logger phing.listener.AnsiColorLogger"
+                sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing setup-behat -logger phing.listener.AnsiColorLogger"
+                timeout(time: 2, unit: 'HOURS') {
+                    if (env.WD_BROWSER_NAME == 'phantomjs') {
+                        sh "docker exec -u jenkins $BUILD_ID_UNIQUE phantomjs --webdriver=${env.WD_HOST}:${env.WD_PORT} &"
                     }
+                    sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/behat -c tests/behat.yml --colors --strict"
                 }
             }
 

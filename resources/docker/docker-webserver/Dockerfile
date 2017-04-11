@@ -70,8 +70,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y -q --no-install-recommends install
         php5.6-xml \
 	php5.6-sqlite \
 	phpmyadmin \
-	unzip \
-	npm
+	unzip
 
 # install phantomjs
 RUN wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
