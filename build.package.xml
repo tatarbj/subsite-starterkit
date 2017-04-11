@@ -178,7 +178,8 @@
             bin="${drush.bin}"
             pipe="yes"
             verbose="${drush.verbose}"
-            root="${drush.make.root}">
+            root="${drush.make.root}"
+            color="${drush.color}">
             <param>${drush.make.target.file}</param>
             <param>${drush.make.root}</param>
             <!--
@@ -212,7 +213,7 @@
 
     <!-- Symlink the Behat bin and test directory in the subsite folder. -->
     <target name="link-behat">
-        <echo msg="Symlink the Behat bin and test directory in './sites/all'." />
+        <echo msg="rel-sym the Behat bin and test directory in './sites/all'." />
         <rel-sym link="bin/behat" target="${platform.build.subsite.dir}/vendor/bin/behat" overwrite="true"/>
         <rel-sym link="${platform.build.subsite.dir}/tests" target="${project.basedir}/tests" overwrite="true"/>
     </target>
@@ -254,6 +255,9 @@
         <echo msg="Run 'composer install' in platform root." />
         <composer command="install" composer="${composer.bin}">
             <arg value="--working-dir=${project.basedir}" />
+            <arg value="--no-interaction" />
+            <arg value="--no-suggest" />
+            <arg value="--ansi" />
         </composer>
     </target>
 
@@ -262,6 +266,9 @@
         <echo msg="Run 'composer install' in the subsite folder for development purposes." />
         <composer command="install" composer="${composer.bin}">
             <arg value="--working-dir=${platform.build.subsite.dir}" />
+            <arg value="--no-interaction" />
+            <arg value="--no-suggest" />
+            <arg value="--ansi" />
         </composer>
     </target>
 
@@ -270,14 +277,17 @@
         <echo msg="Run 'composer install --no-dev' in the build destination folder." />
         <composer command="install" composer="${composer.bin}">
             <arg value="--working-dir=${dist.build.dir}" />
+            <arg value="--no-interaction" />
+            <arg value="--no-suggest" />
             <arg value="--no-dev" />
+            <arg value="--ansi" />
         </composer>
     </target>
 
     <!-- Link site document root to Webserver document root. -->
     <target
         name="link-docroot"
-        description="Create a symlink from the build folder to the webserver document root.">
+        description="Create a Symlink from the build folder to the webserver document root.">
         <rel-sym link="${server.docroot}" target="${platform.build.dir}" overwrite="true" />
     </target>
 
@@ -291,7 +301,7 @@
         </if>
     </target>
 
-    <target name="create-tmp-dirs">
+    <target name="create-tmp-dirs" hidden="true">
         <if>
             <!-- Create the global cache directory if it doesn't exist. -->
             <not>
@@ -390,7 +400,7 @@
     </target>
 
     <!-- Move download to the available temp dir. The global cachedir precedes the local cachedir. -->
-    <target name="move-download-to-tmp-dir">
+    <target name="move-download-to-tmp-dir" hidden="true">
         <if>
             <and>
                 <available file="${platform.package.cachedir}" type="dir"/>
@@ -558,7 +568,7 @@
     </target>
 
     <!-- Backs up a site item from the platform that will be removed in order to rebuild. -->
-    <target name="backup-site-item">
+    <target name="backup-site-item" hidden="true">
         <php expression='dirname("${site-item}")' returnProperty="site-item-dir"/>
         <property name="site-item-backup-dir" value="${site-item-dir}">
             <filterchain>
@@ -588,7 +598,7 @@
     </target>
 
     <!-- Restores a site item from the platform.rebuild.backup.destination to the new build. -->
-    <target name="restore-site-item">
+    <target name="restore-site-item" hidden="true">
         <property name="site-item-backup" value="${site-item}">
             <filterchain>
                 <replaceregexp>
@@ -661,9 +671,6 @@
             <then>
                 <mkdir dir="${platform.build.files.dir}/private_files" />
                 <mkdir dir="${platform.build.tmp.dir}" />
-                <!-- Support CSS and JS injector. -->
-                <mkdir dir="${platform.build.files.dir}/css_injector" />
-                <mkdir dir="${platform.build.files.dir}/js_injector" />
             </then>
         </if>
     </target>

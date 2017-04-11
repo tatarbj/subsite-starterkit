@@ -40,8 +40,9 @@ node {
     try {
         wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
             stage('Check') {
-                //sh 'composer install --no-suggest --no-interaction --ansi'
-                sh 'COMPOSER_CACHE_DIR=/dev/null composer install --no-suggest --no-interaction --ansi'
+                //sh 'composer clear-cache'
+                sh 'composer install --no-suggest --no-interaction --ansi'
+                //sh 'COMPOSER_CACHE_DIR=/dev/null composer install --no-suggest --no-interaction --ansi'
                 //sh './bin/phing setup-php-codesniffer quality-assurance -logger phing.listener.AnsiColorLogger'
             }
 
@@ -56,6 +57,7 @@ node {
                 sh "docker start dev-server"
                 sh "sleep 15"
                 sh "docker exec -u jenkins dev-server ./bin/phing install-dev -D'drupal.db.host'='127.0.0.1' -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='root' -D'drupal.db.password'='' -logger phing.listener.AnsiColorLogger"
+                sh "docker exec -u jenkins dev-server ./bin/phing setup-behat"
                 timeout(time: 2, unit: 'HOURS') {
                     if (env.WD_BROWSER_NAME == 'phantomjs') {
                         sh "docker exec -u jenkins dev-server phantomjs --webdriver=${env.WD_HOST}:${env.WD_PORT} &"
