@@ -56,7 +56,7 @@ node {
 
             stage('Test') {
                 def workspace = pwd()
-                def server = sh "docker inspect dev-server"
+                def server = sh "$(docker inspect dev-server)"
                 //def server = docker.image("dev-server")
                 server.inside("--name=$BUILD_ID_UNIQUE -p 127.0.0.1:80:80 -v $workspace:/web") {
                     sh "sleep 30"
