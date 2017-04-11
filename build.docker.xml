@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="My subsite" default="help">
 
-    <!-- Import production database. -->
-    <target name="create-db" description="Create database.">
-        <!-- Drop database if exists, create database. -->
-        <exec command="echo y | mysqladmin -h${drupal.db.host} -u${drupal.db.user} -p${drupal.db.password} DROP DATABASE IF EXISTS ${drupal.db.name}" logoutput="true" />
-        <exec command="mysqladmin -h${drupal.db.host} -u${drupal.db.user} -p${drupal.db.password} CREATE ${drupal.db.name}" logoutput="true" />
-    </target>
-
     <target name="start-container" description="Start docker container">
-        <exec command="docker run --name dev-server -p 127.0.0.1:80:80 -v /opt/mysql:/var/lib/mysql -v ${workspace}:/web -w /web -d dev-server:latest" />
+        <echo msg='Starting container "${jenkins.container.name}."' />
+        <exec command="docker run --name ${jenkins.container.name} -p 127.0.0.1:80:80 -v ${jenkins.workspace.dir}:/web -w /web -d dev-server:latest" />
     </target>
 
-    <target name="stop-containers" description="Stop all docker containers and clean up">
-        <exec command="docker stop dev-server; docker rm $(docker ps -aq)" />
+    <target name="stop-container" description="Drop database, stop and remove container">
+        <echo msg='Stopping container "${jenkins.container.name}".' />
+        <exec command="echo y | mysqladmin -h${drupal.db.host} -u${drupal.db.user} -p${drupal.db.password} DROP DATABASE IF EXISTS ${drupal.db.name}" logoutput="true" />
+        <exec command="docker stop ${jenkins.container.name}; docker rm $(docker ps -aq)" />
     </target>
 
 </project>

@@ -22,6 +22,7 @@ node {
             env.WD_BROWSER_NAME = "phantomjs"
             env.WD_PORT = 0
             env.WD_HOST = "127.0.0.1"
+            env.TERM = "xterm"
 
             Random random = new Random()
             tokens = "${env.WORKSPACE}".tokenize('/')
@@ -32,7 +33,7 @@ node {
                  env.WD_PORT = env.HTTP_MOCK_PORT.toInteger() + 1
             }
             env.WD_HOST_URL = "http://${env.WD_HOST}:${env.WD_PORT}/wd/hub"
-            env.DB_NAME = "${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 4').trim()
+            env.BUILD_ID_UNIQUE = "${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 5').trim()
             env.RELEASE_NAME = "${env.PROJECT_ID}_" + "${date}".trim() + "_${env.PLATFORM_PACKAGE_REFERENCE}"
             env.BUILDLINK = "<${env.BUILD_URL}consoleFull|${env.PROJECT_ID} #${env.BUILD_NUMBER}>"
 
@@ -44,21 +45,21 @@ node {
             stage('Check') {
                 //sh 'composer clear-cache'
                 sh 'composer install --no-suggest --no-interaction --ansi'
-                //sh './bin/phing setup-php-codesniffer quality-assurance -logger phing.listener.AnsiColorLogger'
+                //sh './bin/phing setup-php-codesniffer quality-assurance'
             }
 
 
             stage('Build') {
-                sh "./bin/phing build-dev -logger phing.listener.AnsiColorLogger"
+                sh "./bin/phing build-dev"
             }
 
             stage('Test') {
                 def workspace = pwd()
-                sh "./bin/phing start-container -D'workspace'='${workspace}' -logger phing.listener.AnsiColorLogger"
+                sh "./bin/phing start-container -D'jenkins.workspace.dir'='${workspace}' -D'jenkins.container.name'='$BUILD_ID_UNIQUE'"
                 sh "docker start dev-server"
                 sh "sleep 15"
-                sh "docker exec -u jenkins dev-server ./bin/phing install-dev -D'drupal.db.host'='127.0.0.1' -D'drupal.db.name'='$DB_NAME' -D'drupal.db.user'='root' -D'drupal.db.password'='' -logger phing.listener.AnsiColorLogger"
-                sh "docker exec -u jenkins dev-server ./bin/phing setup-behat -logger phing.listener.AnsiColorLogger"
+                sh "docker exec -u jenkins dev-server ./bin/phing install-dev -D'drupal.db.name'='$BUILD_ID_UNIQUE' -D'drupal.db.password'=''"
+                sh "docker exec -u jenkins dev-server ./bin/phing setup-behat"
                 timeout(time: 2, unit: 'HOURS') {
                     if (env.WD_BROWSER_NAME == 'phantomjs') {
                         sh "docker exec -u jenkins dev-server phantomjs --webdriver=${env.WD_HOST}:${env.WD_PORT} &"
@@ -68,7 +69,7 @@ node {
             }
 
             stage('Package') {
-                sh "./bin/phing build-dist -logger phing.listener.AnsiColorLogger"
+                sh "./bin/phing build-dist"
                 sh "cd ${PHING_PROJECT_BUILD_DIR}"
                 env.RELEASE_PATH = "/var/jenkins_home/releases/${env.PROJECT_ID}"
                 if (!fileExists(env.RELEASE_PATH)) {
@@ -83,7 +84,7 @@ node {
             slackSend color: "danger", message: "${env.PROJECT_ID} build ${env.BUILDLINK} failed."
             throw(err)
         } finally {
-            sh './bin/phing stop-containers -logger phing.listener.AnsiColorLogger'
+            sh './bin/phing stop-container'
         }
     }
 }
