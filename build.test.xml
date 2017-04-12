@@ -46,8 +46,16 @@
                 <if>
                     <equals arg1="${platform.package.database}" arg2="1" />
                     <then>
-                         <mkdir dir="${platform.package.cachedir}" />
-                         <exec command="mysqldump -h${drupal.db.host} -p${drupal.db.port} -u${drupal.db.user} -p${drupal.db.password} ${drupal.db.name} &gt; ${platform.package.cachedir}/platform-dev-${platform.package.reference}.sql" />
+                        <mkdir dir="${platform.package.cachedir}" />
+                        <drush
+                            command="sql-dump"
+                            assume="yes"
+                            root="${platform.build.dir}"
+                            bin="${drush.bin}"
+                            verbose="${drush.verbose}"
+                            color="${drush.color}">
+                            <option name="result-file" value="${platform.package.cachedir}/platform-dev-${platform.package.reference}.sql" />
+                        </drush
                     </then>
                 </if>
             </else>
