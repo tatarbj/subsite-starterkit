@@ -21,7 +21,7 @@
                     property="platform-package-database"
                     value="${platform.package.cachedir}/platform-dev-${platform.package.reference}.sql"
                 />
-            <and>
+            </and>
             <then>
                 <exec command="echo &quot;CREATE DATABASE IF NOT EXISTS '${drupal.db.name}';&quot;| mysql -h${drupal.db.host} -u${drupal.db.user} -p${drupal.db.password} create ${drupal.db.name}" logoutput="true" checkreturn="true" />
                 <exec command="mysql -h${drupal.db.host} -u${drupal.db.user} -p${drupal.db.password} ${drupal.db.name} &lt; ${platform-package-database}" checkreturn="true" />
