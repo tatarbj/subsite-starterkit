@@ -5,7 +5,7 @@
         <echo msg='Starting container "${jenkins.container.name}".' />
         <exec command="docker run --name ${jenkins.container.name} -p 127.0.0.1:80:80 -v ${jenkins.workspace.dir}:/web -v${jenkins.cache.dir}:${jenkins.cache.dir} -w /web -d dev-server:latest" />
         <exec command="docker start ${jenkins.container.name}" />
-        <exec command="sleep 15" />
+        <exec command="docker exec ${jenkins.container.name} while ! echo Ready for install. | nc ${drupal.db.host} ${drupal.db.port}; do echo Waiting for mysql...; sleep 2; done" />
     </target>
 
     <target name="stop-container" description="Drop database, stop and remove container">
