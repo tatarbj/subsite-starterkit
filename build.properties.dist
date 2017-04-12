@@ -119,8 +119,11 @@ platform.package.provider = git-hub
 # The name of the platform repository.
 platform.package.repository = ec-europa/platform-dev
 
-# The name of the global folder where platform downloads can be stored.
+# The name of the global folder where platform downloads and installs can be stored.
 platform.package.cachedir = /tmp/platform-dev
+
+# Activate vanilla database caching to skip drush site-install.
+platform.package.database = 0
 
 # The name of the folder where the platform will be downloaded.
 platform.package.destination = ${phing.project.tmp.dir}

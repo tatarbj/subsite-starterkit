@@ -68,7 +68,7 @@ node('master') {
             }
 
             stage('Package') {
-                sh "./bin/phing build-dist"
+                sh "./bin/phing build-dist -logger phing.listener.AnsiColorLogger"
                 sh "cd ${PHING_PROJECT_BUILD_DIR}"
                 env.RELEASE_PATH = "/var/jenkins_home/releases/${env.PROJECT_ID}"
                 if (!fileExists(env.RELEASE_PATH)) {
