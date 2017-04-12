@@ -19,8 +19,6 @@
     <target name="drush-sql-create">
         <echo message="Creating database ${drupal.db.name}." />
         <drush command="sql-create" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
-            <option name="db-su" value="${drupal.db.user}" />
-            <option name="db-su-pw" value="${drupal.db.password}" />
             <option name="db-url" value="${drupal.db.url}" />
         </drush>
     </target>
