@@ -29,7 +29,7 @@
     <target name="drush-sql-import">
         <echo message="Importing database." />
         <drush command="sql-cli" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>&lt; "${database-file}"</param>
+            <param>&lt; ${database-file}</param>
         </drush>
     </target>
 
