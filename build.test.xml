@@ -55,7 +55,7 @@
                             verbose="${drush.verbose}"
                             color="${drush.color}">
                             <option name="result-file" value="${platform.package.cachedir}/platform-dev-${platform.package.reference}.sql" />
-                        </drush
+                        </drush>
                     </then>
                 </if>
             </else>
