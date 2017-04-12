@@ -122,40 +122,7 @@
         </if>
     </target>
 
-    <!-- Regenerate the settings file with database credentials and development variables. -->
-    <target name="regenerate-settings" description="Regenerate settings.php file." depends="check-for-default-settings-or-rebuild">
-        <copy file="src/Drupal/generate-settings.php" tofile="tmp/generate-settings.php" overwrite="true">
-            <filterchain>
-                <replacetokens begintoken="%%" endtoken="%%">
-                    <!-- Replace tokens in settings generation script. -->
-                    <token key="drupal.db.type" value="${drupal.db.type}" />
-                    <token key="drupal.db.name" value="${drupal.db.name}" />
-                    <token key="drupal.db.user" value="${drupal.db.user}" />
-                    <token key="drupal.db.password" value="${drupal.db.password}" />
-                    <token key="drupal.db.host" value="${drupal.db.host}" />
-                    <token key="drupal.db.port" value="${drupal.db.port}" />
-                    <token key="error_level" value="${development.variables.error_level}" />
-                    <token key="views_ui_show_sql_query" value="${development.variables.views_ui_show_sql_query}" />
-                    <token key="views_ui_show_performance_statistics" value="${development.variables.views_ui_show_performance_statistics}" />
-                    <token key="views_show_additional_queries" value="${development.variables.views_show_additional_queries}" />
-                    <token key="stage_file_proxy_origin" value="${development.variables.stage_file_proxy_origin}" />
-                    <token key="stage_file_proxy_origin_dir" value="${development.variables.stage_file_proxy_origin_dir}" />
-                    <token key="stage_file_proxy_hotlink" value="${development.variables.stage_file_proxy_hotlink}" />
-                    <token key="file_public_path" value="${platform.build.files.dir}" />
-                    <token key="file_private_path" value="${platform.build.files.dir}/private_files" />
-                    <token key="file_temporary_path" value="${platform.build.tmp.dir}" />
-                </replacetokens>
-            </filterchain>
-        </copy>
-        <!-- Execute setttings generation script. -->
-        <drush command="php-script" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}">
-            <param>tmp/generate-settings.php</param>
-        </drush>
-        <!-- Setup the private files directory if needed. -->
-        <phingcall target="setup-files-directory" />
-    </target>
-
     <!-- Install a development version of the subsite with a production database. -->
-    <target name="build-clone" description="Setup a clone of production." depends="download-prod-db, regenerate-settings, import-prod-db, enable-development-modules" />
+    <target name="build-clone" description="Setup a clone of production." depends="download-prod-db, drush-regenerate-settings, import-prod-db, enable-development-modules" />
 
 </project>
