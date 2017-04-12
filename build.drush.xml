@@ -44,6 +44,8 @@
     <!-- Backup the database. -->
     <target name="drush-sql-dump">
         <echo message="Backing up database ${drupal.db.name} to ${database-file}." />
+        <dirname property="database-cachedir" file="${database-file}"/>
+        <mkdir dir="${database-cachedir}" />
         <drush command="sql-dump" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="result-file" value="${database-file}" />
         </drush>
