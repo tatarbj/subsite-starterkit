@@ -63,7 +63,7 @@ node('master') {
             throw(err)
         } finally {
             sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing drush-sql-drop -logger phing.listener.AnsiColorLogger"
-            sh "docker stop $BUILD_ID_UNIQUE && docker rm \$(docker ps -aq)"
+            sh "docker stop $BUILD_ID_UNIQUE && docker rm \$(docker ps -aq -f status=exited)"
             //sh "./bin/phing stop-container -D'docker.container.name'='$BUILD_ID_UNIQUE' -logger phing.listener.AnsiColorLogger"
         }
     }
