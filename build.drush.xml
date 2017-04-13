@@ -29,6 +29,20 @@
         <drush command="sql-cli" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
             <param>&lt; ${database-file}</param>
         </drush>
+        <!-- Clear Drush caches. -->
+        <drush command="cc" assume="yes" root="${platform.build.dir}" bin="${drush.bin}">
+            <param>drush</param>
+        </drush>
+        <!-- Rebuild Registry. -->
+        <drush command="registry-rebuild" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}">
+            <param>--fire-bazooka</param>
+        </drush>
+        <!-- Update database. -->
+        <drush command="updatedb" assume="yes" root="${platform.build.dir}" bin="${drush.bin}"></drush>
+        <!-- Clear Caches. -->
+        <drush command="cc" assume="yes" root="${platform.build.dir}" bin="${drush.bin}">
+            <param>all</param>
+        </drush>
     </target>
 
     <!-- Drop the database. -->
