@@ -27,7 +27,7 @@ node('master') {
 
             setBuildStatus("Build started.", "PENDING");
             slackSend color: "good", message: "${env.SUBSITE_NAME} build ${env.BUILDLINK} started."
-            sh "docker run --name $BUILD_UNIQUE_ID -p 127.0.0.1:80:80 -v ${env.WORKSPACE}:/web -v/var/jenkins_home/cache:/var/jenkins_home/cache -w /web -d dev-server:latest"
+            sh "docker run --name $BUILD_ID_UNIQUE -p 127.0.0.1:80:80 -v ${env.WORKSPACE}:/web -v/var/jenkins_home/cache:/var/jenkins_home/cache -w /web -d dev-server:latest"
             //sh "./bin/phing start-container -D'jenkins.cache.dir'='/var/jenkins_home/cache' -D'jenkins.workspace.dir'='${env.WORKSPACE}' -D'docker.container.name'='$BUILD_ID_UNIQUE' -logger phing.listener.AnsiColorLogger"
         }
 
