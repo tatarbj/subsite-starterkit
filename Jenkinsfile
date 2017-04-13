@@ -53,7 +53,7 @@ node('master') {
             }
 
             stage('Package') {
-                sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing build-release -logger phing.listener.AnsiColorLogger"
+                sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing build-release -D'project.release.path'='${env.RELEASE_PATH}' -D'project.release.name'='${env.RELEASE_NAME}' -logger phing.listener.AnsiColorLogger"
                 setBuildStatus("Build complete.", "SUCCESS");
                 slackSend color: "good", message: "${env.SUBSITE_NAME} build ${env.BUILDLINK} completed."
             }
@@ -62,7 +62,7 @@ node('master') {
             slackSend color: "danger", message: "${env.PROJECT_ID} build ${env.BUILDLINK} failed."
             throw(err)
         } finally {
-            sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing drush-sql-drop"
+            sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing drush-sql-drop -logger phing.listener.AnsiColorLogger"
             sh "docker stop $BUILD_ID_UNIQUE && docker rm \$(docker ps -aq)"
             //sh "./bin/phing stop-container -D'docker.container.name'='$BUILD_ID_UNIQUE' -logger phing.listener.AnsiColorLogger"
         }
