@@ -601,6 +601,11 @@
         </if>
     </target>
 
+    <target name="build-release" description="Package a build-dist release." dependes="build-dist">
+        <mkdir dir="${env.RELEASE_PATH}" />
+        <exec command="tar -czf ${env.RELEASE_PATH}/${env.RELEASE_NAME}.tar.gz ${phing.project.build.dir}" />
+    </target>
+
     <target
         name="build-dev"
         description="Build a local development version of the subsite."
