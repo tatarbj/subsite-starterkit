@@ -603,7 +603,7 @@
 
     <target name="build-release" description="Package a build-dist release." depends="build-dist">
         <mkdir dir="${project.release.path}" />
-        <exec command="tar -czf ${project.release.path}/${env.RELEASE_NAME}.tar.gz ${phing.project.build.dir}" />
+        <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${phing.project.build.dir}" />
     </target>
 
     <target
