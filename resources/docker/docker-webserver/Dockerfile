@@ -88,7 +88,8 @@ RUN mkdir -p /opt && \
     mv /opt/$SOLR /opt/solr
 
 # Get apachesolr conf
-RUN git clone --single-branch --branch 7.x-1.7 git://git.drupal.org/project/apachesolr.git && \
+RUN git clone --single-branch --branch 7.x-1.x git://git.drupal.org/project/apachesolr.git && \
+    mkdir -p /opt/solr/server/solr/drupal/conf && \
     cp -v apachesolr/solr-conf/solr-5.x/* /opt/solr/server/solr/drupal/conf && \
     rm -rf apachesolr
 
@@ -106,11 +107,15 @@ RUN wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x
 
 # install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-ENV COMPOSER_CACHE_DIR=/var/cache/composer
 
 # add user "jenkins" to use it as default user for working with files
 RUN yes "" | adduser --uid=1000 --disabled-password jenkins && \
     echo "jenkins   ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+# put composer on global cache folder
+RUN mkdir -p /var/jenkins_home/cache/composer && \
+    chown -R jenkins:jenkins /var/jenkins_home/cache/composer
+ENV COMPOSER_CACHE_DIR=/var/jenkins_home/cache/composer
 
 # add drush registry_rebuild
 RUN mkdir -p /home/jenkins/.drush && \
