@@ -109,6 +109,11 @@ RUN wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x
 RUN yes "" | adduser --uid=1000 --disabled-password jenkins && \
     echo "jenkins   ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
 
+# put composer on global cache folder
+RUN mkdir -p /var/jenkins_home/cache/composer && \
+    chown -R jenkins:jenkins /var/jenkins_home/cache/composer
+ENV COMPOSER_CACHE_DIR=/var/jenkins_home/cache/composer
+
 # add drush registry_rebuild
 RUN mkdir -p /home/jenkins/.drush && \
     wget https://ftp.drupal.org/files/projects/registry_rebuild-7.x-2.5.tar.gz && \
