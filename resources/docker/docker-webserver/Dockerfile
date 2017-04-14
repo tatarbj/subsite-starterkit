@@ -88,7 +88,8 @@ RUN mkdir -p /opt && \
     mv /opt/$SOLR /opt/solr
 
 # Get apachesolr conf
-RUN git clone --single-branch --branch 7.x-1.7 git://git.drupal.org/project/apachesolr.git && \
+RUN git clone --single-branch --branch 7.x-1.x git://git.drupal.org/project/apachesolr.git && \
+    mkdir -p /opt/solr/server/solr/drupal/conf && \
     cp -v apachesolr/solr-conf/solr-5.x/* /opt/solr/server/solr/drupal/conf && \
     rm -rf apachesolr
 
