@@ -105,9 +105,6 @@ RUN wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x
     rm phantomjs-2.1.1-linux-x86_64.tar.bz2 && \
     ln -s /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin/
 
-# install composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
 # add user "jenkins" to use it as default user for working with files
 RUN yes "" | adduser --uid=1000 --disabled-password jenkins && \
     echo "jenkins   ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
@@ -118,9 +115,6 @@ RUN mkdir -p /home/jenkins/.drush && \
     tar -xvzf registry_rebuild-7.x-2.5.tar.gz -C /home/jenkins/.drush && \
     rm registry_rebuild-7.x-2.5.tar.gz && \
     chown -R jenkins:jenkins /home/jenkins/.drush
-
-# install composer assets plugin
-RUN sudo -H -u jenkins bash -c "/usr/local/bin/composer global require fxp/composer-asset-plugin:~1.1"
 
 # create and set access to the folder
 RUN mkdir -p /web/platform && \
@@ -164,7 +158,7 @@ COPY configs/xdebug.ini /etc/php5.6/mods-available/xdebug.ini
 
 EXPOSE 80 443 3306 8983 9000
 
-VOLUME ["/web", "/var/lib/mysql", "/opt/solr/server/solr/drupal/data", "/opt/solr/server/solr/drupal/conf", "/var/log/supervisor"]
+VOLUME ["/web", "/var/lib/mysql", "/usr/local/bin/composer" "/opt/solr/server/solr/drupal/data", "/opt/solr/server/solr/drupal/conf", "/var/log/supervisor"]
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
 
