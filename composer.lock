@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1c3d677fa4ff25a0e4f93e526de9478c",
+    "content-hash": "72b8d612b84150eccc36500a99bd38b6",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.25.7",
+            "version": "3.26.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "d4f1104f5ac9c755875c5e6e9bade2c70708219a"
+                "reference": "514b86e97aa84cc7e30a218df4531ea758b9ba26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d4f1104f5ac9c755875c5e6e9bade2c70708219a",
-                "reference": "d4f1104f5ac9c755875c5e6e9bade2c70708219a",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/514b86e97aa84cc7e30a218df4531ea758b9ba26",
+                "reference": "514b86e97aa84cc7e30a218df4531ea758b9ba26",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-04-11T22:31:27+00:00"
+            "time": "2017-04-19T19:45:48+00:00"
         },
         {
             "name": "continuousphp/aws-sdk-phing",
@@ -329,7 +329,7 @@
             "support": {
                 "source": "https://github.com/verbruggenalex/composer-patches/tree/checkpatched"
             },
-            "time": "2017-04-16 11:19:19"
+            "time": "2017-04-16T11:19:19+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -418,11 +418,6 @@
                 "satooshi/php-coveralls": "^1.0"
             },
             "type": "library",
-            "extra": {
-                "patches_applied": {
-                    "Support forcing of color with drush": "patches/phingdrushtask-color-support.patch"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Phing\\Drush\\": "src/",
@@ -589,9 +584,6 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "8.0.x-dev"
-                },
-                "patches_applied": {
-                    "https://github.com/drush-ops/drush/pull/2215": "patches/drush-force-color.patch"
                 }
             },
             "autoload": {
@@ -1139,16 +1131,16 @@
         },
         {
             "name": "letudiant/composer-shared-package-plugin",
-            "version": "3.1.1",
+            "version": "dev-installbinaries",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Letudiant/composer-shared-package-plugin.git",
-                "reference": "1ba9fe9bf93b05f492286562258398c6e014b929"
+                "url": "https://github.com/verbruggenalex/composer-shared-package-plugin.git",
+                "reference": "4bee239f42dec54130668411774eb8880800945f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Letudiant/composer-shared-package-plugin/zipball/1ba9fe9bf93b05f492286562258398c6e014b929",
-                "reference": "1ba9fe9bf93b05f492286562258398c6e014b929",
+                "url": "https://api.github.com/repos/verbruggenalex/composer-shared-package-plugin/zipball/4bee239f42dec54130668411774eb8880800945f",
+                "reference": "4bee239f42dec54130668411774eb8880800945f",
                 "shasum": ""
             },
             "require": {
@@ -1166,9 +1158,6 @@
                 "class": "LEtudiant\\Composer\\SharedPackagePlugin",
                 "branch-alias": {
                     "dev-master": "3.1-dev"
-                },
-                "patches_applied": {
-                    "Shared package exclude composer plugins": "patches/shared-packages-exclude-plugins.patch"
                 }
             },
             "autoload": {
@@ -1176,7 +1165,9 @@
                     "LEtudiant\\Composer\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "Test\\Unit\\LEtudiant\\Composer\\": "tests/unit"
+            },
             "license": [
                 "MIT"
             ],
@@ -1187,7 +1178,11 @@
                 }
             ],
             "description": "This composer plugin allows you to share selected packages between your projects with symlinks.",
-            "time": "2016-03-28T13:53:52+00:00"
+            "support": {
+                "issues": "https://github.com/letudiant/composer-shared-package-plugin/issues",
+                "source": "https://github.com/verbruggenalex/composer-shared-package-plugin/tree/installbinaries"
+            },
+            "time": "2017-04-19 20:12:26"
         },
         {
             "name": "mtdowling/jmespath.php",
@@ -1675,11 +1670,6 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "2.16.x-dev"
-                },
-                "patches_applied": {
-                    "Customize terminal colors": "patches/phing-customize-colors.patch",
-                    "Check for autoload from working dir": "patches/phing-shared-packages-autoload-compatibility.patch",
-                    "https://github.com/phingofficial/phing/pull/701": "patches/phing-composer-task_automatic-path.patch"
                 }
             },
             "autoload": {
@@ -3619,6 +3609,12 @@
             "alias_normalized": "1.7.1.0",
             "version": "9999999-dev",
             "package": "cpliakas/git-wrapper"
+        },
+        {
+            "alias": "dev-master",
+            "alias_normalized": "9999999-dev",
+            "version": "dev-installbinaries",
+            "package": "letudiant/composer-shared-package-plugin"
         }
     ],
     "minimum-stability": "dev",
@@ -3627,6 +3623,7 @@
         "cweagans/composer-patches": 20,
         "pear/archive_tar": 20,
         "pear/versioncontrol_git": 20,
+        "letudiant/composer-shared-package-plugin": 20,
         "behat/behat": 5
     },
     "prefer-stable": true,
