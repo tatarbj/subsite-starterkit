@@ -86,7 +86,7 @@
       "package-list": [
         "*"
       ],
-      "vendor-dir": "/usr/share/composer"
+      "vendor-dir": "/usr/share/jenkins/composer"
     }
   },
   "scripts": {
