@@ -1143,12 +1143,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/verbruggenalex/composer-shared-package-plugin.git",
-                "reference": "50714fb8f255e3a48db8da49abd7305b3a2d8d1c"
+                "reference": "387122c2d0116273859b5dcf3094b4f12ec88eb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/verbruggenalex/composer-shared-package-plugin/zipball/50714fb8f255e3a48db8da49abd7305b3a2d8d1c",
-                "reference": "50714fb8f255e3a48db8da49abd7305b3a2d8d1c",
+                "url": "https://api.github.com/repos/verbruggenalex/composer-shared-package-plugin/zipball/387122c2d0116273859b5dcf3094b4f12ec88eb5",
+                "reference": "387122c2d0116273859b5dcf3094b4f12ec88eb5",
                 "shasum": ""
             },
             "require": {
@@ -1193,7 +1193,7 @@
                 "issues": "https://github.com/letudiant/composer-shared-package-plugin/issues",
                 "source": "https://github.com/verbruggenalex/composer-shared-package-plugin/tree/installbinaries"
             },
-            "time": "2017-04-19 20:24:00"
+            "time": "2017-04-19 20:54:04"
         },
         {
             "name": "mtdowling/jmespath.php",
