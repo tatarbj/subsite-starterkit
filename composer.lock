@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3711fe7aee01c1aaf4bda386bf6f105b",
+    "content-hash": "72066163ae7c637735c57039ac224ee2",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -329,7 +329,7 @@
             "support": {
                 "source": "https://github.com/verbruggenalex/composer-patches/tree/checkpatched"
             },
-            "time": "2017-04-16 11:19:19"
+            "time": "2017-04-16T11:19:19+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -418,11 +418,6 @@
                 "satooshi/php-coveralls": "^1.0"
             },
             "type": "library",
-            "extra": {
-                "patches_applied": {
-                    "Support forcing of color with drush": "patches/phingdrushtask-color-support.patch"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Phing\\Drush\\": "src/",
@@ -589,9 +584,6 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "8.0.x-dev"
-                },
-                "patches_applied": {
-                    "https://github.com/drush-ops/drush/pull/2215": "patches/drush-force-color.patch"
                 }
             },
             "autoload": {
@@ -1138,64 +1130,6 @@
             "time": "2015-04-20T18:58:01+00:00"
         },
         {
-            "name": "letudiant/composer-shared-package-plugin",
-            "version": "dev-installbinaries",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/verbruggenalex/composer-shared-package-plugin.git",
-                "reference": "387122c2d0116273859b5dcf3094b4f12ec88eb5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/verbruggenalex/composer-shared-package-plugin/zipball/387122c2d0116273859b5dcf3094b4f12ec88eb5",
-                "reference": "387122c2d0116273859b5dcf3094b4f12ec88eb5",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "~1.0",
-                "php": ">=5.3.2"
-            },
-            "require-dev": {
-                "codeclimate/php-test-reporter": "dev-master",
-                "composer/composer": "dev-master",
-                "phpunit/phpunit": "~4.7",
-                "symfony/var-dumper": "~2.7"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": "LEtudiant\\Composer\\SharedPackagePlugin",
-                "branch-alias": {
-                    "dev-master": "3.1-dev"
-                },
-                "patches_applied": {
-                    "Shared package exclude composer plugins": "patches/shared-packages-exclude-plugins.patch"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "LEtudiant\\Composer\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "Test\\Unit\\LEtudiant\\Composer\\": "tests/unit"
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Sylvain Lorinet",
-                    "email": "sylvain.lorinet@gmail.com"
-                }
-            ],
-            "description": "This composer plugin allows you to share selected packages between your projects with symlinks.",
-            "support": {
-                "issues": "https://github.com/letudiant/composer-shared-package-plugin/issues",
-                "source": "https://github.com/verbruggenalex/composer-shared-package-plugin/tree/installbinaries"
-            },
-            "time": "2017-04-19 20:54:04"
-        },
-        {
             "name": "mtdowling/jmespath.php",
             "version": "2.4.0",
             "source": {
@@ -1681,11 +1615,6 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "2.16.x-dev"
-                },
-                "patches_applied": {
-                    "Customize terminal colors": "patches/phing-customize-colors.patch",
-                    "Check for autoload from working dir": "patches/phing-shared-packages-autoload-compatibility.patch",
-                    "https://github.com/phingofficial/phing/pull/701": "patches/phing-composer-task_automatic-path.patch"
                 }
             },
             "autoload": {
@@ -3625,12 +3554,6 @@
             "alias_normalized": "1.7.1.0",
             "version": "9999999-dev",
             "package": "cpliakas/git-wrapper"
-        },
-        {
-            "alias": "dev-master",
-            "alias_normalized": "9999999-dev",
-            "version": "dev-installbinaries",
-            "package": "letudiant/composer-shared-package-plugin"
         }
     ],
     "minimum-stability": "dev",
@@ -3639,7 +3562,6 @@
         "cweagans/composer-patches": 20,
         "pear/archive_tar": 20,
         "pear/versioncontrol_git": 20,
-        "letudiant/composer-shared-package-plugin": 20,
         "behat/behat": 5
     },
     "prefer-stable": true,
