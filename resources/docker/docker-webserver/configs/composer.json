@@ -1,0 +1,29 @@
+{
+  "require": {
+    "letudiant/composer-shared-package-plugin": "dev-develop as dev-master"
+  },
+  "require-dev": {
+    "verbruggenalex/autoalias": "dev-master"
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/verbruggenalex/composer-shared-package-plugin.git"
+    }
+  ],
+  "extra": {
+    "shared-package": {
+      "package-list": [
+        "*"
+      ],
+      "symlink-dir": "vendor",
+      "vendor-dir": "/usr/share/jenkins/composer"
+    }
+  },
+  "config": {
+    "github-protocols": [
+      "https"
+    ]
+  }
+}
+

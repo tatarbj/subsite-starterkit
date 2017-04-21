@@ -34,15 +34,15 @@
     <taskdef name="drushmakefile" classname="\NextEuropa\Phing\DrushMakeFileTask" />
 
     <echo msg="Importing the Drush task." level="${level}" />
-    <import file="${project.basedir}/vendor-shared/drupal/phingdrushtask/import.xml"/>
+    <import file="${project.basedir}/vendor/drupal/phingdrushtask/import.xml"/>
 
     <echo msg="Importing the Behat task." level="${level}" />
-    <import file="${project.basedir}/vendor-shared/drupol/phingbehattask/import.xml"/>
+    <import file="${project.basedir}/vendor/drupol/phingbehattask/import.xml"/>
 
     <!-- Import CPHP tasks @todo refractor when jenkins is active. -->
     <echo msg="Importing the ContinuousPHP specific Phing tasks." level="${level}"  />
-    <import file="vendor-shared/continuousphp/phing-tasks/tasks.xml" />
-    <import file="vendor-shared/continuousphp/aws-sdk-phing/tasks.xml" />
+    <import file="vendor/continuousphp/phing-tasks/tasks.xml" />
+    <import file="vendor/continuousphp/aws-sdk-phing/tasks.xml" />
 
     <!-- Needs to be removed when phing adds relative symlink support -->
     <!-- https://github.com/phingofficial/phing/issues/684 -->

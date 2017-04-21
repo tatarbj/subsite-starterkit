@@ -114,6 +114,14 @@ RUN mkdir -p /var/jenkins_home/cache/composer && \
     chown -R jenkins:jenkins /var/jenkins_home/cache/composer
 ENV COMPOSER_CACHE_DIR=/var/jenkins_home/cache/composer
 
+# install composer
+ADD configs/composer.json /home/jenkins/.composer/composer.json
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
+    mkdir -p /home/jenkins/.composer/cache/vcs && \
+    chown -R jenkins:jenkins /home/jenkins && \
+    sudo -H -u jenkins bash -c "/usr/local/bin/composer clear-cache" && \
+    sudo -H -u jenkins bash -c "/usr/local/bin/composer global install --no-plugins"
+
 # add drush registry_rebuild
 RUN mkdir -p /home/jenkins/.drush && \
     wget https://ftp.drupal.org/files/projects/registry_rebuild-7.x-2.5.tar.gz && \
@@ -163,7 +171,7 @@ COPY configs/xdebug.ini /etc/php5.6/mods-available/xdebug.ini
 
 EXPOSE 80 443 3306 8983 9000
 
-VOLUME ["/web", "/var/lib/mysql", "/usr/local/bin/composer" "/opt/solr/server/solr/drupal/data", "/opt/solr/server/solr/drupal/conf", "/var/log/supervisor"]
+VOLUME ["/web", "/var/lib/mysql", "/opt/solr/server/solr/drupal/data", "/opt/solr/server/solr/drupal/conf", "/var/log/supervisor"]
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
 
