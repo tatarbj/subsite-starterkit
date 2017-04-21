@@ -40,10 +40,6 @@
     },
     {
       "type": "vcs",
-      "url": "https://github.com/verbruggenalex/composer-shared-package-plugin.git"
-    },
-    {
-      "type": "vcs",
       "url": "https://git.drupal.org/project/coder.git"
     },
     {
