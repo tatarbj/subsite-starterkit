@@ -8,7 +8,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Drupal\\nexteuropa\\": "$PWD/tests/src"
+      "Drupal\\nexteuropa\\": "$WEBROOT/platform/tests/src"
     }
   }
 }
