@@ -13,8 +13,8 @@
   ],
   "extra": {
     "shared-package": {
-      "package-list": [
-        "*"
+      "package-exclude-list": [
+        "behat/behat"
       ],
       "symlink-dir": "vendor",
       "vendor-dir": "/usr/share/jenkins/composer"
