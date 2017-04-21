@@ -8,7 +8,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Drupal\\nexteuropa\\": "tests/src"
+      "Drupal\\nexteuropa\\": "$PWD/tests/src"
     }
   }
 }
