@@ -11,18 +11,14 @@ node('master') {
         def defaults = readProperties file: 'build.properties.dist'
         def props = readProperties defaults: defaults, file: 'build.properties'
 
+        def buildLink = "<${env.BUILD_URL}consoleFull|${props['project.id']} #${env.BUILD_NUMBER}>"
+        def releaseName = "${props['project.id']}_" + sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S').trim() + "_${props['platform.package.reference']}"
+        def releasePath = "/var/jenkins_home/releases/${props['project.id']}"
 
         withEnv([
-            "PROJECT_ID=props['project.id']",
-            "PLATFORM_PACKAGE_REFERENCE=props['platform.package.reference']",
-            "SUBSITE_NAME=props['subsite.name']",
             "WORKSPACE=${env.WORKSPACE}",
             "WD_HOST_URL=http://127.0.0.1:8647/wd/hub",
-            "BUILD_ID_UNIQUE=${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim(),
-            "RELEASE_NAME=${env.PROJECT_ID}_" + sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S').trim() + "_${env.PLATFORM_PACKAGE_REFERENCE}",
-            "RELEASE_PATH=/var/jenkins_home/releases/${env.PROJECT_ID}",
-            "BUILDLINK=<${env.BUILD_URL}consoleFull|${env.PROJECT_ID} #${env.BUILD_NUMBER}>"
-
+            "BUILD_ID_UNIQUE=${props['project.id']}.replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim(),
         ]) {
 
         stage('Init') {
@@ -30,7 +26,7 @@ node('master') {
             checkout scm
 
             setBuildStatus("Build started.", "PENDING");
-            slackSend color: "good", message: "${env.SUBSITE_NAME} build ${env.BUILDLINK} started."
+            slackSend color: "good", message: "props['subsite.name'] build ${buildLink} started."
 
             sh "docker-compose -f resources/docker/docker-compose.yml up -d"
             //sh "docker run --rm -v ${env.WORKSPACE}:/app composer/composer install"
@@ -64,11 +60,11 @@ node('master') {
             stage('Package') {
                 sh "docker exec -u jenkins php_${BUILD_ID_UNIQUE} ./bin/phing build-release -D'project.release.path'='${env.RELEASE_PATH}' -D'project.release.name'='${env.RELEASE_NAME}' -logger phing.listener.AnsiColorLogger"
                 setBuildStatus("Build complete.", "SUCCESS");
-                slackSend color: "good", message: "${env.SUBSITE_NAME} build ${env.BUILDLINK} completed."
+                slackSend color: "good", message: "${props['subsite.name']} build ${buildLink} completed."
             }
         } catch(err) {
             setBuildStatus("Build failed.", "FAILURE");
-            slackSend color: "danger", message: "${env.PROJECT_ID} build ${env.BUILDLINK} failed."
+            slackSend color: "danger", message: "${props['subsite.name']} build ${buildLink} failed."
             throw(err)
         } finally {
             sh "docker-compose -f resources/docker/docker-compose.yml down"
