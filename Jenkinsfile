@@ -32,7 +32,7 @@ node('master') {
             setBuildStatus("Build started.", "PENDING");
             slackSend color: "good", message: "${env.SUBSITE_NAME} build ${env.BUILDLINK} started."
 
-            sh 'docker run --rm -v $(env.WORKSPACE):/app composer/composer install'
+            sh 'docker run --rm -v "$(env.WORKSPACE):/app" composer/composer install'
 
             //sh "docker run --name $BUILD_ID_UNIQUE -eCOMPOSER_CACHE_DIR=/var/jenkins_home/cache/composer -v ${env.WORKSPACE}:/web -v/var/jenkins_home/cache:/var/jenkins_home/cache -v /var/jenkins_home/releases:/var/jenkins_home/releases -v/usr/share/jenkins/composer:/usr/share/jenkins/composer -w /web -d dev-server:latest"
             //sh "./bin/phing start-container -D'jenkins.cache.dir'='/var/jenkins_home/cache' -D'jenkins.workspace.dir'='${envWORKSPACE}' -D'docker.container.name'='$BUILD_ID_UNIQUE' -logger phing.listener.AnsiColorLogger"
