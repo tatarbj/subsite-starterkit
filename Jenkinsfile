@@ -42,8 +42,8 @@ node('master') {
         try {
             stage('Check') {
                 //sh "./bin/phing start-containers -logger phing.listener.AnsiColorLogger"
-                sh "docker exec -u jenkins php_${BUILD_ID_UNIQUE} composer --version"
-                sh "docker exec -u jenkins php_${BUILD_ID_UNIQUE} composer install --no-suggest --no-interaction --ansi"
+                sh "docker exec php_${BUILD_ID_UNIQUE} composer --version"
+                sh "docker exec php_${BUILD_ID_UNIQUE} composer install --no-suggest --no-interaction --ansi"
                 //sh "docker exec -u jenkins php_${BUILD_ID_UNIQUE} ./bin/phing setup-php-codesniffer quality-assurance -logger phing.listener.AnsiColorLogger"
             }
 
