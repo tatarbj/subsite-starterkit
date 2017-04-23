@@ -40,27 +40,27 @@ node('master') {
         try {
             stage('Check') {
                 //sh "./bin/phing start-containers -logger phing.listener.AnsiColorLogger"
-                sh "docker exec php_${BUILD_ID_UNIQUE} composer --version"
-                sh "docker exec php_${BUILD_ID_UNIQUE} composer install --no-suggest --no-interaction --ansi"
-                //sh "docker exec -u jenkins php_${BUILD_ID_UNIQUE} ./bin/phing setup-php-codesniffer quality-assurance -logger phing.listener.AnsiColorLogger"
+                sh "docker exec ${BUILD_ID_UNIQUE}_php composer --version"
+                sh "docker exec ${BUILD_ID_UNIQUE}_php composer install --no-suggest --no-interaction --ansi"
+                //sh "docker exec -u jenkins ${BUILD_ID_UNIQUE}_php ./bin/phing setup-php-codesniffer quality-assurance -logger phing.listener.AnsiColorLogger"
             }
 
 
             stage('Build') {
-                sh "docker exec php_${BUILD_ID_UNIQUE} ./bin/phing build-dev -logger phing.listener.AnsiColorLogger"
+                sh "docker exec ${BUILD_ID_UNIQUE}_php ./bin/phing build-dev -logger phing.listener.AnsiColorLogger"
             }
 
             stage('Test') {
-                sh "docker exec php_${BUILD_ID_UNIQUE} ./bin/phing install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}' -logger phing.listener.AnsiColorLogger"
-                sh "docker exec php_${BUILD_ID_UNIQUE} ./bin/phing setup-behat -logger phing.listener.AnsiColorLogger"
+                sh "docker exec ${BUILD_ID_UNIQUE}_php ./bin/phing install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}' -logger phing.listener.AnsiColorLogger"
+                sh "docker exec ${BUILD_ID_UNIQUE}_php ./bin/phing setup-behat -logger phing.listener.AnsiColorLogger"
                 timeout(time: 2, unit: 'HOURS') {
-                    sh "docker exec php_${BUILD_ID_UNIQUE} phantomjs --webdriver=127.0.0.1:8643 &"
-                    sh "docker exec php_${BUILD_ID_UNIQUE} ./bin/behat -c tests/behat.yml --colors --strict"
+                    sh "docker exec ${BUILD_ID_UNIQUE}_php phantomjs --webdriver=127.0.0.1:8643 &"
+                    sh "docker exec ${BUILD_ID_UNIQUE}_php ./bin/behat -c tests/behat.yml --colors --strict"
                 }
             }
 
             stage('Package') {
-                sh "docker exec php_${BUILD_ID_UNIQUE} ./bin/phing build-release -D'project.release.path'='${env.RELEASE_PATH}' -D'project.release.name'='${env.RELEASE_NAME}' -logger phing.listener.AnsiColorLogger"
+                sh "docker exec ${BUILD_ID_UNIQUE}_php ./bin/phing build-release -D'project.release.path'='${env.RELEASE_PATH}' -D'project.release.name'='${env.RELEASE_NAME}' -logger phing.listener.AnsiColorLogger"
                 setBuildStatus("Build complete.", "SUCCESS");
                 slackSend color: "good", message: "${siteName} build ${buildLink} completed."
             }
@@ -71,8 +71,8 @@ node('master') {
         } finally {
             sh "docker-compose -f resources/docker/docker-compose.yml down"
             //sh "./bin/phing stop-containers -logger phing.listener.AnsiColorLogger"
-            //sh "docker exec -u jenkins php_${BUILD_ID_UNIQUE} ./bin/phing drush-sql-drop -logger phing.listener.AnsiColorLogger"
-            //sh "docker stop php_${BUILD_ID_UNIQUE} && docker rm \$(docker ps -aq -f status=exited)"
+            //sh "docker exec -u jenkins ${BUILD_ID_UNIQUE}_php ./bin/phing drush-sql-drop -logger phing.listener.AnsiColorLogger"
+            //sh "docker stop ${BUILD_ID_UNIQUE}_php && docker rm \$(docker ps -aq -f status=exited)"
             //sh "./bin/phing stop-container -D'docker.container.name'='$BUILD_ID_UNIQUE' -logger phing.listener.AnsiColorLogger"
         }
         }
