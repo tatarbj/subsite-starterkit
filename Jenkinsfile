@@ -18,10 +18,10 @@ node('master') {
             "SUBSITE_NAME=props['subsite.name']",
 
             "WD_HOST_URL=http://127.0.0.1:8647/wd/hub",
-            "BUILD_ID_UNIQUE=${PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim(),
-            "RELEASE_NAME=${PROJECT_ID}_" + sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S').trim() + "_${PLATFORM_PACKAGE_REFERENCE}",
-            "RELEASE_PATH=/var/jenkins_home/releases/${PROJECT_ID}",
-            "BUILDLINK=<${BUILD_URL}consoleFull|${PROJECT_ID} #${BUILD_NUMBER}>"
+            "BUILD_ID_UNIQUE=${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim(),
+            "RELEASE_NAME=${env.PROJECT_ID}_" + sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S').trim() + "_${PLATFORM_PACKAGE_REFERENCE}",
+            "RELEASE_PATH=/var/jenkins_home/releases/${env.PROJECT_ID}",
+            "BUILDLINK=<${BUILD_URL}consoleFull|${env.PROJECT_ID} #${BUILD_NUMBER}>"
 
         ]) {
 
