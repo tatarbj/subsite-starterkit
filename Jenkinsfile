@@ -71,7 +71,8 @@ node('master') {
             slackSend color: "danger", message: "${env.PROJECT_ID} build ${env.BUILDLINK} failed."
             throw(err)
         } finally {
-            sh "./bin/phing stop-containers -logger phing.listener.AnsiColorLogger"
+            sh "docker-compose -f resources/docker/docker-compose.yml down"
+            //sh "./bin/phing stop-containers -logger phing.listener.AnsiColorLogger"
             //sh "docker exec -u jenkins php_${BUILD_ID_UNIQUE} ./bin/phing drush-sql-drop -logger phing.listener.AnsiColorLogger"
             //sh "docker stop php_${BUILD_ID_UNIQUE} && docker rm \$(docker ps -aq -f status=exited)"
             //sh "./bin/phing stop-container -D'docker.container.name'='$BUILD_ID_UNIQUE' -logger phing.listener.AnsiColorLogger"
