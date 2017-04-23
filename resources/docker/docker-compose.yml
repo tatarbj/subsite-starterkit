@@ -11,7 +11,7 @@ services:
     links:
       - mysql:mysql
     group_add:
-      - jenkins
+      - root
   mysql:
     image: mysql:5.6
     container_name: sql_${BUILD_ID_UNIQUE}

@@ -30,7 +30,7 @@ node('master') {
             checkout scm
 
             setBuildStatus("Build started.", "PENDING");
-            slackSend color: "good", message: "$SUBSITE_NAME build $BUILDLINK started."
+            slackSend color: "good", message: "${env.SUBSITE_NAME} build ${env.BUILDLINK} started."
 
             sh "docker-compose -f resources/docker/docker-compose.yml up -d"
             //sh "docker run --rm -v ${env.WORKSPACE}:/app composer/composer install"
