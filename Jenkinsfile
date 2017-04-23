@@ -11,6 +11,7 @@ node('master') {
         def defaults = readProperties file: 'build.properties.dist'
         def props = readProperties defaults: defaults, file: 'build.properties'
 
+        def siteName = props['subsite.name']
         def buildId = props['project.id'].replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
         def buildLink = "<${env.BUILD_URL}consoleFull|${props['project.id']} #${env.BUILD_NUMBER}>"
         def releaseName = props['project.id'] + "_" + sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S').trim() + "_${props['platform.package.reference']}"
@@ -27,7 +28,7 @@ node('master') {
             checkout scm
 
             setBuildStatus("Build started.", "PENDING");
-            slackSend color: "good", message: "${props['subsite.name']} build ${buildLink} started."
+            slackSend color: "good", message: "${siteName} build ${buildLink} started."
 
             sh "docker-compose -f resources/docker/docker-compose.yml up -d"
             //sh "docker run --rm -v ${env.WORKSPACE}:/app composer/composer install"
@@ -61,11 +62,11 @@ node('master') {
             stage('Package') {
                 sh "docker exec -u jenkins php_${BUILD_ID_UNIQUE} ./bin/phing build-release -D'project.release.path'='${env.RELEASE_PATH}' -D'project.release.name'='${env.RELEASE_NAME}' -logger phing.listener.AnsiColorLogger"
                 setBuildStatus("Build complete.", "SUCCESS");
-                slackSend color: "good", message: "${props['subsite.name']} build ${buildLink} completed."
+                slackSend color: "good", message: "${siteName} build ${buildLink} completed."
             }
         } catch(err) {
             setBuildStatus("Build failed.", "FAILURE");
-            slackSend color: "danger", message: "${props['subsite.name']} build ${buildLink} failed."
+            slackSend color: "danger", message: "${siteName} build ${buildLink} failed."
             throw(err)
         } finally {
             sh "docker-compose -f resources/docker/docker-compose.yml down"
