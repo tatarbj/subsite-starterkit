@@ -5,8 +5,10 @@ services:
     container_name: ${BUILD_ID_UNIQUE}_php
     environment:
       DOCROOT: ${WORKSPACE}/platform
+      COMPOSER_CACHE_DIR: /usr/share/composer
     volumes:
       - ${WORKSPACE}:${WORKSPACE}
+      - /usr/share/composer:/usr/share/composer
     working_dir: ${WORKSPACE}
     links:
       - mysql:mysql
