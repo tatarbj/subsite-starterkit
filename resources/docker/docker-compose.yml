@@ -10,6 +10,8 @@ services:
     working_dir: ${WORKSPACE}
     links:
       - mysql:mysql
+    group_add:
+      - jenkins
   mysql:
     image: mysql:5.6
     container_name: sql_${BUILD_ID_UNIQUE}
