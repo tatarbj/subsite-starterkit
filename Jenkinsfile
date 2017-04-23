@@ -31,6 +31,9 @@ node('master') {
 
             setBuildStatus("Build started.", "PENDING");
             slackSend color: "good", message: "${env.SUBSITE_NAME} build ${env.BUILDLINK} started."
+
+            sh "docker run --rm -v $(env.WORKSPACE):/app composer/composer install"
+
             //sh "docker run --name $BUILD_ID_UNIQUE -eCOMPOSER_CACHE_DIR=/var/jenkins_home/cache/composer -v ${env.WORKSPACE}:/web -v/var/jenkins_home/cache:/var/jenkins_home/cache -v /var/jenkins_home/releases:/var/jenkins_home/releases -v/usr/share/jenkins/composer:/usr/share/jenkins/composer -w /web -d dev-server:latest"
             //sh "./bin/phing start-container -D'jenkins.cache.dir'='/var/jenkins_home/cache' -D'jenkins.workspace.dir'='${envWORKSPACE}' -D'docker.container.name'='$BUILD_ID_UNIQUE' -logger phing.listener.AnsiColorLogger"
         }
@@ -67,8 +70,9 @@ node('master') {
             slackSend color: "danger", message: "${env.PROJECT_ID} build ${env.BUILDLINK} failed."
             throw(err)
         } finally {
-            sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing drush-sql-drop -logger phing.listener.AnsiColorLogger"
-            sh "docker stop $BUILD_ID_UNIQUE && docker rm \$(docker ps -aq -f status=exited)"
+            sh "./bin/phing stop-containers -logger phing.listener.AnsiColorLogger"
+            //sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing drush-sql-drop -logger phing.listener.AnsiColorLogger"
+            //sh "docker stop $BUILD_ID_UNIQUE && docker rm \$(docker ps -aq -f status=exited)"
             //sh "./bin/phing stop-container -D'docker.container.name'='$BUILD_ID_UNIQUE' -logger phing.listener.AnsiColorLogger"
         }
         }
