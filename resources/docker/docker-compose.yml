@@ -4,7 +4,7 @@ services:
     image: fpfis/php56
     container_name: php_${BUILD_ID_UNIQUE}
     environment:
-      DOCROOT: ${env.WORKSPACE}/platform
+      DOCROOT: "${env.WORKSPACE}/platform"
     volumes:
       - ${env.WORKSPACE}:${env.WORKSPACE}
     working_dir: ${env.WORKSPACE}
