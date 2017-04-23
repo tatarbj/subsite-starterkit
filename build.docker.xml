@@ -3,7 +3,7 @@
 
     <target name="start-containers" description="Start docker containers">
         <echo msg='Starting containers for "${docker.container.name}".' />
-        <exec command="docker-compose -f resources/docker/docker-compose.yml up -d">
+        <exec command="docker-compose -f resources/docker/docker-compose.yml up -d" />
     </target>
 
     <target name="stop-containers" description="Stop docker containers">

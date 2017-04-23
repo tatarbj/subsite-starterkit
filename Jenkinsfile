@@ -27,7 +27,7 @@ node('master') {
             checkout scm
 
             setBuildStatus("Build started.", "PENDING");
-            slackSend color: "good", message: "props['subsite.name'] build ${buildLink} started."
+            slackSend color: "good", message: "${props['subsite.name']} build ${buildLink} started."
 
             sh "docker-compose -f resources/docker/docker-compose.yml up -d"
             //sh "docker run --rm -v ${env.WORKSPACE}:/app composer/composer install"
