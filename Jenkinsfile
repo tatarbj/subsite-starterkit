@@ -16,7 +16,7 @@ node('master') {
             "PROJECT_ID=props['project.id']",
             "PLATFORM_PACKAGE_REFERENCE=props['platform.package.reference']",
             "SUBSITE_NAME=props['subsite.name']",
-            "WORKSPACE=${env.WORKSPACE}"
+            "WORKSPACE=${env.WORKSPACE}",
             "WD_HOST_URL=http://127.0.0.1:8647/wd/hub",
             "BUILD_ID_UNIQUE=${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim(),
             "RELEASE_NAME=${env.PROJECT_ID}_" + sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S').trim() + "_${env.PLATFORM_PACKAGE_REFERENCE}",
