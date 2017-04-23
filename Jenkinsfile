@@ -51,7 +51,7 @@ node('master') {
             }
 
             stage('Test') {
-                sh "docker exec php_${BUILD_ID_UNIQUE} ./bin/phing install-dev -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}' -logger phing.listener.AnsiColorLogger"
+                sh "docker exec php_${BUILD_ID_UNIQUE} ./bin/phing install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}' -logger phing.listener.AnsiColorLogger"
                 sh "docker exec php_${BUILD_ID_UNIQUE} ./bin/phing setup-behat -logger phing.listener.AnsiColorLogger"
                 timeout(time: 2, unit: 'HOURS') {
                     sh "docker exec php_${BUILD_ID_UNIQUE} phantomjs --webdriver=127.0.0.1:8643 &"
