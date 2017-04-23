@@ -11,14 +11,15 @@ node('master') {
         def defaults = readProperties file: 'build.properties.dist'
         def props = readProperties defaults: defaults, file: 'build.properties'
 
+        def buildId = props['project.id'].replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
         def buildLink = "<${env.BUILD_URL}consoleFull|${props['project.id']} #${env.BUILD_NUMBER}>"
-        def releaseName = "${props['project.id']}_" + sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S').trim() + "_${props['platform.package.reference']}"
+        def releaseName = props['project.id'] + "_" + sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S').trim() + "_${props['platform.package.reference']}"
         def releasePath = "/var/jenkins_home/releases/${props['project.id']}"
 
         withEnv([
             "WORKSPACE=${env.WORKSPACE}",
             "WD_HOST_URL=http://127.0.0.1:8647/wd/hub",
-            "BUILD_ID_UNIQUE=${props['project.id']}.replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim(),
+            "BUILD_ID_UNIQUE=${buildId}",
         ]) {
 
         stage('Init') {
