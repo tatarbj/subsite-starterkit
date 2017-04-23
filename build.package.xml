@@ -187,7 +187,7 @@
 
     <!-- Symlink the Behat bin and test directory in the subsite folder. -->
     <target name="link-behat">
-        <echo msg="rel-sym the Behat bin and test directory in './sites/all'." />
+        <echo msg="Symlink the Behat bin and test directory in './sites/all'." />
         <rel-sym link="bin/behat" target="${platform.build.subsite.dir}/vendor/bin/behat" overwrite="true"/>
         <rel-sym link="${platform.build.subsite.dir}/tests" target="${project.basedir}/tests" overwrite="true"/>
     </target>
@@ -252,6 +252,7 @@
         <composer command="install" composer="${composer.bin}">
             <arg value="--working-dir=${dist.build.dir}" />
             <arg value="--no-interaction" />
+            <arg value="--no-plugins" />
             <arg value="--no-suggest" />
             <arg value="--no-dev" />
             <arg value="--ansi" />
