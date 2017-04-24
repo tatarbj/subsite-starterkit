@@ -384,20 +384,12 @@
             <then>
                 <!-- Move package to the global cachedir location. -->
                 <move file="${platform.package.destination}/deploy-package.tar.gz" tofile="${platform.package.cachedir}/${platform.package.tarball}" overwrite="true"/>
-                <!-- Unpack the platform. -->
-                <phingcall target="unpack-platform">
-                    <property name="platform.package.download" value="${platform.package.cachedir}/${platform.package.tarball}"/>
-                </phingcall>
             </then>
             <elseif>
                 <available file="${platform.package.destination}/deploy-package.tar.gz" type="file"/>
                 <then>
                     <!-- Move package to the local cachedir location. -->
                     <move file="${platform.package.destination}/deploy-package.tar.gz" tofile="${platform.package.destination}/${platform.package.tarball}" overwrite="true"/>
-                    <!-- Unpack the platform. -->
-                    <phingcall target="unpack-platform">
-                        <property name="platform.package.download" value="${platform.package.destination}/${platform.package.tarball}"/>
-                    </phingcall>
                 </then>
             </elseif>
         </if>
