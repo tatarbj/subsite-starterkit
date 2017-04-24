@@ -1,6 +1,5 @@
 {
   "require": {
-    "cweagans/composer-patches": "~1.0",
     "letudiant/composer-shared-package-plugin": "dev-develop as dev-master"
   },
   "repositories": [
@@ -10,6 +9,7 @@
     }
   ],
   "extra": {
+    "install-binaries": true,
     "shared-package": {
       "package-exclude-list": [
         "behat/behat",
