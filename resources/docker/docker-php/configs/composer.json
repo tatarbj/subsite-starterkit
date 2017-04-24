@@ -11,7 +11,8 @@
   "extra": {
     "shared-package": {
       "package-exclude-list": [
-        "behat/behat"
+        "behat/behat",
+        "phing/phing"
       ],
       "symlink-dir": "vendor",
       "vendor-dir": "/usr/share/composer"
