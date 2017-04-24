@@ -46,7 +46,7 @@ node('master') {
                     dockerExecute('./bin/phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
                     dockerExecute('./bin/phing', 'setup-behat')
                     timeout(time: 2, unit: 'HOURS') {
-                        dockerExecute('phantomjs', '--webdriver=127.0.0.1:8643 &')
+                        //dockerExecute('phantomjs', '--webdriver=127.0.0.1:8643 &')
                         dockerExecute('./bin/behat', '-c tests/behat.yml --strict')
                     }
                 }
