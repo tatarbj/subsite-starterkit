@@ -16,6 +16,7 @@ services:
     working_dir: ${WORKSPACE}
     links:
       - mysql:mysql
+      - selenium:selenium
     group_add:
       - root
   mysql:
