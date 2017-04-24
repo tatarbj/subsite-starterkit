@@ -12,6 +12,7 @@
     "shared-package": {
       "package-exclude-list": [
         "behat/behat",
+        "cweagans/composer-patches",
         "phing/phing"
       ],
       "symlink-dir": "vendor",
