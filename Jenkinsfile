@@ -33,7 +33,7 @@ node('master') {
 
             try {
                 stage('Check') {
-                    dockerExecute('composer', 'install --no-suggest --no-interaction --ansi')
+                    dockerExecute('composer', 'install --no-suggest --no-interaction')
                     //dockerExecute('./bin/phing', 'setup-php-codesniffer quality-assurance') 
                 }
 
@@ -83,6 +83,9 @@ def dockerExecute(String executable, String command) {
             break
         case "./bin/behat":
             color = "--color"
+            break
+        case "composer":
+            color = "--ansi"
             break
         default:
             color = ""
