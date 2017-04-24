@@ -1,5 +1,6 @@
 {
   "require": {
+    "cweagans/composer-patches": "~1.0",
     "letudiant/composer-shared-package-plugin": "dev-develop as dev-master"
   },
   "repositories": [
