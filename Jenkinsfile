@@ -15,7 +15,7 @@ node('master') {
         def buildId = props['project.id'].replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
         def buildLink = "<${env.BUILD_URL}consoleFull|${props['project.id']} #${env.BUILD_NUMBER}>"
         def releaseName = props['project.id'] + "_" + sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S').trim() + "_${props['platform.package.reference']}"
-        def releasePath = "/var/jenkins_home/releases/${props['project.id']}"
+        def releasePath = "/usr/share/subsites/releases/${props['project.id']}"
 
         withEnv([
             "WORKSPACE=${env.WORKSPACE}",
@@ -52,7 +52,7 @@ node('master') {
                 }
 
                 stage('Package') {
-                    dockerExecute('./bin/phing', "build-release -D'project.release.path'='${env.RELEASE_PATH}' -D'project.release.name'='${env.RELEASE_NAME}'")
+                    dockerExecute('./bin/phing', "build-release -D'project.release.path'='${releasePath}' -D'project.release.name'='${releaseName}'")
                     setBuildStatus("Build complete.", "SUCCESS");
                     slackSend color: "good", message: "${siteName} build ${buildLink} completed."
                 }
