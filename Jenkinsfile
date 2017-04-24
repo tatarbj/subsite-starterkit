@@ -2,70 +2,67 @@
 
 node('master') {
     wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
-        stage('Init') {
-            deleteDir()
-            checkout scm
 
-            if (!fileExists('build.properties')) {
-                echo "File build.properties not found. Can not proceed."
-                exit
-            }
-            echo "File build.properties found, merging with build.properties.dist."
-            def defaults = readProperties file: 'build.properties.dist'
-            def props = readProperties defaults: defaults, file: 'build.properties'
-
-            // Load needed properties into environment variables.
-            env.PROJECT_ID = props["project.id"]
-            env.PLATFORM_PACKAGE_REFERENCE = props["platform.package.reference"]
-            env.SUBSITE_NAME = props["subsite.name"]
-
-            env.WD_HOST_URL = "http://127.0.0.1:8647/wd/hub"
-            env.BUILD_ID_UNIQUE = "${env.PROJECT_ID}".replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date | md5sum | head -c 5').trim()
-            env.RELEASE_NAME = "${env.PROJECT_ID}_" + sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S').trim() + "_${env.PLATFORM_PACKAGE_REFERENCE}"
-            env.RELEASE_PATH = "/var/jenkins_home/releases/${env.PROJECT_ID}"
-            env.BUILDLINK = "<${env.BUILD_URL}consoleFull|${env.PROJECT_ID} #${env.BUILD_NUMBER}>"
-
-            setBuildStatus("Build started.", "PENDING");
-            slackSend color: "good", message: "${env.SUBSITE_NAME} build ${env.BUILDLINK} started."
-            sh "docker run --name $BUILD_ID_UNIQUE -eCOMPOSER_CACHE_DIR=/var/jenkins_home/cache/composer -v ${env.WORKSPACE}:/web -v/var/jenkins_home/cache:/var/jenkins_home/cache -v /var/jenkins_home/releases:/var/jenkins_home/releases -v/usr/share/jenkins/composer:/usr/share/jenkins/composer -w /web -d dev-server:latest"
-            //sh "./bin/phing start-container -D'jenkins.cache.dir'='/var/jenkins_home/cache' -D'jenkins.workspace.dir'='${env.WORKSPACE}' -D'docker.container.name'='$BUILD_ID_UNIQUE' -logger phing.listener.AnsiColorLogger"
+        if (!fileExists('build.properties')) {
+            echo "File build.properties not found. Can not proceed."
+            exit
         }
+        echo "File build.properties found, merging with build.properties.dist."
+        def defaults = readProperties file: 'build.properties.dist'
+        def props = readProperties defaults: defaults, file: 'build.properties'
 
-        try {
-            stage('Check') {
-                //sh "docker exec -u jenkins $BUILD_ID_UNIQUE composer clear-cache"
-                sh "docker exec -u jenkins $BUILD_ID_UNIQUE composer --version"
-                sh "docker exec -u jenkins $BUILD_ID_UNIQUE composer install --no-suggest --no-interaction --ansi"
-                //sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing setup-php-codesniffer quality-assurance -logger phing.listener.AnsiColorLogger"
-            }
+        def siteName = props['subsite.name']
+        def buildId = props['project.id'].replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
+        def buildLink = "<${env.BUILD_URL}consoleFull|${props['project.id']} #${env.BUILD_NUMBER}>"
+        def releaseName = props['project.id'] + "_" + sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S').trim() + "_${props['platform.package.reference']}"
+        def releasePath = "/var/jenkins_home/releases/${props['project.id']}"
 
+        withEnv([
+            "WORKSPACE=${env.WORKSPACE}",
+            "WD_HOST_URL=http://127.0.0.1:8647/wd/hub",
+            "BUILD_ID_UNIQUE=${buildId}",
+        ]) {
 
-            stage('Build') {
-                sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing build-dev -logger phing.listener.AnsiColorLogger"
-            }
+            stage('Init') {
+                deleteDir()
+                checkout scm
+                setBuildStatus("Build started.", "PENDING");
+                slackSend color: "good", message: "${siteName} build ${buildLink} started."
+                sh "docker-compose -f resources/docker/docker-compose.yml up -d"
+             }
 
-            stage('Test') {
-                sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing install-dev -D'drupal.db.name'='$BUILD_ID_UNIQUE' -logger phing.listener.AnsiColorLogger"
-                sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing setup-behat -logger phing.listener.AnsiColorLogger"
-                timeout(time: 2, unit: 'HOURS') {
-                    sh "docker exec -u jenkins $BUILD_ID_UNIQUE phantomjs --webdriver=127.0.0.1:8643 &"
-                    sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/behat -c tests/behat.yml --colors --strict"
+            try {
+                stage('Check') {
+                    dockerExecute('composer', 'install --no-suggest --no-interaction')
+                    //dockerExecute('./bin/phing', 'setup-php-codesniffer quality-assurance') 
                 }
-            }
 
-            stage('Package') {
-                sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing build-release -D'project.release.path'='${env.RELEASE_PATH}' -D'project.release.name'='${env.RELEASE_NAME}' -logger phing.listener.AnsiColorLogger"
-                setBuildStatus("Build complete.", "SUCCESS");
-                slackSend color: "good", message: "${env.SUBSITE_NAME} build ${env.BUILDLINK} completed."
+
+                stage('Build') {
+                    dockerExecute('./bin/phing', 'build-dev')
+                }
+
+                stage('Test') {
+                    dockerExecute('./bin/phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
+                    dockerExecute('./bin/phing', 'setup-behat')
+                    timeout(time: 2, unit: 'HOURS') {
+                        dockerExecute('phantomjs', '--webdriver=127.0.0.1:8643 &')
+                        dockerExecute('./bin/behat', '-c tests/behat.yml --strict')
+                    }
+                }
+
+                stage('Package') {
+                    dockerExecute('./bin/phing', "build-release -D'project.release.path'='${env.RELEASE_PATH}' -D'project.release.name'='${env.RELEASE_NAME}'")
+                    setBuildStatus("Build complete.", "SUCCESS");
+                    slackSend color: "good", message: "${siteName} build ${buildLink} completed."
+                }
+            } catch(err) {
+                setBuildStatus("Build failed.", "FAILURE");
+                slackSend color: "danger", message: "${siteName} build ${buildLink} failed."
+                throw(err)
+            } finally {
+                sh "docker-compose -f resources/docker/docker-compose.yml down"
             }
-        } catch(err) {
-            setBuildStatus("Build failed.", "FAILURE");
-            slackSend color: "danger", message: "${env.PROJECT_ID} build ${env.BUILDLINK} failed."
-            throw(err)
-        } finally {
-            sh "docker exec -u jenkins $BUILD_ID_UNIQUE ./bin/phing drush-sql-drop -logger phing.listener.AnsiColorLogger"
-            sh "docker stop $BUILD_ID_UNIQUE && docker rm \$(docker ps -aq -f status=exited)"
-            //sh "./bin/phing stop-container -D'docker.container.name'='$BUILD_ID_UNIQUE' -logger phing.listener.AnsiColorLogger"
         }
     }
 }
@@ -77,4 +74,22 @@ void setBuildStatus(String message, String state) {
         errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
         statusResultSource: [$class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]]]
     ]);
+}
+
+def dockerExecute(String executable, String command) {
+    switch("${executable}") {
+        case "./bin/phing":
+            color = "-logger phing.listener.AnsiColorLogger"
+            break
+        case "./bin/behat":
+            color = "--color"
+            break
+        case "composer":
+            color = "--ansi"
+            break
+        default:
+            color = ""
+            break
+    }
+    sh "docker exec ${BUILD_ID_UNIQUE}_php ${executable} ${command} ${color}"
 }

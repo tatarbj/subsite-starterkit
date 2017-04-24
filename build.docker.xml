@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="My subsite" default="help">
 
+    <target name="start-containers" description="Start docker containers">
+        <echo msg='Starting containers for "${docker.container.name}".' />
+        <exec command="docker-compose -f resources/docker/docker-compose.yml up -d" />
+    </target>
+
+    <target name="stop-containers" description="Stop docker containers">
+        <echo msg='Stopping containers for "${docker.container.name}".' />
+        <exec command="docker-compose -f resources/docker/docker-compose.yml down" />
+    </target>
+
     <target name="start-container" description="Start docker container">
         <echo msg='Starting container "${docker.container.name}".' />
         <exec command="docker run --name ${docker.container.name} -p 127.0.0.1:80:80 -v ${jenkins.workspace.dir}:/web -v${jenkins.cache.dir}:${jenkins.cache.dir} -w /web -d dev-server:latest" />

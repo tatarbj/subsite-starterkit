@@ -2,20 +2,39 @@
 
 <project name="My subsite" default="help">
 
+    <!-- Check if site exists. -->
+    <if>
+        <available file="${platform.build.settings.dir}/settings.php" type="file"/>
+        <then>
+            <property name="site-detected" value="1" />
+        </then>
+    </if>
+
+    <!-- Check if backup exists. -->
+    <if>
+        <available file="${platform.rebuild.backup.destination}" type="dir"/>
+        <then>
+            <property name="backup-detected" value="1" />
+        </then>
+    </if>
+
     <!-- Delete the previous development build. -->
     <target name="delete-dev">
         <!--
             During the Drupal installation process the settings folder is write
             protected. Ensure it is writeable so it can be removed.
          -->
+        <echo msg="Delete previous build." />
+
         <phingcall target="unprotect-folder">
             <property name="folder.to.unprotect" value="${platform.build.settings.dir}" />
         </phingcall>
+        <echo msg="Unprotecting folder." />
 
-        <echo msg="Delete previous build." />
         <phingcall target="delete-folder">
             <property name="folder.to.delete" value="${platform.build.dir}" />
         </phingcall>
+        <echo msg="Deleting folder." />
     </target>
 
     <!-- Delete the previous distribution build. -->
@@ -187,7 +206,7 @@
 
     <!-- Symlink the Behat bin and test directory in the subsite folder. -->
     <target name="link-behat">
-        <echo msg="rel-sym the Behat bin and test directory in './sites/all'." />
+        <echo msg="Symlink the Behat bin and test directory in './sites/all'." />
         <rel-sym link="bin/behat" target="${platform.build.subsite.dir}/vendor/bin/behat" overwrite="true"/>
         <rel-sym link="${platform.build.subsite.dir}/tests" target="${project.basedir}/tests" overwrite="true"/>
     </target>
@@ -252,6 +271,7 @@
         <composer command="install" composer="${composer.bin}">
             <arg value="--working-dir=${dist.build.dir}" />
             <arg value="--no-interaction" />
+            <arg value="--no-plugins" />
             <arg value="--no-suggest" />
             <arg value="--no-dev" />
             <arg value="--ansi" />
@@ -383,20 +403,12 @@
             <then>
                 <!-- Move package to the global cachedir location. -->
                 <move file="${platform.package.destination}/deploy-package.tar.gz" tofile="${platform.package.cachedir}/${platform.package.tarball}" overwrite="true"/>
-                <!-- Unpack the platform. -->
-                <phingcall target="unpack-platform">
-                    <property name="platform.package.download" value="${platform.package.cachedir}/${platform.package.tarball}"/>
-                </phingcall>
             </then>
             <elseif>
                 <available file="${platform.package.destination}/deploy-package.tar.gz" type="file"/>
                 <then>
                     <!-- Move package to the local cachedir location. -->
                     <move file="${platform.package.destination}/deploy-package.tar.gz" tofile="${platform.package.destination}/${platform.package.tarball}" overwrite="true"/>
-                    <!-- Unpack the platform. -->
-                    <phingcall target="unpack-platform">
-                        <property name="platform.package.download" value="${platform.package.destination}/${platform.package.tarball}"/>
-                    </phingcall>
                 </then>
             </elseif>
         </if>
@@ -450,21 +462,16 @@
     </target>
 
     <!-- Backs up files and folders listed in platform.rebuild properties in order to rebuild. -->
-    <target name="backup-site">
+    <target name="backup-site" if="site-detected">
         <if>
-            <available file="${platform.build.settings.dir}/settings.php" type="file"/>
+            <equals arg1="${platform.rebuild.auto}" arg2="0"/>
             <then>
+                <echo msg="Installed site detected." level="warning"/>
+                <propertyprompt propertyName="backup-site-activated" promptText="Do you wish to backup site for this build? (y/n)" />
                 <if>
-                    <equals arg1="${platform.rebuild.auto}" arg2="0"/>
+                    <equals arg1="${backup-site-activated}" arg2="y" />
                     <then>
-                        <echo msg="Installed site detected." level="warning"/>
-                        <propertyprompt propertyName="backup-site-activated" promptText="Do you wish to backup site for this build? (y/n)" />
-                        <if>
-                            <equals arg1="${backup-site-activated}" arg2="y" />
-                            <then>
-                                <property name="platform.rebuild.auto" value="1" override="true"/>
-                            </then>
-                        </if>
+                        <property name="platform.rebuild.auto" value="1" override="true"/>
                     </then>
                 </if>
             </then>
@@ -504,21 +511,16 @@
     </target>
 
     <!-- Restoring sites directory if backed up before rebuild-dev. -->
-    <target name="restore-site">
+    <target name="restore-site" if="backup-detected">
         <if>
-            <available file="${platform.rebuild.backup.destination}" type="dir"/>
+            <equals arg1="${platform.rebuild.auto}" arg2="0"/>
             <then>
+                <echo msg="Site backup detected." level="warning"/>
+                <propertyprompt propertyName="restore-site-activated" promptText="Do you wish to restore site for this build? (y/n)" />
                 <if>
-                    <equals arg1="${platform.rebuild.auto}" arg2="0"/>
+                    <equals arg1="${restore-site-activated}" arg2="y" />
                     <then>
-                        <echo msg="Site backup detected." level="warning"/>
-                        <propertyprompt propertyName="restore-site-activated" promptText="Do you wish to restore site for this build? (y/n)" />
-                        <if>
-                            <equals arg1="${restore-site-activated}" arg2="y" />
-                            <then>
-                                <property name="platform.rebuild.auto" value="1" override="true"/>
-                            </then>
-                        </if>
+                        <property name="platform.rebuild.auto" value="1" override="true"/>
                     </then>
                 </if>
             </then>
