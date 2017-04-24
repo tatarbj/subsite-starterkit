@@ -33,6 +33,7 @@ node('master') {
 
             try {
                 stage('Check') {
+                    dockerExecute('composer', 'clear-cache')
                     dockerExecute('composer', 'install --no-suggest --no-interaction')
                     //dockerExecute('./bin/phing', 'setup-php-codesniffer quality-assurance') 
                 }
