@@ -33,26 +33,26 @@ node('master') {
 
             try {
                 stage('Check') {
-                    sh "docker exec ${BUILD_ID_UNIQUE}_php composer install --no-suggest --no-interaction --ansi"
-                    //sh "docker exec ${BUILD_ID_UNIQUE}_php ./bin/phing setup-php-codesniffer quality-assurance -logger phing.listener.AnsiColorLogger"
+                    dockerExecute('composer', 'install --no-suggest --no-interaction --ansi')
+                    //dockerExecute('./bin/phing', 'setup-php-codesniffer quality-assurance') 
                 }
 
 
                 stage('Build') {
-                    sh "docker exec ${BUILD_ID_UNIQUE}_php ./bin/phing build-dev -logger phing.listener.AnsiColorLogger"
+                    dockerExecute('./bin/phing', 'build-dev')
                 }
 
                 stage('Test') {
-                    sh "docker exec ${BUILD_ID_UNIQUE}_php ./bin/phing install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}' -logger phing.listener.AnsiColorLogger"
-                    sh "docker exec ${BUILD_ID_UNIQUE}_php ./bin/phing setup-behat -logger phing.listener.AnsiColorLogger"
+                    dockerExecute('./bin/phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
+                    dockerExecute('./bin/phing', 'setup-behat')
                     timeout(time: 2, unit: 'HOURS') {
-                        sh "docker exec ${BUILD_ID_UNIQUE}_php phantomjs --webdriver=127.0.0.1:8643 &"
-                        sh "docker exec ${BUILD_ID_UNIQUE}_php ./bin/behat -c tests/behat.yml --colors --strict"
+                        dockerExecute('phantomjs', '--webdriver=127.0.0.1:8643 &')
+                        dockerExecute('./bin/behat', '-c tests/behat.yml --strict')
                     }
                 }
 
                 stage('Package') {
-                    sh "docker exec ${BUILD_ID_UNIQUE}_php ./bin/phing build-release -D'project.release.path'='${env.RELEASE_PATH}' -D'project.release.name'='${env.RELEASE_NAME}' -logger phing.listener.AnsiColorLogger"
+                    dockerExecute('./bin/phing', "build-release -D'project.release.path'='${env.RELEASE_PATH}' -D'project.release.name'='${env.RELEASE_NAME}'")
                     setBuildStatus("Build complete.", "SUCCESS");
                     slackSend color: "good", message: "${siteName} build ${buildLink} completed."
                 }
@@ -74,4 +74,19 @@ void setBuildStatus(String message, String state) {
         errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
         statusResultSource: [$class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]]]
     ]);
+}
+
+dockerExecute(String executable, String command) {
+    switch(${executable}) {
+        case "./bin/phing":
+            color = "-logger phing.listener.AnsiColorLogger"
+            break
+        case "./bin/behat":
+            color = "--color"
+            break
+        default:
+            color = ""
+            break
+    }
+    sh "docker exec ${BUILD_ID_UNIQUE}_php ${executable} ${command} ${color}"
 }
