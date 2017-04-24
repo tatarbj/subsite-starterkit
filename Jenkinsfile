@@ -77,7 +77,7 @@ void setBuildStatus(String message, String state) {
 }
 
 def dockerExecute(String executable, String command) {
-    switch(${executable}) {
+    switch("${executable}") {
         case "./bin/phing":
             color = "-logger phing.listener.AnsiColorLogger"
             break
