@@ -39,7 +39,7 @@ node('master') {
 
 
                 stage('Build') {
-                    dockerExecute('./bin/phing', 'build-dev')
+                    dockerExecute('./bin/phing', 'build-dev -D'behat.wd_host.url'='http://127.0.0.1:4444/wd/hub' -D'behat.browser.name'='chrome'")
                 }
 
                 stage('Test') {

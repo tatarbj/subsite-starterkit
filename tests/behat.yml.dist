@@ -11,8 +11,10 @@ default:
         tags: "~@wip"
   extensions:
     Behat\MinkExtension:
+      browser_name: '{{ behat.browser.name }}'
       goutte: ~
-      selenium2: ~
+      selenium2:
+        wd_host: '{{ behat.wd_host.url }}'
       javascript_session: 'selenium2'
       base-url: '${behat.base_url}'
     Drupal\DrupalExtension:
