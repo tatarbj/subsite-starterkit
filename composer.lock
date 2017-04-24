@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "66a67cb94a079aa728efe5fa49ca4f77",
-    "content-hash": "a9b75fc7acfa21c9aafb218a363b78b8",
+    "hash": "8b2eb734b7d1a57a71a835f21508e415",
+    "content-hash": "e3b94f673c04466637d00bddc6e60efd",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.26.1",
+            "version": "3.26.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "fb58de550919d0472f62dcb9e1bb11d793c6d297"
+                "reference": "05df1887d7b8cea9fba9ad59e1513c3815e883ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fb58de550919d0472f62dcb9e1bb11d793c6d297",
-                "reference": "fb58de550919d0472f62dcb9e1bb11d793c6d297",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/05df1887d7b8cea9fba9ad59e1513c3815e883ae",
+                "reference": "05df1887d7b8cea9fba9ad59e1513c3815e883ae",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-04-20 21:58:43"
+            "time": "2017-04-21 20:25:16"
         },
         {
             "name": "continuousphp/aws-sdk-phing",
@@ -283,16 +283,16 @@
         },
         {
             "name": "cweagans/composer-patches",
-            "version": "dev-checkpatched",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/verbruggenalex/composer-patches.git",
-                "reference": "5b63ccc68eee83c2b382297074e1b4836d090a16"
+                "url": "https://github.com/cweagans/composer-patches.git",
+                "reference": "b3036f23b73570ab5d869e345277786c8eb248a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/verbruggenalex/composer-patches/zipball/5b63ccc68eee83c2b382297074e1b4836d090a16",
-                "reference": "5b63ccc68eee83c2b382297074e1b4836d090a16",
+                "url": "https://api.github.com/repos/cweagans/composer-patches/zipball/b3036f23b73570ab5d869e345277786c8eb248a9",
+                "reference": "b3036f23b73570ab5d869e345277786c8eb248a9",
                 "shasum": ""
             },
             "require": {
@@ -312,11 +312,7 @@
                     "cweagans\\Composer\\": "src"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "cweagans\\Composer\\Tests\\": "tests"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-2-Clause"
             ],
@@ -327,10 +323,7 @@
                 }
             ],
             "description": "Provides a way to patch Composer packages.",
-            "support": {
-                "source": "https://github.com/verbruggenalex/composer-patches/tree/checkpatched"
-            },
-            "time": "2017-04-16 11:19:19"
+            "time": "2017-03-19 18:18:52"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -3094,7 +3087,7 @@
                 {
                     "name": "Anthon Pang",
                     "email": "apang@softwaredevelopment.ca",
-                    "role": "Fork Maintainer"
+                    "role": "Fork maintainer"
                 }
             ],
             "description": "PHP WebDriver for Selenium 2",
@@ -3573,7 +3566,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "cpliakas/git-wrapper": 20,
-        "cweagans/composer-patches": 20,
         "pear/archive_tar": 20,
         "pear/versioncontrol_git": 20,
         "behat/behat": 5
