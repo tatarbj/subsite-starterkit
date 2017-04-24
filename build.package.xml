@@ -24,14 +24,17 @@
             During the Drupal installation process the settings folder is write
             protected. Ensure it is writeable so it can be removed.
          -->
+        <echo msg="Delete previous build." />
+
         <phingcall target="unprotect-folder">
             <property name="folder.to.unprotect" value="${platform.build.settings.dir}" />
         </phingcall>
+        <echo msg="Unprotecting folder." />
 
-        <echo msg="Delete previous build." />
         <phingcall target="delete-folder">
             <property name="folder.to.delete" value="${platform.build.dir}" />
         </phingcall>
+        <echo msg="Deleting folder." />
     </target>
 
     <!-- Delete the previous distribution build. -->
