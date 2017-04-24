@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8b2eb734b7d1a57a71a835f21508e415",
-    "content-hash": "e3b94f673c04466637d00bddc6e60efd",
+    "hash": "cbd9235a4627b25d3185ec40cdae728d",
+    "content-hash": "8aa1aa082534b9a1c9bc962d21d88d72",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -283,16 +283,16 @@
         },
         {
             "name": "cweagans/composer-patches",
-            "version": "1.6.1",
+            "version": "dev-checkpatched",
             "source": {
                 "type": "git",
-                "url": "https://github.com/cweagans/composer-patches.git",
-                "reference": "b3036f23b73570ab5d869e345277786c8eb248a9"
+                "url": "https://github.com/verbruggenalex/composer-patches.git",
+                "reference": "5b63ccc68eee83c2b382297074e1b4836d090a16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cweagans/composer-patches/zipball/b3036f23b73570ab5d869e345277786c8eb248a9",
-                "reference": "b3036f23b73570ab5d869e345277786c8eb248a9",
+                "url": "https://api.github.com/repos/verbruggenalex/composer-patches/zipball/5b63ccc68eee83c2b382297074e1b4836d090a16",
+                "reference": "5b63ccc68eee83c2b382297074e1b4836d090a16",
                 "shasum": ""
             },
             "require": {
@@ -312,7 +312,11 @@
                     "cweagans\\Composer\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "cweagans\\Composer\\Tests\\": "tests"
+                }
+            },
             "license": [
                 "BSD-2-Clause"
             ],
@@ -323,7 +327,10 @@
                 }
             ],
             "description": "Provides a way to patch Composer packages.",
-            "time": "2017-03-19 18:18:52"
+            "support": {
+                "source": "https://github.com/verbruggenalex/composer-patches/tree/checkpatched"
+            },
+            "time": "2017-04-16 11:19:19"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -3566,6 +3573,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "cpliakas/git-wrapper": 20,
+        "cweagans/composer-patches": 20,
         "pear/archive_tar": 20,
         "pear/versioncontrol_git": 20,
         "behat/behat": 5
