@@ -1,14 +1,17 @@
 version: '2'
 services:
   web:
-    image: fpfis/php56
+    #image: fpfis/php56
+    build: ./docker-php
     container_name: ${BUILD_ID_UNIQUE}_php
     environment:
       DOCROOT: ${WORKSPACE}/platform
-      COMPOSER_CACHE_DIR: /usr/share/composer
+      COMPOSER_CACHE_DIR: /var/cache/composer
     volumes:
       - ${WORKSPACE}:${WORKSPACE}
       - /usr/share/composer:/usr/share/composer
+      - /var/cache/composer:/var/cache/composer
+      - ./configs/composer.json:/composer/composer.json
     working_dir: ${WORKSPACE}
     links:
       - mysql:mysql
