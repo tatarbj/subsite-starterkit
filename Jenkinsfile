@@ -82,7 +82,7 @@ def dockerExecute(String executable, String command) {
             color = "-logger phing.listener.AnsiColorLogger"
             break
         case "./bin/behat":
-            color = "--color"
+            color = "--colors"
             break
         case "composer":
             color = "--ansi"
