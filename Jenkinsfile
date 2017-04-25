@@ -39,7 +39,7 @@ node('master') {
 
 
                 stage('Build') {
-                    dockerExecute('./bin/phing', "build-dev -D'behat.wd_host.url'='http://127.0.0.1:4444/wd/hub' -D'behat.browser.name'='chrome'")
+                    dockerExecute('./bin/phing', "build-dev -D'behat.wd_host.url'='http://selenium:4444/wd/hub' -D'behat.browser.name'='chrome'")
                 }
 
                 stage('Test') {
@@ -60,7 +60,7 @@ node('master') {
                 slackSend color: "danger", message: "${siteName} build ${buildLink} failed."
                 throw(err)
             } finally {
-                //sh "docker-compose -f resources/docker/docker-compose.yml down"
+                sh "docker-compose -f resources/docker/docker-compose.yml down"
             }
         }
     }
