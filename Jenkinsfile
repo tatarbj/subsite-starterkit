@@ -60,7 +60,7 @@ node('master') {
                 slackSend color: "danger", message: "${siteName} build ${buildLink} failed."
                 throw(err)
             } finally {
-                sh "docker-compose -f resources/docker/docker-compose.yml down"
+                //sh "docker-compose -f resources/docker/docker-compose.yml down"
             }
         }
     }
