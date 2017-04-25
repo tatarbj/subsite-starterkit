@@ -29,10 +29,6 @@
       "NextEuropa\\": "src"
     }
   },
-  "require-dev": {
-    "behat/behat": "~3.1.0@rc",
-    "drupal/drupal-extension": "~3.1.0"
-  },
   "repositories": [
     {
       "type": "vcs",
