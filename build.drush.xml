@@ -29,14 +29,7 @@
         <drush command="sql-cli" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
             <param>&lt; ${database-file}</param>
         </drush>
-        <!-- Clear Drush caches. -->
-        <drush command="cc" assume="yes" root="${platform.build.dir}" bin="${drush.bin}">
-            <param>drush</param>
-        </drush>
-        <!-- Rebuild Registry. -->
-        <drush command="registry-rebuild" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}">
-            <param>--fire-bazooka</param>
-        </drush>
+        <phingcall target="drush-registry-rebuild" />
         <!-- Update database. -->
         <drush command="updatedb" assume="yes" root="${platform.build.dir}" bin="${drush.bin}"></drush>
         <!-- Clear Caches. -->
@@ -106,6 +99,38 @@
         </drush>
         <!-- Setup the private files directory if needed. -->
         <phingcall target="setup-files-directory" />
+    </target>
+
+    <!-- Rebuild registry. -->
+    <target name="drush-registry-rebuild">
+        <trycatch>
+            <try>
+                <!-- Check if registry rebuild is available. -->
+                <exec command="${drush.bin} rr --help" checkreturn="true" />
+            </try>
+            <catch>
+                <!-- Download if not available. -->
+                <phingcall target="drush-dl-rr" />
+            </catch>
+            <finally>
+                 <!-- Rebuild Registry. -->
+                 <drush command="registry-rebuild" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}">
+                     <param>--fire-bazooka</param>
+                 </drush>
+            </finally>
+        </trycatch>
+    </target>
+
+    <!-- Download registry rebuild. -->
+    <target name="drush-dl-rr">
+        <echo message="Installing registry rebuild on user account." />
+        <drush command="pm-download" assume="yes" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>registry_rebuild-7</param>
+        </drush>
+        <!-- Clear Drush caches. -->
+        <drush command="cc" assume="yes" bin="${drush.bin}">
+            <param>drush</param>
+        </drush>
     </target>
 
 </project>
