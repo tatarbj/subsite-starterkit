@@ -11,6 +11,7 @@
         <phingcall target="drush-sql-import">
             <property name="database-file" value="tmp/${gunzipped.filename}" />
         </phingcall>
+        <phingcall target="drush-registry-rebuild" />
     </target>
 
     <!-- Download the production database. -->
