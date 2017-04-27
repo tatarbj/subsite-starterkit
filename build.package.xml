@@ -653,6 +653,9 @@
             <then>
                 <mkdir dir="${platform.build.files.dir}/private_files" />
                 <mkdir dir="${platform.build.tmp.dir}" />
+                <!-- Support CSS and JS injector. -->
+                <mkdir dir="${platform.build.files.dir}/css_injector" />
+                <mkdir dir="${platform.build.files.dir}/js_injector" />
             </then>
         </if>
     </target>
