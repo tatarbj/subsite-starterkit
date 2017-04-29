@@ -18,7 +18,7 @@ services:
       - mysql:mysql
       - selenium:selenium
     group_add:
-      - root
+      - 2000
   mysql:
     image: mysql:5.6
     container_name: ${BUILD_ID_UNIQUE}_mysql
@@ -45,4 +45,4 @@ services:
     image: selenium/standalone-chrome
     container_name: ${BUILD_ID_UNIQUE}_selenium
     group_add:
-      - root
+      - 2000
