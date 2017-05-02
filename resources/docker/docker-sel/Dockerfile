@@ -1,3 +1,7 @@
 FROM selenium/standalone-chrome
 
-RUN groupadd -g 1000 jenkins
+USER root
+
+RUN groupadd -g 1000 -o jenkins
+
+USER seluser
