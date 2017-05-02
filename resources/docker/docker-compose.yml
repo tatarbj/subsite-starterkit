@@ -42,7 +42,8 @@ services:
     image: fpfis/solr5
     container_name: ${BUILD_ID_UNIQUE}_solr
   selenium:
-    image: selenium/standalone-chrome
+    #image: selenium/standalone-chrome
+    build: ./docker-sel
     container_name: ${BUILD_ID_UNIQUE}_selenium
     group_add:
       - jenkins
