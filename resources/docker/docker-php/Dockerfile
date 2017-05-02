@@ -1,7 +1,7 @@
 FROM fpfis/php56
 
 RUN groupadd -g 1000 jenkins
-RUN useradd -G jenkins  -u 1000 jenkins
+RUN useradd -g jenkins  -u 1000 jenkins
 RUN gpasswd -a jenkins apache
 
 RUN chown -R jenkins:jenkins /composer
