@@ -7,8 +7,6 @@ services:
     environment:
       DOCROOT: ${WORKSPACE}/platform
       COMPOSER_CACHE_DIR: /var/cache/composer
-      APACHE_RUN_USER: jenkins
-      APACHE_RUN_GROUP: jenkins
     volumes:
       - ${WORKSPACE}:${WORKSPACE}
       - /usr/share/composer:/usr/share/composer

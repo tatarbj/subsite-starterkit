@@ -13,5 +13,3 @@ USER jenkins
 ADD configs/composer.json /composer/composer.json
 
 RUN composer global install
-
-USER root
