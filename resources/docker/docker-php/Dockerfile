@@ -6,10 +6,12 @@ RUN gpasswd -a jenkins apache
 
 RUN chown -R jenkins:jenkins /composer
 
-RUN rm -rf /var/www/html
+#RUN rm -rf /var/www/html
 
 USER jenkins
 
 ADD configs/composer.json /composer/composer.json
 
 RUN composer global install
+
+USER root
