@@ -17,6 +17,8 @@ services:
     links:
       - mysql:mysql
       - selenium:selenium
+    group_add:
+      - jenkins
   mysql:
     image: mysql:5.6
     container_name: ${BUILD_ID_UNIQUE}_mysql

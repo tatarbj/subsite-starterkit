@@ -1,9 +1,11 @@
 FROM fpfis/php56
 
-RUN useradd  -u 2000 jenkins
+RUN useradd -G jenkins  -u 1000 jenkins
 RUN gpasswd -a jenkins apache
 
 RUN chown -R jenkins:jenkins /composer
+
+RUN rm -rf /var/www/html
 
 USER jenkins
 
