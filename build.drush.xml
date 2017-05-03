@@ -15,6 +15,16 @@
         </drush>
     </target>
 
+    <!-- Create the directories. -->
+    <target name="drush-create-files-dirs">
+        <echo message="Creating files directories for ${drupal.db.name}." />
+        <drush command="php-eval" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}"
+            <param>"file_prepare_directory(${platform.build.files.dir}, FILE_CREATE_DIRECTORY);"</param>
+            <param>"file_prepare_directory(${platform.build.files.dir}/private_files, FILE_CREATE_DIRECTORY);"</param>
+            <param>"file_prepare_directory(${platform.build.tmp.dir}, FILE_CREATE_DIRECTORY);"</param>
+        </drush>
+    </target>
+
     <!-- Create the database. -->
     <target name="drush-sql-create">
         <echo message="Creating database ${drupal.db.name}." />
@@ -30,6 +40,7 @@
             <param>&lt; ${database-file}</param>
         </drush>
         <phingcall target="drush-registry-rebuild" />
+        <phingcall target="drush-create-files-dirs" />
         <!-- Update database. -->
         <drush command="updatedb" assume="yes" root="${platform.build.dir}" bin="${drush.bin}"></drush>
         <!-- Clear Caches. -->
