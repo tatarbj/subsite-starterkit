@@ -3,6 +3,7 @@ FROM fpfis/php56
 RUN groupadd -g 1000 jenkins
 RUN useradd -g jenkins -u 1000 jenkins
 RUN gpasswd -a jenkins apache
+RUN usermod apache --append --groups jenkins
 
 RUN chown -R jenkins:jenkins /composer /var/www
 
