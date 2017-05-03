@@ -18,7 +18,7 @@
     <!-- Create the directories. -->
     <target name="drush-create-files-dirs">
         <echo message="Creating files directories for ${drupal.db.name}." />
-        <drush command="php-eval" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}"
+        <drush command="php-eval" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
             <param>"file_prepare_directory(${platform.build.files.dir}, FILE_CREATE_DIRECTORY);"</param>
             <param>"file_prepare_directory(${platform.build.files.dir}/private_files, FILE_CREATE_DIRECTORY);"</param>
             <param>"file_prepare_directory(${platform.build.tmp.dir}, FILE_CREATE_DIRECTORY);"</param>
