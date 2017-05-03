@@ -24,6 +24,7 @@ node('master') {
         ]) {
 
             stage('Init') {
+                sh "chown -R jenkins:jenkins ${env.WORKSPACE}"
                 deleteDir()
                 checkout scm
                 setBuildStatus("Build started.", "PENDING");
