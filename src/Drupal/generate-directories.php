@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Script used by drush to create files directories.
+ */
+
 // Directories to create.
 $directories = array(
   variable_get('file_temporary_path', file_directory_temp()),
