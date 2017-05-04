@@ -25,6 +25,7 @@ foreach ($directories as $directory) {
     // Let mkdir() recursively create directories and use the default directory
     // permissions.
     if (@drupal_mkdir($directory, NULL, TRUE)) {
+      // @codingStandardsIgnoreLine
       @chmod($directory, 0775)
     }
   }
