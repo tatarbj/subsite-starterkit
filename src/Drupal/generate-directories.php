@@ -5,6 +5,11 @@
  * Script used by drush to create files directories.
  */
 
+// Include the install.inc to use the function drupal_rewrite_settings().
+if (!function_exists('file_prepare_directory')) {
+  include 'includes/file.inc';
+}
+
 // Directories to create.
 $directories = array(
   variable_get('file_temporary_path', conf_path() . '/tmp'),
