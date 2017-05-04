@@ -13,8 +13,6 @@ $directories = array(
 );
 
 foreach ($directories as $directory) {
-  if (!$directory) {
-    continue;
-  }
   file_prepare_directory($directory, FILE_CREATE_DIRECTORY);
+  drupal_chmod($directory);
 }
