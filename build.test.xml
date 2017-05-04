@@ -191,7 +191,7 @@
     <target
         name="install-dev"
         description="Install a local development version of the subsite."
-        depends="install, enable-development-modules"
+        depends="drush-create-files-dirs, install, enable-development-modules"
     />
 
     <!-- Rebuild node access. -->
