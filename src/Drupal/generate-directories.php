@@ -8,6 +8,7 @@
 // Include the install.inc to use the function drupal_rewrite_settings().
 if (!function_exists('file_prepare_directory')) {
   include 'includes/file.inc';
+  include 'includes/module.inc';
 }
 
 // Directories to create.
