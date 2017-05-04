@@ -26,7 +26,7 @@ foreach ($directories as $directory) {
     // permissions.
     if (@drupal_mkdir($directory, NULL, TRUE)) {
       // @codingStandardsIgnoreLine
-      @chmod($directory, 0775)
+      @chmod($directory, 0775);
     }
   }
 }
