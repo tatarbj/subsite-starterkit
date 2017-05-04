@@ -9,6 +9,7 @@
 if (!function_exists('file_prepare_directory')) {
   include 'includes/file.inc';
   include 'includes/module.inc';
+  include 'includes/cache.inc';
 }
 
 // Directories to create.
