@@ -6,7 +6,7 @@
  */
 
 // Include the install.inc to use the function drupal_rewrite_settings().
-if (!function_exists('file_prepare_directory')) {
+if (!function_exists('drupal_mkdir')) {
   include 'includes/file.inc';
 }
 
@@ -20,8 +20,13 @@ $directories = array(
 );
 
 foreach ($directories as $directory) {
-  if ($directory) {
-    file_prepare_directory($directory, FILE_CREATE_DIRECTORY);
-    drupal_chmod($directory);
+  // Check if directory exists.
+  if ($directory && !is_dir($directory)) {
+    // Let mkdir() recursively create directories and use the default directory
+    // permissions.
+    if (@drupal_mkdir($directory, NULL, TRUE)) {
+      // @codingStandardsIgnoreLine
+      @chmod($directory, 0775);
+    }
   }
 }
