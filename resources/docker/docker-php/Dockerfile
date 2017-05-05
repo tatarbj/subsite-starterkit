@@ -13,8 +13,7 @@ ADD configs/composer.json /composer/composer.json
 
 RUN composer global install
 
-RUN curl -L "https://ftp.drupal.org/files/projects/registry_rebuild-7.x-2.5.tar.gz" | \
-    tar xzf registry_rebuild-7.x-2.5.tar.gz && \
+RUN curl -L "https://ftp.drupal.org/files/projects/registry_rebuild-7.x-2.5.tar.gz" | tar xzf registry_rebuild-7.x-2.5.tar.gz && \
     rm registry_rebuild-7.x-2.5.tar.gz && \
     mkdir -p ~/.drush && \
     mv registry_rebuild ~/.drush
