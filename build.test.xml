@@ -8,7 +8,7 @@
             Ensure the settings folder is writable so the installer can create
             the settings.php file.
          -->
-        <chmod mode="0755" failonerror="false" verbose="false" quiet="true">
+        <chmod mode="0775" failonerror="false" verbose="false" quiet="true">
             <fileset dir="${platform.build.settings.dir}" />
         </chmod>
 
@@ -191,7 +191,7 @@
     <target
         name="install-dev"
         description="Install a local development version of the subsite."
-        depends="install, enable-development-modules"
+        depends="drush-create-files-dirs, install, enable-development-modules"
     />
 
     <!-- Rebuild node access. -->

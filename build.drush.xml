@@ -107,8 +107,6 @@
         <drush command="php-script" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
             <param>tmp/generate-settings.php</param>
         </drush>
-        <!-- Setup the private files directory if needed. -->
-        <phingcall target="setup-files-directory" />
     </target>
 
     <!-- Rebuild registry. -->

@@ -622,7 +622,6 @@
             link-behat,
             setup-behat,
             update-htaccess,
-            setup-files-directory,
             setup-php-codesniffer,
             download-development-modules,
             restore-site"
