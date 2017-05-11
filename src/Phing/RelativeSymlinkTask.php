@@ -93,7 +93,7 @@ class RelativeSymlinkTask extends \SymlinkTask {
       }
     }
 
-    $this->log('Linking: ' . $target . ' to ' . $link, Project::MSG_INFO);
+    $this->log('Linking: ' . $link . ' to ' . $target, Project::MSG_INFO);
 
     return $fs->symlink($target, $link);
   }

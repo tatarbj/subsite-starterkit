@@ -2,20 +2,39 @@
 
 <project name="My subsite" default="help">
 
+    <!-- Check if site exists. -->
+    <if>
+        <available file="${platform.build.settings.dir}/settings.php" type="file"/>
+        <then>
+            <property name="site-detected" value="1" />
+        </then>
+    </if>
+
+    <!-- Check if backup exists. -->
+    <if>
+        <available file="${platform.rebuild.backup.destination}" type="dir"/>
+        <then>
+            <property name="backup-detected" value="1" />
+        </then>
+    </if>
+
     <!-- Delete the previous development build. -->
     <target name="delete-dev">
         <!--
             During the Drupal installation process the settings folder is write
             protected. Ensure it is writeable so it can be removed.
          -->
+        <echo msg="Delete previous build." />
+
         <phingcall target="unprotect-folder">
             <property name="folder.to.unprotect" value="${platform.build.settings.dir}" />
         </phingcall>
+        <echo msg="Unprotecting folder." />
 
-        <echo msg="Delete previous build." />
         <phingcall target="delete-folder">
             <property name="folder.to.delete" value="${platform.build.dir}" />
         </phingcall>
+        <echo msg="Deleting folder." />
     </target>
 
     <!-- Delete the previous distribution build. -->
@@ -130,7 +149,7 @@
                 <propertyregex
                     property="not.empty"
                     subject="${sitemake}"
-                    pattern="([^#; ])(libraries\[|projects\[|includes\[)"
+                    pattern="([^#; ])(libraries\[|projects\[)"
                     match="$1"
                     casesensitive="false"
                     defaultvalue="empty"/>
@@ -167,31 +186,6 @@
         <phingcall target="delete-folder">
             <property name="folder.to.delete" value="${phing.project.tmp.dir}/build" />
         </phingcall>
-    </target>
-
-    <!-- Subtarget: execute a makefile with the no-core option. -->
-    <target name="drush-make-no-core">
-        <echo message="Running make file ${drush.make.target.file} into folder ${drush.make.root}." />
-        <drush
-            command="make"
-            assume="yes"
-            bin="${drush.bin}"
-            pipe="yes"
-            verbose="${drush.verbose}"
-            root="${drush.make.root}">
-            <param>${drush.make.target.file}</param>
-            <param>${drush.make.root}</param>
-            <!--
-                Increasing the concurrency improves the build time by a factor
-                of 3.
-             -->
-            <option name="concurrency">10</option>
-            <option name="no-patch-txt"></option>
-            <!--
-                This option will allow us to build inside an existing folder.
-             -->
-            <option name="no-core"></option>
-        </drush>
     </target>
 
     <!-- Symlink the source folders for easy development. -->
@@ -254,6 +248,9 @@
         <echo msg="Run 'composer install' in platform root." />
         <composer command="install" composer="${composer.bin}">
             <arg value="--working-dir=${project.basedir}" />
+            <arg value="--no-interaction" />
+            <arg value="--no-suggest" />
+            <arg value="--ansi" />
         </composer>
     </target>
 
@@ -262,6 +259,10 @@
         <echo msg="Run 'composer install' in the subsite folder for development purposes." />
         <composer command="install" composer="${composer.bin}">
             <arg value="--working-dir=${platform.build.subsite.dir}" />
+            <arg value="--no-interaction" />
+            <arg value="--no-plugins" />
+            <arg value="--no-suggest" />
+            <arg value="--ansi" />
         </composer>
     </target>
 
@@ -270,14 +271,18 @@
         <echo msg="Run 'composer install --no-dev' in the build destination folder." />
         <composer command="install" composer="${composer.bin}">
             <arg value="--working-dir=${dist.build.dir}" />
+            <arg value="--no-interaction" />
+            <arg value="--no-plugins" />
+            <arg value="--no-suggest" />
             <arg value="--no-dev" />
+            <arg value="--ansi" />
         </composer>
     </target>
 
     <!-- Link site document root to Webserver document root. -->
     <target
         name="link-docroot"
-        description="Create a symlink from the build folder to the webserver document root.">
+        description="Create a Symlink from the build folder to the webserver document root.">
         <rel-sym link="${server.docroot}" target="${platform.build.dir}" overwrite="true" />
     </target>
 
@@ -291,7 +296,7 @@
         </if>
     </target>
 
-    <target name="create-tmp-dirs">
+    <target name="create-tmp-dirs" hidden="true">
         <if>
             <!-- Create the global cache directory if it doesn't exist. -->
             <not>
@@ -390,7 +395,7 @@
     </target>
 
     <!-- Move download to the available temp dir. The global cachedir precedes the local cachedir. -->
-    <target name="move-download-to-tmp-dir">
+    <target name="move-download-to-tmp-dir" hidden="true">
         <if>
             <and>
                 <available file="${platform.package.cachedir}" type="dir"/>
@@ -399,20 +404,12 @@
             <then>
                 <!-- Move package to the global cachedir location. -->
                 <move file="${platform.package.destination}/deploy-package.tar.gz" tofile="${platform.package.cachedir}/${platform.package.tarball}" overwrite="true"/>
-                <!-- Unpack the platform. -->
-                <phingcall target="unpack-platform">
-                    <property name="platform.package.download" value="${platform.package.cachedir}/${platform.package.tarball}"/>
-                </phingcall>
             </then>
             <elseif>
                 <available file="${platform.package.destination}/deploy-package.tar.gz" type="file"/>
                 <then>
                     <!-- Move package to the local cachedir location. -->
                     <move file="${platform.package.destination}/deploy-package.tar.gz" tofile="${platform.package.destination}/${platform.package.tarball}" overwrite="true"/>
-                    <!-- Unpack the platform. -->
-                    <phingcall target="unpack-platform">
-                        <property name="platform.package.download" value="${platform.package.destination}/${platform.package.tarball}"/>
-                    </phingcall>
                 </then>
             </elseif>
         </if>
@@ -466,21 +463,16 @@
     </target>
 
     <!-- Backs up files and folders listed in platform.rebuild properties in order to rebuild. -->
-    <target name="backup-site">
+    <target name="backup-site" if="site-detected">
         <if>
-            <available file="${platform.build.settings.dir}/settings.php" type="file"/>
+            <equals arg1="${platform.rebuild.auto}" arg2="0"/>
             <then>
+                <echo msg="Installed site detected." level="warning"/>
+                <propertyprompt propertyName="backup-site-activated" promptText="Do you wish to backup site for this build? (y/n)" />
                 <if>
-                    <equals arg1="${platform.rebuild.auto}" arg2="0"/>
+                    <equals arg1="${backup-site-activated}" arg2="y" />
                     <then>
-                        <echo msg="Installed site detected." level="warning"/>
-                        <propertyprompt propertyName="backup-site-activated" promptText="Do you wish to backup site for this build? (y/n)" />
-                        <if>
-                            <equals arg1="${backup-site-activated}" arg2="y" />
-                            <then>
-                                <property name="platform.rebuild.auto" value="1" override="true"/>
-                            </then>
-                        </if>
+                        <property name="platform.rebuild.auto" value="1" override="true"/>
                     </then>
                 </if>
             </then>
@@ -520,21 +512,16 @@
     </target>
 
     <!-- Restoring sites directory if backed up before rebuild-dev. -->
-    <target name="restore-site">
+    <target name="restore-site" if="backup-detected">
         <if>
-            <available file="${platform.rebuild.backup.destination}" type="dir"/>
+            <equals arg1="${platform.rebuild.auto}" arg2="0"/>
             <then>
+                <echo msg="Site backup detected." level="warning"/>
+                <propertyprompt propertyName="restore-site-activated" promptText="Do you wish to restore site for this build? (y/n)" />
                 <if>
-                    <equals arg1="${platform.rebuild.auto}" arg2="0"/>
+                    <equals arg1="${restore-site-activated}" arg2="y" />
                     <then>
-                        <echo msg="Site backup detected." level="warning"/>
-                        <propertyprompt propertyName="restore-site-activated" promptText="Do you wish to restore site for this build? (y/n)" />
-                        <if>
-                            <equals arg1="${restore-site-activated}" arg2="y" />
-                            <then>
-                                <property name="platform.rebuild.auto" value="1" override="true"/>
-                            </then>
-                        </if>
+                        <property name="platform.rebuild.auto" value="1" override="true"/>
                     </then>
                 </if>
             </then>
@@ -558,7 +545,7 @@
     </target>
 
     <!-- Backs up a site item from the platform that will be removed in order to rebuild. -->
-    <target name="backup-site-item">
+    <target name="backup-site-item" hidden="true">
         <php expression='dirname("${site-item}")' returnProperty="site-item-dir"/>
         <property name="site-item-backup-dir" value="${site-item-dir}">
             <filterchain>
@@ -588,7 +575,7 @@
     </target>
 
     <!-- Restores a site item from the platform.rebuild.backup.destination to the new build. -->
-    <target name="restore-site-item">
+    <target name="restore-site-item" hidden="true">
         <property name="site-item-backup" value="${site-item}">
             <filterchain>
                 <replaceregexp>
@@ -617,6 +604,11 @@
         </if>
     </target>
 
+    <target name="build-release" description="Package a build-dist release." depends="build-dist">
+        <mkdir dir="${project.release.path}" />
+        <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${phing.project.build.dir}" />
+    </target>
+
     <target
         name="build-dev"
         description="Build a local development version of the subsite."
@@ -630,7 +622,6 @@
             link-behat,
             setup-behat,
             update-htaccess,
-            setup-files-directory,
             setup-php-codesniffer,
             download-development-modules,
             restore-site"
