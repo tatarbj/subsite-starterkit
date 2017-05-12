@@ -10,12 +10,12 @@ phpcs.xml
 tests/behat.yml
 
 # Ignore build artifacts.
-bin/
-build/
-platform/
-tmp/
+/bin/
+/build/
+/platform/
+/tmp/
 vendor/
-resources/git/hooks/pre-push/phpcs
+/resources/git/hooks/pre-push/phpcs
 
 # Ignore license for subsites
 LICENSE.md
