@@ -59,18 +59,18 @@
   "extra": {
     "patches": {
       "drupal/phingdrushtask": {
-        "Support forcing of color with drush": "patches/phingdrushtask-color-support.patch"
+        "Support forcing of color with drush": "includes/composer/patches/phingdrushtask-color-support.patch"
       },
       "drush/drush": {
-        "https://github.com/drush-ops/drush/pull/2215": "patches/drush-force-color.patch"
+        "https://github.com/drush-ops/drush/pull/2215": "includes/composer/patches/drush-force-color.patch"
       },
       "letudiant/composer-shared-package-plugin": {
-        "Shared package exclude composer plugins": "patches/shared-packages-exclude-plugins.patch"
+        "Shared package exclude composer plugins": "includes/composer/patches/shared-packages-exclude-plugins.patch"
       },
       "phing/phing": {
-        "Customize terminal colors": "patches/phing-customize-colors.patch",
-        "Check for autoload from working dir": "patches/phing-shared-packages-autoload-compatibility.patch",
-        "https://github.com/phingofficial/phing/pull/701": "patches/phing-composer-task_automatic-path.patch"
+        "Customize terminal colors": "includes/composer/patches/phing-customize-colors.patch",
+        "Check for autoload from working dir": "includes/composer/patches/phing-shared-packages-autoload-compatibility.patch",
+        "https://github.com/phingofficial/phing/pull/701": "includes/composer/patches/phing-composer-task_automatic-path.patch"
       }
     }
   },
