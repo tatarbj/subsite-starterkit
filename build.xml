@@ -25,7 +25,7 @@
     <property file="build.properties.dist" logoutput="${logoutput}" />
 
     <!-- Set include path for custom tasks. -->
-    <includepath classpath="${project.basedir}/src/Phing" />
+    <includepath classpath="${project.basedir}/src/Phing/Tasks" />
 
     <echo msg="Loading PHP Codesniffer Configuration task." level="${level}"  />
     <taskdef name="phpcodesnifferconfiguration" classname="\NextEuropa\Phing\PhpCodeSnifferConfigurationTask" />
@@ -52,11 +52,11 @@
 
     <!-- Import build xml files. -->
     <import file="resources/build.custom.xml" />
-    <import file="build.clone.xml" />
-    <import file="build.drush.xml" />
-    <import file="build.docker.xml" />
-    <import file="build.package.xml" />
-    <import file="build.test.xml" />
+    <import file="includes/build/build.clone.xml" />
+    <import file="includes/build/build.drush.xml" />
+    <import file="includes/build/build.docker.xml" />
+    <import file="includes/build/build.package.xml" />
+    <import file="includes/build/build.test.xml" />
 
     <!-- Disable output on consecutive phing calls. -->
     <property name="logoutput" value="false" override="true" />
