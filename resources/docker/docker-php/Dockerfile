@@ -1,11 +1,11 @@
 FROM fpfis/php56-dev
 
-RUN groupadd -g 1000 jenkins
-RUN useradd -g jenkins -u 1000 -m jenkins
+#RUN groupadd -g 1000 jenkins
+#RUN useradd -g jenkins -u 1000 -m jenkins
 #RUN gpasswd -a jenkins apache
-RUN usermod apache --append --groups jenkins
+#RUN usermod apache --append --groups jenkins
 
-RUN chown -R jenkins:jenkins /composer /var/www
+#RUN chown -R jenkins:jenkins /composer /var/www
 
 #RUN yum -y install httpd-devel
 #RUN yum -y groupinstall 'Development Tools'
@@ -26,15 +26,15 @@ RUN chown -R jenkins:jenkins /composer /var/www
 #RUN make && \
 #    make install
 
-USER jenkins
+#USER jenkins
 
-ADD configs/composer.json /composer/composer.json
+#ADD configs/composer.json /composer/composer.json
 
-RUN composer global install
+#RUN composer global install
 
-RUN curl -o ~/registry_rebuild-7.x-2.5.tar.gz -sS "https://ftp.drupal.org/files/projects/registry_rebuild-7.x-2.5.tar.gz" && \
-    mkdir -p ~/.drush/registry_rebuild && \
-    tar xzf ~/registry_rebuild-7.x-2.5.tar.gz -C ~/.drush/registry_rebuild && \
-    rm ~/registry_rebuild-7.x-2.5.tar.gz
+#RUN curl -o ~/registry_rebuild-7.x-2.5.tar.gz -sS "https://ftp.drupal.org/files/projects/registry_rebuild-7.x-2.5.tar.gz" && \
+#    mkdir -p ~/.drush/registry_rebuild && \
+#    tar xzf ~/registry_rebuild-7.x-2.5.tar.gz -C ~/.drush/registry_rebuild && \
+#    rm ~/registry_rebuild-7.x-2.5.tar.gz
 
-USER root
+#USER root
