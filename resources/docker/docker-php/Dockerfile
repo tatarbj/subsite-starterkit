@@ -1,4 +1,4 @@
-FROM fpfis/php56
+FROM fpfis/php56-dev
 
 RUN groupadd -g 1000 jenkins
 RUN useradd -g jenkins -u 1000 -m jenkins
