@@ -1,6 +1,4 @@
-#!groovy
-
-node('master') {
+node {
     wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
 
         if (!fileExists('build.properties')) {
