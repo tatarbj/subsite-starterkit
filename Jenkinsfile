@@ -23,7 +23,7 @@ node {
                 //sh "./bin/phing start-container -D'docker.container.id'=${buildId} -D'docker.container.workspace'=${WORKSPACE}"
                 sh "docker-compose -f resources/docker/docker-compose.yml up -d"
              }
-/*
+
             try {
                 stage('Check') {
                     dockerExecute('composer', 'install --no-suggest --no-interaction')
@@ -46,15 +46,15 @@ node {
                 stage('Package') {
                     dockerExecute('./bin/phing', "build-release -D'project.release.path'='${releasePath}' -D'project.release.name'='${releaseName}'")
                     setBuildStatus("Build complete.", "SUCCESS");
-                    slackSend color: "good", message: "${siteName} build ${buildLink} completed."
+                    slackSend color: "good", message: "Subsite build ${buildLink} completed."
                 }
             } catch(err) {
                 setBuildStatus("Build failed.", "FAILURE");
-                slackSend color: "danger", message: "${siteName} build ${buildLink} failed."
+                slackSend color: "danger", message: "Subsite build ${buildLink} failed."
                 throw(err)
             } finally {
-                //sh "docker-compose -f resources/docker/docker-compose.yml down"
-            }*/
+                sh "docker-compose -f resources/docker/docker-compose.yml down"
+            }
         }
     }
 }
