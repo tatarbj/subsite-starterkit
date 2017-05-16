@@ -3,7 +3,7 @@ node {
     wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
 
         def buildId = sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
-        def buildName = "${env.JOB_NAME}".replaceAll('%2F','-').replaceAll('/','-').trim()
+        def buildName = "${env.JOB_NAME}".replaceAll('%2F','_').replaceAll('/','_').trim()
         def buildLink = "<${env.BUILD_URL}consoleFull|${buildName} #${env.BUILD_NUMBER}>"
         //def releaseName = props['project.id'] + "_" + sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S').trim() + "_${props['platform.package.reference']}"
         //def releasePath = "/usr/share/subsites/releases/${props['project.id']}"
@@ -11,7 +11,7 @@ node {
         withEnv([
             "WORKSPACE=${env.WORKSPACE}",
             "WD_HOST_URL=http://127.0.0.1:8647/wd/hub",
-            "BUILD_ID_UNIQUE=${buildId}",
+            "BUILD_ID_UNIQUE=${buildName}_${buildId}",
         ]) {
 
             stage('Init') {
@@ -19,9 +19,9 @@ node {
                 checkout scm
                 setBuildStatus("Build started.", "PENDING");
                 slackSend color: "good", message: "Subsite build ${buildLink} started."
-                sh "docker run -u jenkins -v ${WORKSPACE}:/app -v /usr/share/composer:/usr/share/composer docker_composer install --no-suggest --no-interaction"
-                sh "./bin/phing start-container -D'docker.container.id'=${buildId} -D'docker.container.workspace'=${WORKSPACE}"
-                //sh "docker-compose -f resources/docker/docker-compose.yml up -d"
+                //sh "docker run -u jenkins -v ${WORKSPACE}:/app -v /usr/share/composer:/usr/share/composer docker_composer install --no-suggest --no-interaction"
+                //sh "./bin/phing start-container -D'docker.container.id'=${buildId} -D'docker.container.workspace'=${WORKSPACE}"
+                sh "docker-compose -f resources/docker/docker-compose.yml up -d"
              }
 /*
             try {
