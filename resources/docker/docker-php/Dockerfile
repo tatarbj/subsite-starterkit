@@ -5,7 +5,7 @@ RUN useradd -g jenkins -u 1000 -m jenkins
 #RUN gpasswd -a jenkins apache
 RUN usermod apache --append --groups jenkins
 
-RUN chown -R jenkins:jenkins /composer /var/www
+RUN chown -R jenkins:jenkins /composer
 
 USER jenkins
 
