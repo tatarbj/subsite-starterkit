@@ -3,12 +3,12 @@
 
     <target name="start-container" description="Start docker container">
         <echo msg='Starting container for "${docker.container.id}".' />
-        <exec command="BUILD_UNIQUE_ID=${project.id}_${docker.container.id} docker-compose -f resources/docker/docker-compose.yml -v ${docker.container.workspace}:/app up -d" />
+        <exec command="BUILD_UNIQUE_ID=${project.id}_${docker.container.id} WORKSPACE=${docker.container.workspace} docker-compose -f resources/docker/docker-compose.yml -v ${docker.container.workspace}:/app up -d" />
     </target>
 
     <target name="stop-container" description="Stop docker container">
         <echo msg='Stopping container for "${docker.container.id}".' />
-        <exec command="BUILD_UNIQUE_ID=${project.id}_${docker.container.id} docker-compose -f resources/docker/docker-compose.yml -v ${docker.container.workspace}:/app down" />
+        <exec command="BUILD_UNIQUE_ID=${project.id}_${docker.container.id} WORKSPACE=${docker.container.workspace} docker-compose -f resources/docker/docker-compose.yml -v ${docker.container.workspace}:/app down" />
     </target>
 
     <target name="start-container-old" description="Start docker container">
