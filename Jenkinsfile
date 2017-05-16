@@ -1,19 +1,11 @@
 node {
     wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
 
-        if (!fileExists('build.properties')) {
-            echo "File build.properties not found. Can not proceed."
-            exit
-        }
-        echo "File build.properties found, merging with build.properties.dist."
-        def defaults = readProperties file: 'build.properties.dist'
-        def props = readProperties defaults: defaults, file: 'build.properties'
-
-        def siteName = props['subsite.name']
-        def buildId = props['project.id'].replaceAll('-','_').trim() + '_' + sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
-        def buildLink = "<${env.BUILD_URL}consoleFull|${props['project.id']} #${env.BUILD_NUMBER}>"
-        def releaseName = props['project.id'] + "_" + sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S').trim() + "_${props['platform.package.reference']}"
-        def releasePath = "/usr/share/subsites/releases/${props['project.id']}"
+        def buildId = sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
+        def buildName = "${env.JOB_NAME}".replaceAll('%2F','-').replaceAll('/','-').trim()
+        def buildLink = "<${env.BUILD_URL}consoleFull|${buildName} #${env.BUILD_NUMBER}>"
+        //def releaseName = props['project.id'] + "_" + sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S').trim() + "_${props['platform.package.reference']}"
+        //def releasePath = "/usr/share/subsites/releases/${props['project.id']}"
 
         withEnv([
             "WORKSPACE=${env.WORKSPACE}",
