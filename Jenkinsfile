@@ -3,7 +3,7 @@ node {
     wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
 
         def buildId = sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
-        def buildName = "${env.JOB_NAME}".replaceAll('%2F','_').replaceAll('/','_').trim()
+        def buildName = "${env.JOB_NAME}".replaceAll('%2F','_').replaceAll('/','_').replaceAll('-','_').trim()
         def buildLink = "<${env.BUILD_URL}consoleFull|${buildName} #${env.BUILD_NUMBER}>"
         //def releaseName = props['project.id'] + "_" + sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S').trim() + "_${props['platform.package.reference']}"
         //def releasePath = "/usr/share/subsites/releases/${props['project.id']}"
