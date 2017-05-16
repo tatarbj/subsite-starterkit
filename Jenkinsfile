@@ -23,7 +23,7 @@ node {
                 sh "./bin/phing start-container -D'docker.container.id'=${buildId}"
                 //sh "docker-compose -f resources/docker/docker-compose.yml up -d"
              }
-
+/*
             try {
                 stage('Check') {
                     dockerExecute('composer', 'install --no-suggest --no-interaction')
@@ -54,7 +54,7 @@ node {
                 throw(err)
             } finally {
                 //sh "docker-compose -f resources/docker/docker-compose.yml down"
-            }
+            }*/
         }
     }
 }
