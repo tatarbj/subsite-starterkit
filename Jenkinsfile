@@ -20,7 +20,7 @@ node {
                 setBuildStatus("Build started.", "PENDING");
                 slackSend color: "good", message: "Subsite build ${buildLink} started."
                 sh "docker run docker_composer install"
-                sh "./bin/phing start-container -D'docker.container.id'=${buildId}"
+                sh "./bin/phing start-container -D'docker.container.id'=${buildId} -D'docker.container.workspace'=${WORKSPACE}"
                 //sh "docker-compose -f resources/docker/docker-compose.yml up -d"
              }
 /*
