@@ -8,12 +8,12 @@ services:
       DOCROOT: /var/www/html/platform
       COMPOSER_CACHE_DIR: /var/cache/composer
     volumes:
-      - ${WORKSPACE}:/var/www/html
+      - ${WORKSPACE}:${WORKSPACE}
       - /usr/share/composer:/usr/share/composer
       - /usr/share/platform:/usr/share/platform
       - /usr/share/subsites:/usr/share/subsites
       - /var/cache/composer:/var/cache/composer
-    #working_dir: ${WORKSPACE}
+    working_dir: ${WORKSPACE}
     links:
       - mysql:mysql
       - selenium:selenium
