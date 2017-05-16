@@ -5,7 +5,7 @@ services:
     build: ./docker-php
     container_name: ${BUILD_ID_UNIQUE}_php
     environment:
-      DOCROOT: /var/www/html/platform
+      DOCROOT: ${WORKSPACE}/platform
       COMPOSER_CACHE_DIR: /var/cache/composer
     volumes:
       - ${WORKSPACE}:${WORKSPACE}
