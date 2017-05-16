@@ -18,7 +18,7 @@ node {
                 deleteDir()
                 checkout scm
                 setBuildStatus("Build started.", "PENDING");
-                slackSend color: "good", message: "${siteName} build ${buildLink} started."
+                slackSend color: "good", message: "Subsite build ${buildLink} started."
                 sh "docker run docker_composer install"
                 sh "./bin/phing start-container -D'docker.container.id'=${buildId}"
                 //sh "docker-compose -f resources/docker/docker-compose.yml up -d"
