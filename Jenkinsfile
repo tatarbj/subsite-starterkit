@@ -1,3 +1,4 @@
+
 node {
     wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
 
@@ -18,7 +19,9 @@ node {
                 checkout scm
                 setBuildStatus("Build started.", "PENDING");
                 slackSend color: "good", message: "${siteName} build ${buildLink} started."
-                sh "docker-compose -f resources/docker/docker-compose.yml up -d"
+                sh "docker run docker_composer install"
+                sh "./bin/phing start-container -D'docker.container.id'=${buildId}"
+                //sh "docker-compose -f resources/docker/docker-compose.yml up -d"
              }
 
             try {

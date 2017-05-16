@@ -43,3 +43,9 @@ services:
     #image: selenium/standalone-chrome
     build: ./docker-sel
     container_name: ${BUILD_ID_UNIQUE}_selenium
+  composer:
+    build: ./docker-com
+    environment:
+      COMPOSER_CACHE_DIR: /var/cache/composer
+    volumes:
+      - /var/cache/composer:/var/cache/composer    

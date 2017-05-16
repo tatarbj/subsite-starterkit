@@ -2,13 +2,13 @@
 <project name="My subsite" default="help">
 
     <target name="start-container" description="Start docker container">
-        <echo msg='Starting container for "${docker.container.name}".' />
-        <exec command="docker-compose -f resources/docker/docker-compose.yml up -d" />
+        <echo msg='Starting container for "${docker.container.id}".' />
+        <exec command="BUILD_UNIQUE_ID=${project.id}_${docker.container.id} docker-compose -f resources/docker/docker-compose.yml up -d" />
     </target>
 
     <target name="stop-container" description="Stop docker container">
-        <echo msg='Stopping container for "${docker.container.name}".' />
-        <exec command="docker-compose -f resources/docker/docker-compose.yml down" />
+        <echo msg='Stopping container for "${docker.container.id}".' />
+        <exec command="BUILD_UNIQUE_ID=${project.id}_${docker.container.id} docker-compose -f resources/docker/docker-compose.yml down" />
     </target>
 
     <target name="start-container-old" description="Start docker container">
