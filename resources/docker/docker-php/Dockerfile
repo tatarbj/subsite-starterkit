@@ -9,7 +9,7 @@ RUN useradd -g jenkins -u 1000 -m jenkins
 
 #USER jenkins
 
-ADD configs/composer.json /composer/composer.json
+ADD configs/composer.json /root/.composer/composer.json
 
 RUN composer global install
 
