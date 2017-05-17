@@ -12,8 +12,8 @@ services:
     image: fpfis/mysql56
   selenium:
     image: selenium/standalone-chrome
-    ports:
-      - 4444:4444
+  solr:
+    image: fpfis/solr5
 
 pipeline:
   prepare-mysql:
@@ -30,7 +30,7 @@ pipeline:
   install:
     image: fpfis/php56-dev
     commands:
-      - './bin/phing install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'=database
+      - ./bin/phing install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'=database
     
   reset-perms:
     image: fpfis/php56
