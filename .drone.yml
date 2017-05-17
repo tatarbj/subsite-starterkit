@@ -10,6 +10,10 @@ services:
   # centos 6 + mysql community
   mysql:
     image: fpfis/mysql56
+  selenium:
+    image: selenium/standalone-chrome
+    ports:
+      - 4444:4444
 
 pipeline:
   prepare-mysql:
@@ -22,11 +26,18 @@ pipeline:
     commands:
       - php --version
       - composer install
+      - ./bin/phing build-dev -D'behat.wd_host.url'='http://selenium:4444/wd/hub' -D'behat.browser.name'='chrome'
+  install:
+    image: fpfis/php56-dev
+    commands:
+      - './bin/phing install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'=database
+    
   reset-perms:
     image: fpfis/php56
     environment:
       - DOCUMENT_ROOT=/test/ssk
     commands:
+      - ls -lha '/test/ssk'
       - echo 'Reseting workspace permissions ...'
       - /run.sh id
       - chown web:web . -R
