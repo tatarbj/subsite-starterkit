@@ -1,0 +1,36 @@
+workspace:
+  base: /test
+  path: ssk
+
+services:
+  web:
+    image: fpfis/php56
+    environment:
+     - DOCUMENT_ROOT=/test/ssk/build
+  # centos 6 + mysql community
+  mysql:
+    image: fpfis/mysql56
+
+pipeline:
+
+  prepare-mysql:
+    image: fpfis/mysql56
+    commands:
+      - mysqladmin -h mysql -uroot create database 
+
+  prepare:
+    image: fpfis/php56-dev
+    commands:
+      - php --version
+      - composer install
+
+  reset-perms:
+    image: fpfis/php56
+    environment:
+      - DOCUMENT_ROOT=/test/ssk
+    commands:
+      - echo 'Reseting workspace permissions ...'
+      - /run.sh id
+      - chown web:web . -R
+    when:
+      status:  [ failure, success ]
