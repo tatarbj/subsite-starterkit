@@ -4,9 +4,9 @@ workspace:
 
 services:
   web:
-    image: fpfis/php56
+    image: fpfis/php56-dev
     environment:
-     - DOCUMENT_ROOT=/test/ssk/build
+     - DOCUMENT_ROOT=/test/ssk
   # centos 6 + mysql community
   mysql:
     image: fpfis/mysql56
