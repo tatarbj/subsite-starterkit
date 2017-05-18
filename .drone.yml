@@ -4,8 +4,8 @@ workspace:
 
 services:
   web:
-    build: ./docker-php
-    # image: fpfis/php56-dev
+    script: docker build -t fpfis/php56-dev ./docker-php
+    image: fpfis/php56-dev
     environment:
      - DOCUMENT_ROOT=/test/ssk
   # centos 6 + mysql community
