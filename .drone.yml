@@ -31,7 +31,7 @@ pipeline:
     image: fpfis/php56-dev
     commands:
       - php --version
-      - composer install
+      - composer install --ansi
       - ./bin/phing build-dev -D'behat.wd_host.url'='http://selenium:4444/wd/hub' -D'behat.browser.name'='chrome' -logger phing.listener.AnsiColorLogger
   install:
     image: fpfis/php56-dev
