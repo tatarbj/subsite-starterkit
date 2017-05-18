@@ -1,0 +1,51 @@
+workspace:
+  base: /test
+  path: ssk
+
+services:
+  web:
+    image: fpfis/php56-dev
+    environment:
+     - DOCUMENT_ROOT=/test/ssk
+     -  COMPOSER_CACHE_DIR=/var/cache/composer
+    volumes:
+      - /usr/share/composer:/usr/share/composer
+      - /usr/share/platform:/usr/share/platform
+      - /usr/share/subsites:/usr/share/subsites
+      - /var/cache/composer:/var/cache/composer
+  # centos 6 + mysql community
+  mysql:
+    image: fpfis/mysql56
+  selenium:
+    image: selenium/standalone-chrome
+  solr:
+    image: fpfis/solr5
+
+pipeline:
+  prepare-mysql:
+    image: fpfis/mysql56
+    commands:
+      - sleep 15
+      - mysqladmin -h mysql -uroot create database 
+  prepare:
+    image: fpfis/php56-dev
+    commands:
+      - php --version
+      - composer install
+      - ./bin/phing build-dev -D'behat.wd_host.url'='http://selenium:4444/wd/hub' -D'behat.browser.name'='chrome' -logger phing.listener.AnsiColorLogger
+  install:
+    image: fpfis/php56-dev
+    commands:
+      - ./bin/phing install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'=database -logger phing.listener.AnsiColorLogger
+
+  reset-perms:
+    image: fpfis/php56
+    environment:
+      - DOCUMENT_ROOT=/test/ssk
+    commands:
+      - ls -lha '/test/ssk'
+      - echo 'Reseting workspace permissions ...'
+      - /run.sh id
+      - chown web:web . -R
+    when:
+      status:  [ failure, success ]
