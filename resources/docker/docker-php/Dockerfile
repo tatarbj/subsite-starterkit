@@ -19,4 +19,4 @@ RUN curl -o ~/registry_rebuild-7.x-2.5.tar.gz -sS "https://ftp.drupal.org/files/
     rm ~/registry_rebuild-7.x-2.5.tar.gz
 
 #USER root
-USER web
+#USER web
