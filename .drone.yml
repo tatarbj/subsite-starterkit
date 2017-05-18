@@ -29,12 +29,22 @@ pipeline:
       - mysqladmin -h mysql -uroot create database 
   prepare:
     image: fpfis/php56-dev
+    volumes:
+      - /usr/share/composer:/usr/share/composer
+      - /usr/share/platform:/usr/share/platform
+      - /usr/share/subsites:/usr/share/subsites
+      - /var/cache/composer:/var/cache/composer
     commands:
       - php --version
       - composer install --ansi
       - ./bin/phing build-dev -D'behat.wd_host.url'='http://selenium:4444/wd/hub' -D'behat.browser.name'='chrome' -logger phing.listener.AnsiColorLogger
   install:
     image: fpfis/php56-dev
+    volumes:
+      - /usr/share/composer:/usr/share/composer
+      - /usr/share/platform:/usr/share/platform
+      - /usr/share/subsites:/usr/share/subsites
+      - /var/cache/composer:/var/cache/composer
     commands:
       - ./bin/phing install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'=database -logger phing.listener.AnsiColorLogger
 
