@@ -4,8 +4,7 @@ workspace:
 
 services:
   web:
-    script: docker build -t fpfis/php56-dev ./docker-php
-    image: fpfis/php56-dev
+    image: fpfis/php56-extended
     environment:
      - DOCUMENT_ROOT=/test/ssk
   # centos 6 + mysql community
@@ -23,7 +22,7 @@ pipeline:
       - sleep 15
       - mysqladmin -h mysql -uroot create database 
   prepare:
-    image: fpfis/php56-dev
+    image: fpfis/php56-extended
     environment:
       - COMPOSER_CACHE_DIR=/var/cache/composer
     volumes:
@@ -36,7 +35,7 @@ pipeline:
       - composer install --ansi
       - ./bin/phing build-dev -D'behat.wd_host.url'='http://selenium:4444/wd/hub' -D'behat.browser.name'='chrome' -logger phing.listener.AnsiColorLogger
   install:
-    image: fpfis/php56-dev
+    image: fpfis/php56-extended
     environment:
       - COMPOSER_CACHE_DIR=/var/cache/composer
     volumes:
@@ -48,7 +47,7 @@ pipeline:
       - ./bin/phing install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'=database -logger phing.listener.AnsiColorLogger
 
   reset-perms:
-    image: fpfis/php56
+    image: fpfis/php56-extended
     environment:
       - DOCUMENT_ROOT=/test/ssk
     commands:
