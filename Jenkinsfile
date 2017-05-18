@@ -21,6 +21,7 @@ node {
                 slackSend color: "good", message: "Subsite build ${buildLink} started."
                 //sh "docker run -u jenkins -v ${WORKSPACE}:/app -v /usr/share/composer:/usr/share/composer docker_composer install --no-suggest --no-interaction"
                 //sh "./bin/phing start-container -D'docker.container.id'=${buildId} -D'docker.container.workspace'=${WORKSPACE}"
+                sh "mkdir -p ${WORKSPACE}/platform"
                 sh "docker-compose -f resources/docker/docker-compose.yml up -d"
              }
 
