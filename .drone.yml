@@ -7,7 +7,7 @@ services:
     image: fpfis/php56-dev
     environment:
      - DOCUMENT_ROOT=/test/ssk
-     -  COMPOSER_CACHE_DIR=/var/cache/composer
+     - COMPOSER_CACHE_DIR=/var/cache/composer
     volumes:
       - /usr/share/composer:/usr/share/composer
       - /usr/share/platform:/usr/share/platform
