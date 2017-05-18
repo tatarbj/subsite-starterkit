@@ -23,8 +23,8 @@ pipeline:
       - mysqladmin -h mysql -uroot create database 
   prepare:
     image: fpfis/php56-dev
-     environment:
-     - COMPOSER_CACHE_DIR=/var/cache/composer
+    environment:
+      - COMPOSER_CACHE_DIR=/var/cache/composer
     volumes:
       - /usr/share/composer:/usr/share/composer
       - /usr/share/platform:/usr/share/platform
@@ -37,7 +37,7 @@ pipeline:
   install:
     image: fpfis/php56-dev
     environment:
-     - COMPOSER_CACHE_DIR=/var/cache/composer
+      - COMPOSER_CACHE_DIR=/var/cache/composer
     volumes:
       - /usr/share/composer:/usr/share/composer
       - /usr/share/platform:/usr/share/platform
