@@ -51,11 +51,11 @@
     <taskdef name="rel-sym" classname="\NextEuropa\Phing\RelativeSymlinkTask" />
 
     <!-- Import build xml files. -->
-    <import file="includes/build/build.clone.xml" />
-    <import file="includes/build/build.drush.xml" />
-    <import file="includes/build/build.docker.xml" />
-    <import file="includes/build/build.package.xml" />
-    <import file="includes/build/build.test.xml" />
+    <import file="${project.starterkit.root}/includes/build/build.clone.xml" />
+    <import file="${project.starterkit.root}/includes/build/build.drush.xml" />
+    <import file="${project.starterkit.root}/includes/build/build.docker.xml" />
+    <import file="${project.starterkit.root}/includes/build/build.package.xml" />
+    <import file="${project.starterkit.root}/includes/build/build.test.xml" />
 
     <!-- Disable output on consecutive phing calls. -->
     <property name="logoutput" value="false" override="true" />
