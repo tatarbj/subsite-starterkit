@@ -132,13 +132,8 @@
     <!-- Download registry rebuild. -->
     <target name="drush-dl-rr">
         <echo message="Installing registry rebuild on user account." />
-        <drush command="pm-download" assume="no" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>registry_rebuild-7</param>
-        </drush>
-        <!-- Clear Drush caches. -->
-        <drush command="cc" assume="yes" bin="${drush.bin}">
-            <param>drush</param>
-        </drush>
+        <exec command="${drush.bin} pm-download registry_rebuild-7 -n >/dev/null" />
+        <exec command="${drush.bin} cc drush >/dev/null" />
     </target>
 
 </project>
