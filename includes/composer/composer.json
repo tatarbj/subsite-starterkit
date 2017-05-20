@@ -75,10 +75,10 @@
     }
   },
   "scripts": {
-    "pre-install-cmd": "$(pwd)/bin/phing -Dproject.basedir=$PROJECT -find",
-    "pre-update-cmd": "$(pwd)/bin/phing -Dproject.basedir=$PROJECT -find",
-    "post-install-cmd": "$(pwd)/bin/phing link-ssk-bin -Dproject.basedir=$PROJECT -find",
-    "post-update-cmd": "$(pwd)/bin/phing link-ssk-bin -Dproject.basedir=$PROJECT -find"
+    "_pre-install-cmd": "$(pwd)/bin/phing -Dproject.basedir=$PROJECT -find",
+    "_pre-update-cmd": "$(pwd)/bin/phing -Dproject.basedir=$PROJECT -find",
+    "post-install-cmd": "scripts/execute.sh",
+    "post-update-cmd": "scripts/execute.sh"
   },
   "config": {
     "bin-dir": "bin/",

@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Symlink starterkit bin.
+$(pwd)/bin/phing link-ssk-bin -Dproject.basedir=$PROJECT -find
+
 # Execute all scripts in the folder that matches the argument.
 DIRECTORY="$(dirname $0)"
 HOOK="$1"
