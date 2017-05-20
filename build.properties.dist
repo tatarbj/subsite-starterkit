@@ -147,9 +147,9 @@ platform.package.token =
 
 # Paths to executables.
 composer.bin = composer.phar
-drush.bin = ${project.basedir}/bin/drush
+drush.bin = ${project.starterkit.root}/bin/drush
 git.bin = git
-phing.bin = ${project.basedir}/bin/phing
+phing.bin = ${project.starterkit.root}/bin/phing
 
 # Build location.
 phing.project.build.dir = build

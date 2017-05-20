@@ -2,14 +2,6 @@
 
 <project name="My subsite" default="help">
 
-    <!-- Help target to list commands. -->
-    <target name="help" description="Phing target list">
-        <exec executable="${phing.bin}"
-              passthru="true">
-            <arg value="-l"/>
-        </exec>
-    </target>
-
     <!-- Only output information on initial phing call. -->
     <property name="logoutput" value="true" />
     <property name="level" value="info" />
@@ -22,7 +14,16 @@
         </then>
     </if>
     <property file="${project.basedir}/build.properties" logoutput="${logoutput}" />
-    <property file="build.properties.dist" logoutput="${logoutput}" />
+    <property file="${project.starterkit.root}/build.properties.dist" logoutput="${logoutput}" />
+
+
+    <!-- Help target to list commands. -->
+    <target name="help" description="Phing target list">
+        <exec executable="${phing.bin}"
+              passthru="true">
+            <arg value="-l"/>
+        </exec>
+    </target>
 
     <!-- Set include path for custom tasks. -->
     <includepath classpath="src/Phing" />
