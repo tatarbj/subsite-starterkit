@@ -41,8 +41,8 @@
 
     <!-- Import CPHP tasks @todo refractor when jenkins is active. -->
     <echo msg="Importing the ContinuousPHP specific Phing tasks." level="${level}"  />
-    <import file="vendor/continuousphp/phing-tasks/tasks.xml" />
-    <import file="vendor/continuousphp/aws-sdk-phing/tasks.xml" />
+    <import file="includes/composer/vendor/continuousphp/phing-tasks/tasks.xml" />
+    <import file="includes/composer/vendor/continuousphp/aws-sdk-phing/tasks.xml" />
 
     <!-- Needs to be removed when phing adds relative symlink support -->
     <!-- https://github.com/phingofficial/phing/issues/684 -->
@@ -51,7 +51,6 @@
     <taskdef name="rel-sym" classname="\NextEuropa\Phing\RelativeSymlinkTask" />
 
     <!-- Import build xml files. -->
-    <import file="resources/build.custom.xml" />
     <import file="includes/build/build.clone.xml" />
     <import file="includes/build/build.drush.xml" />
     <import file="includes/build/build.docker.xml" />
