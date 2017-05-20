@@ -15,6 +15,7 @@ tests/behat.yml
 /platform/
 /tmp/
 vendor/
+/includes/composer/bin/
 /resources/git/hooks/pre-push/phpcs
 
 # Ignore license for subsites

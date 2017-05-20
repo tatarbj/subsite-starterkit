@@ -1,10 +1,4 @@
 {
     "name": "ec-europa/subsite-starterkit",
-    "description": "Subsite Starter Kit packaged in composer",
-    "config": {
-        "bin-dir": "bin/"
-    },
-    "bin": [
-        "ssk/install"
-    ]
+    "description": "Subsite Starter Kit packaged in composer"
 }
