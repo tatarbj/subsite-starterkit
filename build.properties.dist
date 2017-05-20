@@ -16,8 +16,14 @@ subsite.install.modules = myproject_core
 # Project starterkit.
 project.starterkit.root = ${project.basedir}/vendor/ec-europa/subsite-starterkit
 
+# Project starterkit composer.
+project.starterkit.composer = ${project.starterkit.root}/includes/composer
+
+# Project starterkit bin.
+project.starterkit.bin = ${project.starterkit.composer}/bin
+
 # Project starterkit vendor.
-project.starterkit.vendor = ${project.starterkit.root}/includes/composer/vendor
+project.starterkit.vendor = ${project.starterkit.composer}/vendor
 
 # Project ID used to generate other properties.
 project.id = <project>
@@ -147,9 +153,9 @@ platform.package.token =
 
 # Paths to executables.
 composer.bin = composer.phar
-drush.bin = ${project.starterkit.root}/bin/drush
+drush.bin = ${project.starterkit.bin}/drush
 git.bin = git
-phing.bin = ${project.starterkit.root}/bin/phing
+phing.bin = ${project.starterkit.bin}/phing
 
 # Build location.
 phing.project.build.dir = build
