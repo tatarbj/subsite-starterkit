@@ -1,11 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="My subsite" default="help">
 
+    <!-- Composer pre install CMD. -->
+    <target
+        name="composer-pre-install-cmd"
+        description="Commands to execute before composer install."
+    />
+
+    <!-- Composer pre update CMD. -->
+    <target
+        name="composer-pre-update-cmd"
+        description="Commands to execute before composer update."
+    />
+
+    <!-- Composer post update CMD. -->
+    <target
+        name="composer-post-update-cmd"
+        description="Commands to execute after composer update."
+    />
+
+
     <!-- Composer post install CMD. -->
     <target
         name="composer-post-install-cmd"
         description="Commands to execute after composer install."
-        depends="drush-dl-rr, setup-phpcs-pre-push"
+        depends="link-ssk-bin, drush-dl-rr, setup-phpcs-pre-push"
     />
+
+    <target name="link-ssk-bin">
+        <rel-sym link="${project.basedir}/ssk" target="${project.starterkit.bin}" />
+    </target>
 
 </project>

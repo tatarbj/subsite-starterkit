@@ -18,10 +18,6 @@
         </then>
     </if>
 
-    <target name="link-ssk-bin">
-        <rel-sym link="${project.basedir}/ssk" target="${project.starterkit.bin}" />
-    </target>
-
     <!-- Delete the previous development build. -->
     <target name="delete-dev">
         <!--
