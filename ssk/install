@@ -1,4 +1,0 @@
-#!/bin/bash
-
-# Install starterkit.
-composer install --working-dir=../includes/composer
