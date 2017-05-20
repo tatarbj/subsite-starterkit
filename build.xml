@@ -53,6 +53,7 @@
 
     <!-- Import build xml files. -->
     <import file="${project.starterkit.root}/includes/build/build.clone.xml" />
+    <import file="${project.starterkit.root}/includes/build/build.composer.xml" />
     <import file="${project.starterkit.root}/includes/build/build.drush.xml" />
     <import file="${project.starterkit.root}/includes/build/build.docker.xml" />
     <import file="${project.starterkit.root}/includes/build/build.package.xml" />
