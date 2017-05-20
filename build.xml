@@ -18,7 +18,7 @@
     <property file="${project.basedir}/vendor/ec-europa/subsite-starterkit/build.properties.dist" logoutput="${logoutput}" />
 
     <!-- Set include path for custom tasks. -->
-    <includepath classpath="${project.basedir}/vendor/ec-europa/subsite-starterkit/src/Phing/Tasks" />
+    <includepath classpath="${project.basedir}/vendor/ec-europa/subsite-starterkit/src/Phing" />
 
     <echo msg="Loading PHP Codesniffer Configuration task." level="${level}"  />
     <taskdef name="phpcodesnifferconfiguration" classname="\NextEuropa\Phing\PhpCodeSnifferConfigurationTask" />
