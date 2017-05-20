@@ -75,10 +75,10 @@
     }
   },
   "scripts": {
-    "pre-install-cmd": "$(cd -)/resources/composer/scripts/execute.sh pre-install-cmd",
-    "pre-update-cmd": "$(cd -)/resources/composer/scripts/execute.sh pre-update-cmd",
-    "post-install-cmd": "$(cd -)/resources/composer/scripts/execute.sh post-install-cmd",
-    "post-update-cmd": "$(cd -)/resources/composer/scripts/execute.sh post-update-cmd"
+    "pre-install-cmd": "scripts/execute.sh pre-install-cmd",
+    "pre-update-cmd": "scripts/execute.sh pre-update-cmd",
+    "post-install-cmd": "scripts/execute.sh post-install-cmd",
+    "post-update-cmd": "scripts/execute.sh post-update-cmd"
   },
   "config": {
     "bin-dir": "bin/",
