@@ -15,10 +15,17 @@
     <property name="level" value="info" />
 
     <!-- Load build properties. -->
-    <property file="${project.starterkit.root}/build.properties.dist" logoutput="${logoutput}" />
+    <if>
+        <available file="${project.basedir}/build.properties.local" type="file" />
+        <then>
+            <property file="${project.basedir}/build.properties.local" logoutput="${logoutput}" />
+        </then>
+    </if>
+    <property file="${project.basedir}/build.properties" logoutput="${logoutput}" />
+    <property file="build.properties.dist" logoutput="${logoutput}" />
 
     <!-- Set include path for custom tasks. -->
-    <includepath classpath="${project.starterkit.root}/src/Phing" />
+    <includepath classpath="src/Phing" />
 
     <echo msg="Loading PHP Codesniffer Configuration task." level="${level}"  />
     <taskdef name="phpcodesnifferconfiguration" classname="\NextEuropa\Phing\PhpCodeSnifferConfigurationTask" />
@@ -44,11 +51,11 @@
     <taskdef name="rel-sym" classname="\NextEuropa\Phing\RelativeSymlinkTask" />
 
     <!-- Import build xml files. -->
-    <import file="${project.starterkit.root}/includes/build/build.clone.xml" />
-    <import file="${project.starterkit.root}/includes/build/build.drush.xml" />
-    <import file="${project.starterkit.root}/includes/build/build.docker.xml" />
-    <import file="${project.starterkit.root}/includes/build/build.package.xml" />
-    <import file="${project.starterkit.root}/includes/build/build.test.xml" />
+    <import file="includes/build/build.clone.xml" />
+    <import file="includes/build/build.drush.xml" />
+    <import file="includes/build/build.docker.xml" />
+    <import file="includes/build/build.package.xml" />
+    <import file="includes/build/build.test.xml" />
 
     <!-- Disable output on consecutive phing calls. -->
     <property name="logoutput" value="false" override="true" />
