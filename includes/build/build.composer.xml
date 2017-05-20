@@ -2,22 +2,19 @@
 <project name="My subsite" default="help">
 
     <!-- Composer pre install CMD. -->
-    <target
-        name="composer-pre-install-cmd"
-        description="Commands to execute before composer install."
-    />
+    <target name="composer-pre-install-cmd">
+        <echo msg="Executing pre-install targets" />
+    </target>
 
     <!-- Composer pre update CMD. -->
-    <target
-        name="composer-pre-update-cmd"
-        description="Commands to execute before composer update."
-    />
+    <target name="composer-pre-update-cmd">
+        <echo msg="Executing pre-update targets" />
+    </target>
 
     <!-- Composer post update CMD. -->
-    <target
-        name="composer-post-update-cmd"
-        description="Commands to execute after composer update."
-    />
+    <target name="composer-post-update-cmd">
+        <echo msg="Executing post-update targets" />
+    </target>
 
 
     <!-- Composer post install CMD. -->
