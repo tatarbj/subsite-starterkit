@@ -15,10 +15,10 @@
     <property name="level" value="info" />
 
     <!-- Load build properties. -->
-    <property file="${project.basedir}/vendor/ec-europa/subsite-starterkit/build.properties.dist" logoutput="${logoutput}" />
+    <property file="${project.starterkit.root}/build.properties.dist" logoutput="${logoutput}" />
 
     <!-- Set include path for custom tasks. -->
-    <includepath classpath="${project.basedir}/vendor/ec-europa/subsite-starterkit/src/Phing" />
+    <includepath classpath="${project.starterkit.root}/src/Phing" />
 
     <echo msg="Loading PHP Codesniffer Configuration task." level="${level}"  />
     <taskdef name="phpcodesnifferconfiguration" classname="\NextEuropa\Phing\PhpCodeSnifferConfigurationTask" />
@@ -27,15 +27,15 @@
     <taskdef name="drushmakefile" classname="\NextEuropa\Phing\DrushMakeFileTask" />
 
     <echo msg="Importing the Drush task." level="${level}" />
-    <import file="${project.basedir}/vendor/ec-europa/subsite-starterkit/vendor/drupal/phingdrushtask/import.xml"/>
+    <import file="${project.starterkit.vendor}/drupal/phingdrushtask/import.xml"/>
 
     <echo msg="Importing the Behat task." level="${level}" />
-    <import file="${project.basedir}/vendor/ec-europa/subsite-starterkit/vendor/drupol/phingbehattask/import.xml"/>
+    <import file="${project.starterkit.vendor}/drupol/phingbehattask/import.xml"/>
 
     <!-- Import CPHP tasks @todo refractor when jenkins is active. -->
     <echo msg="Importing the ContinuousPHP specific Phing tasks." level="${level}"  />
-    <import file="${project.basedir}/vendor/ec-europa/subsite-starterkit/includes/composer/vendor/continuousphp/phing-tasks/tasks.xml" />
-    <import file="${project.basedir}/vendor/ec-europa/subsite-starterkit/includes/composer/vendor/continuousphp/aws-sdk-phing/tasks.xml" />
+    <import file="${project.starterkit.vendor}/continuousphp/phing-tasks/tasks.xml" />
+    <import file="${project.starterkit.vendor}/continuousphp/aws-sdk-phing/tasks.xml" />
 
     <!-- Needs to be removed when phing adds relative symlink support -->
     <!-- https://github.com/phingofficial/phing/issues/684 -->
@@ -44,11 +44,11 @@
     <taskdef name="rel-sym" classname="\NextEuropa\Phing\RelativeSymlinkTask" />
 
     <!-- Import build xml files. -->
-    <import file="includes/build/build.clone.xml" />
-    <import file="includes/build/build.drush.xml" />
-    <import file="includes/build/build.docker.xml" />
-    <import file="includes/build/build.package.xml" />
-    <import file="includes/build/build.test.xml" />
+    <import file="${project.starterkit.root}/includes/build/build.clone.xml" />
+    <import file="${project.starterkit.root}/includes/build/build.drush.xml" />
+    <import file="${project.starterkit.root}/includes/build/build.docker.xml" />
+    <import file="${project.starterkit.root}/includes/build/build.package.xml" />
+    <import file="${project.starterkit.root}/includes/build/build.test.xml" />
 
     <!-- Disable output on consecutive phing calls. -->
     <property name="logoutput" value="false" override="true" />

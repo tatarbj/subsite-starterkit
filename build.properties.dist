@@ -13,6 +13,12 @@ subsite.install.modules = myproject_core
 # Subsite clone configuration.
 #-----------------------------
 
+# Project starterkit.
+project.starterkit.root = ${project.basedir}/vendor/ec-europa/subsite-starterkit
+
+# Project starterkit vendor.
+project.starterkit.vendor = ${project.starterkit.root}/includes/composer/vendor
+
 # Project ID used to generate other properties.
 project.id = <project>
 
