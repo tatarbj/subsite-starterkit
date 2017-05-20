@@ -75,10 +75,10 @@
     }
   },
   "scripts": {
-    "_pre-install-cmd": "$(pwd)/bin/phing -Dproject.basedir=$PROJECT -find",
-    "_pre-update-cmd": "$(pwd)/bin/phing -Dproject.basedir=$PROJECT -find",
-    "post-install-cmd": "scripts/execute.sh",
-    "post-update-cmd": "scripts/execute.sh"
+    "pre-install-cmd": "scripts/execute.sh pre-install-cmd",
+    "pre-update-cmd": "scripts/execute.sh pre-update-cmd",
+    "post-install-cmd": "scripts/execute.sh post-install-cmd",
+    "post-update-cmd": "scripts/execute.sh post-update-cmd"
   },
   "config": {
     "bin-dir": "bin/",
