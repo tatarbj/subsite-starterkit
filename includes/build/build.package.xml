@@ -18,6 +18,44 @@
         </then>
     </if>
 
+    <!-- Upgrade subsite-starterkit 2.x to 3.x. -->
+    <target name="upgrade-starterkit">
+
+        <!-- Delete starterkit folders. -->
+        <phingcall target="delete-folder">
+            <property name="folder.to.delete" value="${project.basedir}/docs" />
+        </phingcall>
+        <phingcall target="delete-folder">
+            <property name="folder.to.delete" value="${project.basedir}/src" />
+        </phingcall>
+        <phingcall target="delete-folder">
+            <property name="folder.to.delete" value="${project.resources.dir}/cloudformation" />
+        </phingcall>
+        <phingcall target="delete-folder">
+            <property name="folder.to.delete" value="${project.resources.dir}/codedeploy" />
+        </phingcall>
+        <phingcall target="delete-folder">
+            <property name="folder.to.delete" value="${project.resources.dir}/composer" />
+        </phingcall>
+        <!-- Delete starterkit files. -->
+        <delete>
+            <fileset dir="${project.basedir}">
+                <include name="CHANGELOG.md" />
+                <include name="LICENSE.md" />
+                <include name="README.md" />
+                <include name="appspec.yml" />
+                <include name="build.clone.xml" />
+                <include name="build.package.xml" />
+                <include name="build.properties.dist" />
+                <include name="build.test.xml" />
+                <include name="build.xml" />
+                <include name="composer.json" />
+                <include name="composer.lock" />
+                <include name="phpcs-ruleset.xml" />
+            </fileset>
+        </delete>
+    </target>
+
     <!-- Delete the previous development build. -->
     <target name="delete-dev">
         <!--
