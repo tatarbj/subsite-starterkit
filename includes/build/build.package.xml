@@ -48,7 +48,6 @@
                 <include name="build.package.xml" />
                 <include name="build.properties.dist" />
                 <include name="build.test.xml" />
-                <include name="composer.json" />
                 <include name="composer.lock" />
                 <include name="phpcs-ruleset.xml" />
             </fileset>
