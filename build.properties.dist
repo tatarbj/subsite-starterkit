@@ -287,7 +287,7 @@ phpcs.prepush.enable = 1
 
 # The source and destination paths of the git pre-push hook.
 phpcs.prepush.source = ${project.starterkit.vendor}/pfrenssen/phpcs-pre-push/pre-push
-phpcs.prepush.destination = ${project.starterkit.root}/resources/git/hooks/pre-push/phpcs
+phpcs.prepush.destination = ${project.basedir}/resources/git/hooks/pre-push/phpcs
 
 
 # Quality Assurance
