@@ -29,13 +29,13 @@
             <property name="folder.to.delete" value="${project.basedir}/src" />
         </phingcall>
         <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${project.resources.dir}/cloudformation" />
+            <property name="folder.to.delete" value="${subsite.resources.dir}/cloudformation" />
         </phingcall>
         <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${project.resources.dir}/codedeploy" />
+            <property name="folder.to.delete" value="${subsite.resources.dir}/codedeploy" />
         </phingcall>
         <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${project.resources.dir}/composer" />
+            <property name="folder.to.delete" value="${subsite.resources.dir}/composer" />
         </phingcall>
         <!-- Delete starterkit files. -->
         <delete>
@@ -48,7 +48,6 @@
                 <include name="build.package.xml" />
                 <include name="build.properties.dist" />
                 <include name="build.test.xml" />
-                <include name="build.xml" />
                 <include name="composer.json" />
                 <include name="composer.lock" />
                 <include name="phpcs-ruleset.xml" />

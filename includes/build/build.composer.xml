@@ -25,7 +25,7 @@
     />
 
     <target name="link-ssk-bin">
-        <rel-sym link="${project.basedir}/ssk" target="${project.starterkit.bin}" />
+        <rel-sym link="${project.basedir}/ssk" target="${project.starterkit.bin}" overwrite="true" />
     </target>
 
 </project>
