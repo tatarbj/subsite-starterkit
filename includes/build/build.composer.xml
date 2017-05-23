@@ -21,8 +21,26 @@
     <target
         name="composer-post-install-cmd"
         description="Commands to execute after composer install."
-        depends="link-ssk-bin, drush-dl-rr, setup-phpcs-pre-push"
+        depends="
+            copy-build-xml,
+            link-ssk-bin,
+            drush-dl-rr,
+            setup-phpcs-pre-push"
     />
+
+    <target name="copy-build-xml">
+        <if>
+            <isset property="project-is-subsite" />
+            <then>
+                <echo msg="Refreshing subsite build.xml." />
+                <copy
+                    file="${project.starterkit.root}/resources/templates/build.starterkit.xml"
+                    tofile="${project.basedir}/build.xml"
+                    overwrite="true"
+                />
+            </then>
+        </if>
+    </target>
 
     <target name="link-ssk-bin">
         <rel-sym link="${project.basedir}/ssk" target="${project.starterkit.bin}" overwrite="true" />
