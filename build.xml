@@ -57,7 +57,10 @@
     <echo msg="Loading Relative Symlink task." level="${level}" />
     <taskdef name="rel-sym" classname="\NextEuropa\Phing\RelativeSymlinkTask" />
 
-    <!-- Import build xml files. -->
+    <!-- Import project build xml file. -->
+    <import file="${project.basedir}/build.project.xml" />
+
+    <!-- Import starterkit build xml files. -->
     <import file="${project.starterkit.root}/includes/build/build.clone.xml" />
     <import file="${project.starterkit.root}/includes/build/build.composer.xml" />
     <import file="${project.starterkit.root}/includes/build/build.drush.xml" />
