@@ -33,13 +33,10 @@
         <then>
             <property file="${project.basedir}/build.properties" logoutput="${logoutput}" />
         </then>
-        <elseif>
-            <isset property="project-is-subsite" />
-            <then>
-                <!-- Subsite projects need to have some minimal properties defined. -->
-                <fail msg="Project needs to have a build.properties file available." />
-            </then>
-        </elseif>
+        <else>
+            <!-- Projects need to have some minimal properties defined. -->
+            <fail msg="Project needs to have a build.properties file available." />
+        </else>
     </if>
     <property file="${project.starterkit.root}/build.properties.dist" logoutput="${logoutput}" />
 
@@ -79,7 +76,12 @@
     <taskdef name="rel-sym" classname="\NextEuropa\Phing\RelativeSymlinkTask" />
 
     <!-- Import project build xml file. -->
-    <import file="${project.basedir}/build.project.xml" />
+    <if>
+        <isset property="project-is-subsite" />
+        <then>
+            <import file="${project.basedir}/build.project.xml" />
+        </then>
+    </if>
 
     <!-- Import starterkit build xml files. -->
     <import file="${project.starterkit.root}/includes/build/build.clone.xml" />
