@@ -7,7 +7,16 @@
     <property name="level" value="info" />
 
     <!-- Set starterkit properties. -->
-    <property name="project.starterkit.root" value="${project.basedir}/vendor/ec-europa/subsite-starterkit" />
+    <if>
+        <available file="${project.basedir}/vendor/ec-europa/subsite-starterkit" type="dir" />
+        <then>
+            <property name="project.starterkit.root" value="${project.basedir}/vendor/ec-europa/subsite-starterkit" />
+            <property name="project-is-subsite" value="1" />
+        </then>
+        <else>
+            <property name="project.starterkit.root" value="${project.basedir}" />
+        </else>
+    </if>
     <property name="project.starterkit.composer" value="${project.starterkit.root}/includes/composer" />
     <property name="project.starterkit.vendor" value="${project.starterkit.composer}/vendor" />
     <property name="project.starterkit.bin" value="${project.starterkit.composer}/bin" />
@@ -19,7 +28,19 @@
             <property file="${project.basedir}/build.properties.local" logoutput="${logoutput}" />
         </then>
     </if>
-    <property file="${project.basedir}/build.properties" logoutput="${logoutput}" />
+    <if>
+        <available file="${project.basedir}/build.properties" type="file" />
+        <then>
+            <property file="${project.basedir}/build.properties" logoutput="${logoutput}" />
+        </then>
+        <elseif>
+            <isset property="project-is-subsite" />
+            <then>
+                <!-- Subsite projects need to have some minimal properties defined. -->
+                <fail msg="Project needs to have a build.properties file available." />
+            </then>
+        </elseif>
+    </if>
     <property file="${project.starterkit.root}/build.properties.dist" logoutput="${logoutput}" />
 
 
