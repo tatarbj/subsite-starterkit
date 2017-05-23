@@ -23,6 +23,9 @@
 
         <!-- Delete starterkit folders. -->
         <phingcall target="delete-folder">
+            <property name="folder.to.delete" value="${project.basedir}/bin" />
+        </phingcall>
+        <phingcall target="delete-folder">
             <property name="folder.to.delete" value="${project.basedir}/docs" />
         </phingcall>
         <phingcall target="delete-folder">
