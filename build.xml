@@ -59,10 +59,12 @@
     <taskdef name="drushmakefile" classname="\NextEuropa\Phing\DrushMakeFileTask" />
 
     <echo msg="Importing the Drush task." level="${level}" />
-    <import file="${project.starterkit.vendor}/drupal/phingdrushtask/import.xml"/>
+    <exec command="echo $(realpath ${project.starterkit.vendor}/drupal/phingdrushtask)" returnProperty="vendor-phindrushtask">
+    <import file="${vendor-phingdrushtask}/import.xml"/>
 
     <echo msg="Importing the Behat task." level="${level}" />
-    <import file="${project.starterkit.vendor}/drupol/phingbehattask/import.xml"/>
+    <exec command="echo $(realpath ${project.starterkit.vendor}/drupol/phingbehattask)" returnProperty="vendor-phindbehattask">
+    <import file="${vendor-phingbehattask}/import.xml"/>
 
     <!-- Import CPHP tasks @todo refractor when jenkins is active. -->
     <echo msg="Importing the ContinuousPHP specific Phing tasks." level="${level}"  />
