@@ -10,7 +10,8 @@
     <if>
         <available file="${project.basedir}/vendor/ec-europa/subsite-starterkit" type="dir" />
         <then>
-            <property name="project.starterkit.root" value="${project.basedir}/vendor/ec-europa/subsite-starterkit" />
+            <exec command="echo $(realpath ${project.basedir}/vendor/ec-europa/subsite-starterkit)" outputProperty="project.starterkit.root" />
+            <!-- <property name="project.starterkit.root" value="${project.basedir}/vendor/ec-europa/subsite-starterkit" /> -->
             <property name="project-is-subsite" value="1" />
         </then>
         <else>
@@ -59,12 +60,10 @@
     <taskdef name="drushmakefile" classname="\NextEuropa\Phing\DrushMakeFileTask" />
 
     <echo msg="Importing the Drush task." level="${level}" />
-    <exec command="echo $(realpath ${project.starterkit.vendor}/drupal/phingdrushtask)" outputProperty="vendor-phindrushtask" />
-    <import file="${vendor-phingdrushtask}/import.xml"/>
+    <import file="${project.starterkit.vendor}/phingdrushtask/import.xml"/>
 
     <echo msg="Importing the Behat task." level="${level}" />
-    <exec command="echo $(realpath ${project.starterkit.vendor}/drupol/phingbehattask)" outputProperty="vendor-phindbehattask" />
-    <import file="${vendor-phingbehattask}/import.xml"/>
+    <import file="${project.starterkit.vendor}/phingbehattask/import.xml"/>
 
     <!-- Import CPHP tasks @todo refractor when jenkins is active. -->
     <echo msg="Importing the ContinuousPHP specific Phing tasks." level="${level}"  />
