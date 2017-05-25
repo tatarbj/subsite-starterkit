@@ -8,7 +8,7 @@
 
     <!-- Set starterkit properties. -->
     <if>
-        <available file="${project.basedir}/vendor/ec-europa/subsite-starterkit" type="dir" />
+        <available file="${project.basedir}/vendor/ec-europa/subsite-starterkit" />
         <then>
             <exec command="echo $(realpath ${project.basedir}/vendor/ec-europa/subsite-starterkit)" outputProperty="project.starterkit.root" />
             <!-- <property name="project.starterkit.root" value="${project.basedir}/vendor/ec-europa/subsite-starterkit" /> -->
