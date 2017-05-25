@@ -89,7 +89,7 @@
                 <phingcall target="drush-enable-modules">
                     <property name="drupal.modules" value="apachesolr" />
                 </phingcall>
-                <drush command="solr-set-env-url" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}$
+                <drush command="solr-set-env-url" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
                     <option name="url" value="${drupal.solr.env.url}" />
                 </drush>
             </then>
