@@ -15,6 +15,20 @@
         </drush>
     </target>
 
+    <!-- Enable modules. -->
+    <target name="drush-enable-modules">
+        <drush
+            command="pm-enable"
+            assume="yes"
+            root="${platform.build.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}"
+            color="${drush.color}">
+            <param>${drupal.modules}</param>
+        </drush>
+    </target>
+
+
     <!-- Create the directories. -->
     <target name="drush-create-files-dirs">
         <echo message="Creating files directories for ${drupal.db.name}." />
@@ -66,12 +80,20 @@
         </drush>
     </target>
 
-    <!-- Set solr env url. -->
-    <target name="drush-solr-set-env-url">
-        <echo message="Set solr env url for ${drupal.db.name}." />
-        <drush command="solr-set-env-url" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
-            <option name="url" value="${drupal.solr.env.url}" />
-        </drush>
+    <!-- Activate solr if needed. -->
+    <target name="drush-enable-solr">
+        <if>
+            <equals arg1="${drupal.solr.activate}" arg2="1" />
+            <then>
+                <echo message="Enable apachesolr for ${drupal.db.name}." />
+                <phingcall target="drush-enable-modules">
+                    <property name="drupal.modules" value="apachesolr" />
+                </phingcall>
+                <drush command="solr-set-env-url" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}$
+                    <option name="url" value="${drupal.solr.env.url}" />
+                </drush>
+            </then>
+        </if>
     </target>
 
     <!-- Execute a makefile with the no-core option. -->

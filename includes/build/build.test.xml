@@ -39,8 +39,8 @@
             </else>
         </if>
 
-        <!-- Set solr env url -->
-        <phingcall target="drush-solr-set-env-url" />
+        <!-- Enable solr if needed. -->
+        <phingcall target="drush-enable-solr" />
 
         <!--
             Subsites are not allowed to use their own installation profile for
@@ -55,29 +55,16 @@
 
     <!-- Enable required modules after installation of the profile. -->
     <target name="enable-install-modules">
-        <phingcall target="enable-modules">
+        <phingcall target="drush-enable-modules">
             <property name="drupal.modules" value="${subsite.install.modules}" />
         </phingcall>
     </target>
 
     <!-- Enable development modules. -->
     <target name="enable-development-modules">
-        <phingcall target="enable-modules">
+        <phingcall target="drush-enable-modules">
             <property name="drupal.modules" value="${development.modules.enable}" />
         </phingcall>
-    </target>
-
-    <!-- Enable modules. -->
-    <target name="enable-modules">
-        <drush
-            command="pm-enable"
-            assume="yes"
-            root="${platform.build.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}"
-            color="${drush.color}">
-            <param>${drupal.modules}</param>
-        </drush>
     </target>
 
     <!-- Set up PHP CodeSniffer. -->
