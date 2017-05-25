@@ -65,7 +65,7 @@
 
     <echo msg="Importing the Behat task." level="${level}" />
     <exec command="echo $(realpath ${project.starterkit.root}/includes/composer/vendor/drupol/phingbehattask)" outputProperty="vendor-drupol-phingbehattask" />
-    <import file="${vendor-drupol-phingbehattask/import.xml"/>
+    <import file="${vendor-drupol-phingbehattask}/import.xml"/>
 
     <!-- Import CPHP tasks @todo refractor when jenkins is active. -->
     <echo msg="Importing the ContinuousPHP specific Phing tasks." level="${level}"  />
