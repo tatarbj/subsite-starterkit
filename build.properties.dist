@@ -76,6 +76,9 @@ drupal.db.host = 127.0.0.1
 drupal.db.port = 3306
 drupal.db.url = ${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${drupal.db.name}
 
+# Solr env url. Either d7_apachesolr or d7_search_api.
+drupal.solr.env.url = http://solr:8983/solr/d7_apachesolr
+
 # Admin user.
 drupal.admin.username = admin
 drupal.admin.password = pass

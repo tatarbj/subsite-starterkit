@@ -39,12 +39,15 @@
             </else>
         </if>
 
+        <!-- Set solr env url -->
+        <phingcall target="drush-solr-set-env-url" />
+
         <!--
             Subsites are not allowed to use their own installation profile for
             historical reasons. The functionality is contained in one of more
             features and modules which need to be enabled after installation.
-         -->
-         <phingcall target="enable-install-modules" />
+        -->
+        <phingcall target="enable-install-modules" />
 
         <!-- Rebuild node access after Subsites modules activation -->
         <phingcall target="rebuild-node-access" />

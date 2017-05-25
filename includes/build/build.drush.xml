@@ -66,6 +66,14 @@
         </drush>
     </target>
 
+    <!-- Set solr env url. -->
+    <target name="drush-solr-set-env-url">
+        <echo message="Set solr env url for ${drupal.db.name}." />
+        <drush command="solr-set-env-url" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
+            <option name="url" value="${drupal.solr.env.url}" />
+        </drush>
+    </target>
+
     <!-- Execute a makefile with the no-core option. -->
     <target name="drush-make-no-core">
         <echo message="Running make file ${drush.make.target.file} into folder ${drush.make.root}." />
