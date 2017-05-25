@@ -80,7 +80,7 @@
 
     <!-- Regenerate the settings file with database credentials and development variables. -->
     <target name="drush-regenerate-settings" description="Regenerate settings.php file." depends="check-for-default-settings-or-rebuild">
-        <copy file="includes/drush/generate-settings.php" tofile="tmp/generate-settings.php" overwrite="true">
+        <copy file="${project.starterkit.root}/includes/drush/generate-settings.php" tofile="tmp/generate-settings.php" overwrite="true">
             <filterchain>
                 <replacetokens begintoken="%%" endtoken="%%">
                     <!-- Replace tokens in settings generation script. -->
