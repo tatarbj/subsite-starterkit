@@ -8,4 +8,5 @@ USER jenkins
 
 ADD configs/composer.json /composer/composer.json
 
+RUN composer config -g github-oauth.github.com 9fdd1e7949597527a5f1fb982b486999a9c76767
 RUN composer global install

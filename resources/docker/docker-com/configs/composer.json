@@ -18,6 +18,7 @@
             "install-binaries": true,
             "package-exclude-list": [
                 "cweagans/composer-patches",
+                "ec-europa/subsite-starterkit",
                 "phing/phing"
             ],
             "symlink-dir": "vendor",
