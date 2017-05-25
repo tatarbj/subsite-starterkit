@@ -20,7 +20,7 @@
         <echo message="Creating files directories for ${drupal.db.name}." />
         <!-- Execute setttings generation script. -->
         <drush command="php-script" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>includes/drush/generate-directories.php</param>
+            <param>${project.starterkit.root}includes/drush/generate-directories.php</param>
         </drush>
     </target>
 
