@@ -21,7 +21,7 @@ node {
                 //sh "docker run -u jenkins -v ${WORKSPACE}:/app -v /usr/share/composer:/usr/share/composer docker_composer install --no-suggest --no-interaction"
                 //sh "./ssk/phing start-container -D'docker.container.id'=${buildId} -D'docker.container.workspace'=${WORKSPACE}"
                 sh "mkdir -p ${WORKSPACE}/platform"
-                sh "docker-compose -f resources/docker/docker-compose.yml up -d"
+                sh "docker-compose -f ${WORKSPACE}/vendor/ec-europa/subsite-starterkit/resources/docker/docker-compose.yml up -d"
              }
 
             try {
@@ -53,7 +53,7 @@ node {
                 slackSend color: "danger", message: "Subsite build ${buildLink} failed."
                 throw(err)
             } finally {
-                sh "docker-compose -f resources/docker/docker-compose.yml down"
+                sh "docker-compose -f ${WORKSPACE}/vendor/ec-europa/subsite-starterkit/resources/docker/docker-compose.yml down"
             }
         }
 }
