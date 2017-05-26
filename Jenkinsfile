@@ -1,5 +1,7 @@
 #!/usr/bin/groovy
 
+def createWorkflow(){
+
 node {
     wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
 
@@ -86,4 +88,5 @@ def dockerExecute(String executable, String command) {
             break
     }
     sh "docker exec -u web ${BUILD_ID_UNIQUE}_php ${executable} ${command} ${color}"
+}
 }
