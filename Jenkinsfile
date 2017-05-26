@@ -1,3 +1,5 @@
+echo "hello from loading myExtCode"
+
 def createWorkflow() {
         def buildId = sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
         def buildName = "${env.JOB_NAME}".replaceAll('%2F','_').replaceAll('/','_').replaceAll('-','_').trim()
@@ -82,3 +84,5 @@ def dockerExecute(String executable, String command) {
     }
     sh "docker exec -u web ${BUILD_ID_UNIQUE}_php ${executable} ${command} ${color}"
 }
+
+return this;
