@@ -1,6 +1,6 @@
 #!/usr/bin/groovy
 
-node.call() {
+node {
     wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
 
         def buildId = sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
