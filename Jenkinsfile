@@ -2,9 +2,6 @@
 
 def createWorkflow(){
 
-node {
-    wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
-
         def buildId = sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
         def buildName = "${env.JOB_NAME}".replaceAll('%2F','_').replaceAll('/','_').replaceAll('-','_').trim()
         def buildLink = "<${env.BUILD_URL}consoleFull|${buildName} #${env.BUILD_NUMBER}>"
@@ -55,7 +52,6 @@ node {
                 sh "docker-compose -f ${WORKSPACE}/vendor/ec-europa/subsite-starterkit/resources/docker/docker-compose.yml down"
             }
         }
-    }
 }
 
 void setBuildStatus(String message, String state) {
@@ -83,5 +79,4 @@ def dockerExecute(String executable, String command) {
             break
     }
     sh "docker exec -u web ${BUILD_ID_UNIQUE}_php ${executable} ${command} ${color}"
-}
 }
