@@ -1,4 +1,4 @@
-node {
+def createWorkflow() {
         def buildId = sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
         def buildName = "${env.JOB_NAME}".replaceAll('%2F','_').replaceAll('/','_').replaceAll('-','_').trim()
         def buildLink = "<${env.BUILD_URL}consoleFull|${buildName} #${env.BUILD_NUMBER}>"
