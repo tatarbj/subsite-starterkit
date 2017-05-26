@@ -220,7 +220,7 @@ platform.rebuild.backup.files = ${platform.build.settings.dir}/settings.php
 # -------------------
 
 # The location of the Behat executable.
-behat.bin = ${project.basedir}/bin/behat
+behat.bin = ${project.basedir}/ssk/behat
 
 # The location of the Behat tests.
 behat.dir = ${project.basedir}/tests
@@ -232,7 +232,7 @@ behat.yml.template = ${behat.dir}/behat.yml.dist
 behat.yml.path = ${behat.dir}/behat.yml
 
 # The base URL to use in Behat tests.
-behat.base_url = http://localhost
+behat.base_url = http://localhost:8080
 
 # The location to search for Behat subcontexts.
 behat.subcontexts.path = ${platform.build.subsite.dir}
