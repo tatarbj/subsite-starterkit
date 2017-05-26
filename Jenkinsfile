@@ -53,7 +53,7 @@ def createWorkflow() {
                 slackSend color: "danger", message: "Subsite build ${buildLink} failed."
                 throw(err)
             } finally {
-                sh "docker-compose -f ${WORKSPACE}/vendor/ec-europa/subsite-starterkit/resources/docker/docker-compose.yml down"
+                //sh "docker-compose -f ${WORKSPACE}/vendor/ec-europa/subsite-starterkit/resources/docker/docker-compose.yml down"
             }
         }
 }
