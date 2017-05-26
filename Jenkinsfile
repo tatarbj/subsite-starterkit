@@ -27,7 +27,7 @@ node {
 
             try {
                 stage('Check') {
-                    dockerExecute('composer', 'update --no-suggest --no-interaction')
+                    //dockerExecute('composer', 'update --no-suggest --no-interaction')
                     //dockerExecute('./bin/phing', 'setup-php-codesniffer quality-assurance') 
                 }
 
