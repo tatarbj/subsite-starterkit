@@ -5,9 +5,9 @@ RUN useradd -g jenkins -u 1000 -m jenkins
 #RUN gpasswd -a jenkins apache
 #RUN usermod apache --append --groups jenkins
 
-RUN chown -R jenkins:jenkins /root/.composer
+#RUN chown -R jenkins:jenkins /root/.composer
 
-USER jenkins
+#USER jenkins
 
 ADD configs/composer.json /root/.composer/composer.json
 
