@@ -20,7 +20,7 @@ node {
                 setBuildStatus("Build started.", "PENDING");
                 slackSend color: "good", message: "Subsite build ${buildLink} started."
                 //sh "docker run -u jenkins -v ${WORKSPACE}:/app -v /usr/share/composer:/usr/share/composer docker_composer install --no-suggest --no-interaction"
-                //sh "./bin/phing start-container -D'docker.container.id'=${buildId} -D'docker.container.workspace'=${WORKSPACE}"
+                //sh "./ssk/phing start-container -D'docker.container.id'=${buildId} -D'docker.container.workspace'=${WORKSPACE}"
                 sh "mkdir -p ${WORKSPACE}/platform"
                 sh "docker-compose -f resources/docker/docker-compose.yml up -d"
              }
@@ -28,24 +28,24 @@ node {
             try {
                 stage('Check') {
                     //dockerExecute('composer', 'update --no-suggest --no-interaction')
-                    //dockerExecute('./bin/phing', 'setup-php-codesniffer quality-assurance') 
+                    //dockerExecute('./ssk/phing', 'setup-php-codesniffer quality-assurance') 
                 }
 
 
                 stage('Build') {
-                    dockerExecute('./bin/phing', "build-dev -D'behat.wd_host.url'='http://selenium:4444/wd/hub' -D'behat.browser.name'='chrome'")
+                    dockerExecute('./ssk/phing', "build-dev -D'behat.wd_host.url'='http://selenium:4444/wd/hub' -D'behat.browser.name'='chrome'")
                 }
 
                 stage('Test') {
-                    dockerExecute('./bin/phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
+                    dockerExecute('./ssk/phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
                     timeout(time: 2, unit: 'HOURS') {
                         //dockerExecute('phantomjs', '--webdriver=127.0.0.1:8643 &')
-                        dockerExecute('./bin/behat', '-c tests/behat.yml --strict')
+                        dockerExecute('./ssk/behat', '-c tests/behat.yml --strict')
                     }
                 }
 
                 stage('Package') {
-                    dockerExecute('./bin/phing', "build-release -D'project.release.path'='${releasePath}' -D'project.release.name'='${releaseName}'")
+                    dockerExecute('./ssk/phing', "build-release -D'project.release.path'='${releasePath}' -D'project.release.name'='${releaseName}'")
                     setBuildStatus("Build complete.", "SUCCESS");
                     slackSend color: "good", message: "Subsite build ${buildLink} completed."
                 }
@@ -71,10 +71,10 @@ void setBuildStatus(String message, String state) {
 
 def dockerExecute(String executable, String command) {
     switch("${executable}") {
-        case "./bin/phing":
+        case "./ssk/phing":
             color = "-logger phing.listener.AnsiColorLogger"
             break
-        case "./bin/behat":
+        case "./ssk/behat":
             color = "--colors"
             break
         case "composer":
