@@ -1,3 +1,6 @@
+#!/usr/bin/groovy
+
+node {
     wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
 
         def buildId = sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
@@ -83,3 +86,4 @@ def dockerExecute(String executable, String command) {
             break
     }
     sh "docker exec -u web ${BUILD_ID_UNIQUE}_php ${executable} ${command} ${color}"
+}
