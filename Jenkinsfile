@@ -14,8 +14,8 @@ node {
         ]) {
 
             stage('Init') {
-                deleteDir()
-                checkout scm
+                //deleteDir()
+                //checkout scm
                 setBuildStatus("Build started.", "PENDING");
                 slackSend color: "good", message: "Subsite build ${buildLink} started."
                 //sh "docker run -u jenkins -v ${WORKSPACE}:/app -v /usr/share/composer:/usr/share/composer docker_composer install --no-suggest --no-interaction"
