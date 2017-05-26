@@ -1,5 +1,3 @@
-#!/usr/bin/groovy
-
 node {
         def buildId = sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
         def buildName = "${env.JOB_NAME}".replaceAll('%2F','_').replaceAll('/','_').replaceAll('-','_').trim()
