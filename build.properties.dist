@@ -220,7 +220,7 @@ platform.rebuild.backup.files = ${platform.build.settings.dir}/settings.php
 # -------------------
 
 # The location of the Behat executable.
-behat.bin = ${project.basedir}/ssk/behat
+behat.bin = ${platform.build.subsite.dir}/vendor/bin/behat
 
 # The location of the Behat tests.
 behat.dir = ${project.basedir}/tests

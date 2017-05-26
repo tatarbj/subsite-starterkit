@@ -39,7 +39,7 @@ def createWorkflow() {
                     dockerExecute('./ssk/phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
                     timeout(time: 2, unit: 'HOURS') {
                         //dockerExecute('phantomjs', '--webdriver=127.0.0.1:8643 &')
-                        dockerExecute('./ssk/behat', '-c tests/behat.yml --strict')
+                        dockerExecute('./ssk/phing', 'behat')
                     }
                 }
 
