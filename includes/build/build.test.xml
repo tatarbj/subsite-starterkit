@@ -142,6 +142,7 @@
             config="${behat.yml.path}"
             strict="${behat.options.strict}"
             verbose="${behat.options.verbosity}"
+            passthru="${behat.options.passthru}"
         />
     </target>
 
