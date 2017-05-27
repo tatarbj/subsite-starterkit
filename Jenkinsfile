@@ -72,9 +72,6 @@ def dockerExecute(String executable, String command) {
         case "./ssk/phing":
             color = "-logger phing.listener.AnsiColorLogger"
             break
-        case "./ssk/behat":
-            color = "--colors"
-            break
         case "composer":
             color = "--ansi"
             break
