@@ -18,6 +18,7 @@ pipeline:
   prepare-mysql:
     image: fpfis/mysql56
     commands:
+      - sleep 5
       - mysqladmin -h mysql -uroot create database 
   prepare:
     image: fpfis/php56-dev
