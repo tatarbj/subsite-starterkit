@@ -11,14 +11,13 @@ services:
     image: fpfis/mysql56
   selenium:
     image: selenium/standalone-chrome
-  solr:
-    image: fpfis/solr5
+#  solr:
+#    image: fpfis/solr5
 
 pipeline:
   prepare-mysql:
     image: fpfis/mysql56
     commands:
-      - sleep 15
       - mysqladmin -h mysql -uroot create database 
   prepare:
     image: fpfis/php56-dev
@@ -30,15 +29,3 @@ pipeline:
     image: fpfis/php56-dev
     commands:
       - ./bin/phing install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'=database
-    
-  reset-perms:
-    image: fpfis/php56
-    environment:
-      - DOCUMENT_ROOT=/test/ssk
-    commands:
-      - ls -lha '/test/ssk'
-      - echo 'Reseting workspace permissions ...'
-      - /run.sh id
-      - chown web:web . -R
-    when:
-      status:  [ failure, success ]
