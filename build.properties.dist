@@ -42,6 +42,10 @@ project.reference.repository =
 project.reference.branch = master
 project.reference.remote = reference
 
+# The path to save deploy packages to:
+project.release.path = ${share.subsites.path}/${project.id}
+
+
 # Development configuration
 # ---------------------------------------
 
@@ -358,3 +362,15 @@ starterkit.remote = starterkit
 
 # Whether or not to stop executing the build if a directory cannot be copied.
 copy.path.haltonerror = true
+
+
+# Shared paths
+# ------------
+
+# Global share location.
+share.global.path = /usr/share
+
+# Main share locations.
+share.platform.path = ${share.global.path}/platform
+share.subsites.path = ${share.global.path}/subsites
+share.composer.path = ${share.global.path}/composer
