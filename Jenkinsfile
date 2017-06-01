@@ -14,9 +14,9 @@ def createWorkflow() {
             stage('Init') {
                 setBuildStatus("Build started.", "PENDING");
                 slackSend color: "good", message: "Subsite build ${buildLink} started."
-                sh "./ssk/phing start-container -D'docker.container.id'=${buildId} -D'docker.container.workspace'=${WORKSPACE}"
+                //sh "./ssk/phing start-container -D'docker.container.id'=${buildId} -D'docker.container.workspace'=${WORKSPACE}"
                 sh "mkdir -p ${WORKSPACE}/platform"
-                //sh "docker-compose -f ${WORKSPACE}/vendor/ec-europa/subsite-starterkit/resources/docker/docker-compose.yml up -d"
+                sh "docker-compose -f ${WORKSPACE}/vendor/ec-europa/subsite-starterkit/resources/docker/docker-compose.yml up -d"
              }
 
             try {
@@ -47,8 +47,8 @@ def createWorkflow() {
                 slackSend color: "danger", message: "Subsite build ${buildLink} failed."
                 throw(err)
             } finally {
-                //sh "docker-compose -f ${WORKSPACE}/vendor/ec-europa/subsite-starterkit/resources/docker/docker-compose.yml down"
-                sh "./ssk/phing stop-container -D'docker.container.id'=${buildId} -D'docker.container.workspace'=${WORKSPACE}"
+                sh "docker-compose -f ${WORKSPACE}/vendor/ec-europa/subsite-starterkit/resources/docker/docker-compose.yml down"
+                //sh "./ssk/phing stop-container -D'docker.container.id'=${buildId} -D'docker.container.workspace'=${WORKSPACE}"
             }
         }
 }
