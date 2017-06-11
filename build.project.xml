@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="My subsite" default="help">
+    <target name="build-custom" description="Define new custom build targets and/or override existing ones.">
+        <echo message="Running custom build" />
+    </target>
+</project>
