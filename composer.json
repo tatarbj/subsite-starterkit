@@ -1,9 +1,9 @@
 {
   "require": {
-    "ec-europa/ssk": "~3.0"
+    "ec-europa/ssk": "dev-master"
   },
   "scripts": {
-    "run-phing": "./ssk/phing",
+    "phingexec": "./ssk/phing",
     "post-update-cmd": "PROJECT=$(pwd) composer install --working-dir=vendor/ec-europa/ssk/includes/composer --no-interaction --no-suggest --ansi"
   }
 }
